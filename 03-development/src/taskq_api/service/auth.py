@@ -40,6 +40,7 @@ def require_scope(scope: str) -> Callable[..., DbSession]:
         burst, per_sec = request.app.state.rate_config
         decision = rate_limit.consume(session, row.id, burst, per_sec)
         if not decision.allowed:
+            request.app.state.rejections.increment()
             raise ApiError(429, "/errors/rate-limited", "Too Many Requests", "rate limit exceeded",
                            headers={"Retry-After": str(decision.retry_after)})
         if _RANK.get(row.scope, 0) < _RANK[scope]:

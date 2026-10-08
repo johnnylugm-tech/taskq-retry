@@ -46,3 +46,8 @@ def count_by_status(session: Session) -> dict[str, int]:
     """Return task counts grouped by status."""
     rows = session.execute(select(Task.status, func.count()).group_by(Task.status)).all()
     return {status: count for status, count in rows}
+
+
+def durations_ms(session: Session) -> list[int]:
+    """Recorded execution durations in milliseconds. [FR-09]"""
+    return list(session.scalars(select(TaskResult.duration_ms).where(TaskResult.duration_ms.is_not(None))))
