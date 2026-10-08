@@ -1,0 +1,17 @@
+{
+  "timestamp": "20261008T132407Z",
+  "exc_type": "BrokenPipeError",
+  "exc_message": "[Errno 32] Broken pipe",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/johnny/projects/taskq-retry/harness/harness_cli.py\", line 430, in _dispatch\n    return args.func(args)\n           ^^^^^^^^^^^^^^^\n  File \"/Users/johnny/projects/taskq-retry/harness/cli/checks/specs.py\", line 557, in cmd_check_test_spec_consistency\n    print(f\"[review] {fr_id}: {v.message}\")\nBrokenPipeError: [Errno 32] Broken pipe\n",
+  "argv": [
+    "check-test-spec-consistency",
+    "--project",
+    "."
+  ],
+  "cwd": "/Users/johnny/projects/taskq-retry",
+  "project": ".",
+  "harness_git_sha": "6f9097121dfb25448da364b99d2fac95323d85b1",
+  "python_version": "3.11.15",
+  "repro_command": "/Users/johnny/.local/bin/python3 /Users/johnny/projects/taskq-retry/harness/harness_cli.py check-test-spec-consistency --project .",
+  "maintenance_prompt": "harness-methodology crashed with BrokenPipeError: [Errno 32] Broken pipe\nReproduce: /Users/johnny/.local/bin/python3 /Users/johnny/projects/taskq-retry/harness/harness_cli.py check-test-spec-consistency --project .\nDiagnose the root cause in harness-methodology's own code (not the target project's), write a regression test that reproduces this crash, then fix it. Follow SKILL.md's Phase 9 CR-BUG maintenance flow (`harness_cli.py cr-open --type bug ...`)."
+}

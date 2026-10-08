@@ -1,0 +1,58 @@
+{
+  "fr": "TEST_SPEC.md",
+  "review_status": "APPROVE",
+  "reason": "I re-read TEST_SPEC.md in full (712 lines) and checked it against the SRS, SAD and ADR. All 10 FRs have a Classification, a case table and a Sub-assertions table. Each FR has happy_path and validation or failure cases, and Inputs use the key=\"value\" form. The Pattern Activation table is filled. The forced NP-13 and NP-15 cases exist (FR-05 case 8, FR-08 case 6, FR-02 case 11, FR-08 case 4). Every SAD threat T-01 to T-17 maps to a verified_by row. Unit and static NFRs sit in the Deferred table. The Summary counts (137 cases) match the 137 numbered test rows I counted by grep. check-property-spec passes. check-test-spec-consistency fails for three rows (TC-N09-06, TC-N10-03, TC-N12-02), and the cause is in the inventory, not the spec. Those inventory entries carry a deferred: string and no t",
+  "citations": [
+    "02-architecture/TEST_SPEC.md:686",
+    "02-architecture/TEST_SPEC.md:687",
+    "02-architecture/TEST_SPEC.md:688",
+    "02-architecture/TEST_SPEC.md:49",
+    "02-architecture/TEST_SPEC.md:23",
+    "02-architecture/TEST_SPEC.md:697",
+    "02-architecture/SAD.md:296",
+    "02-architecture/adr/ADR.md:51"
+  ],
+  "docs_embedded": [
+    "SRS.md",
+    "SAD.md",
+    "ADR.md",
+    "TEST_SPEC.md",
+    "TEST_INVENTORY.yaml"
+  ],
+  "confidence": 0.9,
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "02-architecture/TEST_SPEC.md:686",
+      "message": "check-test-spec-consistency reports FAIL and BLOCKED for TC-N09-06, TC-N10-03 and TC-N12-02. TEST_INVENTORY.yaml gives them only a deferred: description with no identifier-shaped test_function (lines 479-483, 515-519, 545-549), so nfr_layering_targets returns test_fn empty. TEST_SPEC already lists them in the Deferred table by tc_id (rows 34-36), so this cannot be fixed in the spec. The P1 inventory needs a test_function, or the checker should accept deferred-only entries. Resolve this before advance-phase relies on that gate.",
+      "fr_id": null,
+      "category": "nit"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "02-architecture/TEST_SPEC.md:601",
+      "message": "check-test-spec-consistency emits [review] notes asking Agent B review for NFR-10 and NFR-12 predicates such as result_task_rows == 1, result_bucket_row_count == 1, result_healthz_status == int(healthz_expected_status) and result_server_stopped == True. They are not recognised length/count patterns, but each is a concrete, checkable production-output assertion, so I accept them.",
+      "fr_id": null,
+      "category": "nit"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "02-architecture/adr/ADR.md:51",
+      "message": "ADR-003 (models may import sqlalchemy) is still Proposed. TEST_SPEC rows NFR-06 AC-N6.2 and FR-06 case 1 rest on the layering contract, so this needs stakeholder ratification before P3 treats the exclusion as final.",
+      "fr_id": null,
+      "category": "nit"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "02-architecture/SAD.md:296",
+      "message": "The SAB block between SAB:START and SAB:END is still empty. The SAB generation step must fill it with the NFR-06 scope and the ADR-011 decision_issue.",
+      "fr_id": null,
+      "category": "nit"
+    }
+  ],
+  "reviewed_sha256": "c6b14599d412d71b006ea2ade4b7548b123813839874f9a69334a3fe4f4af841"
+}
