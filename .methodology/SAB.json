@@ -100,7 +100,9 @@
       "modules": [
         "migrations.versions.v1_initial",
         "migrations.versions.v2_tags",
-        "migrations.versions.v3_split_results"
+        "migrations.versions.v3_split_results",
+        "migrations.env",
+        "migrations.versions"
       ],
       "allowed_dependencies": []
     }
