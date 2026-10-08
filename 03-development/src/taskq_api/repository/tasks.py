@@ -50,4 +50,5 @@ def count_by_status(session: Session) -> dict[str, int]:
 
 def durations_ms(session: Session) -> list[int]:
     """Recorded execution durations in milliseconds. [FR-09]"""
-    return list(session.scalars(select(TaskResult.duration_ms).where(TaskResult.duration_ms.is_not(None))))
+    values = session.scalars(select(TaskResult.duration_ms).where(TaskResult.duration_ms.is_not(None)))
+    return [v for v in values if v is not None]
