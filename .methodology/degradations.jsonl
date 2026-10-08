@@ -1,0 +1,1 @@
+{"ts": 1791432843.335167, "component": "gate:env-repair", "what": "1 tool(s) missing, 0 repaired", "why": "", "owner": "infra", "data": {"requested": ["gitleaks"], "attempted_steps": [], "unfixable": ["gitleaks"], "still_missing": [], "installer_python": "/Users/johnny/projects/taskq-retry/.venv/bin/python", "ci": false}}
