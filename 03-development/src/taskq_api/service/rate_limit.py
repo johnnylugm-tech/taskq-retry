@@ -35,7 +35,8 @@ def _locked_bucket(session: Session, key_id: str, rate_burst: int, now: float) -
             return repo.add(session, RateBucket(key_id=key_id, tokens=float(rate_burst), refilled_at=now))
     except IntegrityError:  # a concurrent first request created the row
         bucket = repo.get_for_update(session, key_id)
-        assert bucket is not None
+        if bucket is None:
+            raise
         return bucket
 
 
