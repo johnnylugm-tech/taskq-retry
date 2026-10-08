@@ -5,11 +5,13 @@ All tests run in-process via TestClient against a per-test SQLite database.
 """
 import hashlib
 import threading
+import time
 import uuid
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, event, select
+from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Session
 
 from taskq_api.api import deps, middleware  # noqa: F401  (SAB: FR-05 modules)
@@ -263,3 +265,41 @@ def test_fr05_insert_conflict_without_existing_row_reraises(make_app, monkeypatc
     with Session(engine) as s:
         with pytest.raises(IntegrityError):
             rate_limit.consume(s, key_id, 3, 0.01)
+
+
+# --- review-fr-tests gaps: env refill rate wiring, row lock ----------------------
+
+def test_fr05_refill_rate_comes_from_taskq_rate_per_sec(make_app):
+    client = TestClient(make_app(1, 0.5))
+    assert client.get("/v1/tasks", headers=_h(KEY_A)).status_code == 200
+    denied = client.get("/v1/tasks", headers=_h(KEY_A))
+    assert denied.status_code == 429
+    assert denied.headers["Retry-After"] == "2"  # ceil(1 / 0.5): a hardcoded or other rate gives another value
+
+
+def test_fr05_high_refill_rate_from_env_readmits_after_wait(make_app):
+    client = TestClient(make_app(1, 1000.0))
+    assert client.get("/v1/tasks", headers=_h(KEY_A)).status_code == 200
+    time.sleep(0.05)  # 1000/s refills the single token
+    assert client.get("/v1/tasks", headers=_h(KEY_A)).status_code == 200
+
+
+def test_fr05_bucket_update_takes_row_lock_and_write_lock(make_app):
+    make_app(3, 0.01)
+    engine = make_app.state["engine"]
+    key_id = make_app.state["id_a"]
+    locked_selects, statements = [], []
+
+    @event.listens_for(Session, "do_orm_execute")
+    def _capture(state):
+        if state.is_select:
+            locked_selects.append(str(state.statement.compile(dialect=postgresql.dialect())))
+
+    event.listen(engine, "before_cursor_execute", lambda c, cur, stmt, *a: statements.append(stmt))
+    try:
+        with Session(engine) as s:
+            rate_limit.consume(s, key_id, 3, 0.01)
+    finally:
+        event.remove(Session, "do_orm_execute", _capture)
+    assert any("rate_buckets" in q and "FOR UPDATE" in q for q in locked_selects)  # PostgreSQL row lock
+    assert statements[0] == "BEGIN IMMEDIATE"  # SQLite write lock taken before the read
