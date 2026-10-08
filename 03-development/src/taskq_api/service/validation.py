@@ -3,6 +3,7 @@
 [FR-01] Citations: SPEC.md:88 (non-empty / <=1000 chars / injection blacklist / unique name).
 The blacklist is undefined in SPEC.md (NFR-99 item 1); NUL and line breaks are rejected.
 """
+MAX_NAME_LEN = 255
 MAX_COMMAND_LEN = 1000
 FORBIDDEN_COMMAND_CHARS = frozenset("\x00\r\n")
 

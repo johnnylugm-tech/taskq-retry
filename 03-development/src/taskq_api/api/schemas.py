@@ -7,7 +7,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from taskq_api.service.validation import MAX_COMMAND_LEN, validate_command
+from taskq_api.service.validation import MAX_COMMAND_LEN, MAX_NAME_LEN, validate_command
 
 TaskStatus = Literal["pending", "running", "succeeded", "failed"]
 
@@ -15,7 +15,7 @@ TaskStatus = Literal["pending", "running", "succeeded", "failed"]
 class TaskCreate(BaseModel):
     """POST /v1/tasks body."""
 
-    name: str = Field(min_length=1, max_length=255)
+    name: str = Field(min_length=1, max_length=MAX_NAME_LEN)
     command: str = Field(min_length=1, max_length=MAX_COMMAND_LEN)
 
     _check_command = field_validator("command")(validate_command)
