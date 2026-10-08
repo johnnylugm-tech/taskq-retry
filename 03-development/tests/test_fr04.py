@@ -113,14 +113,15 @@ def test_fr04_insufficient_scope_returns_403_without_existence_leak(client, db_u
     expected_status, expected_type = "403", "/errors/forbidden"
     resp_existing = _call(client, "write", "DELETE", f"/v1/tasks/{existing_id}")
     resp_unknown = _call(client, "write", "DELETE", f"/v1/tasks/{UNKNOWN_ID}")
-    assert resp_existing.status_code == int(expected_status)  # AC4.2-status
-    assert resp_unknown.status_code == int(expected_status)  # AC4.2-status
+    for resp in (resp_existing, resp_unknown):
+        result_status_code = resp.status_code
+        assert result_status_code == int(expected_status)  # AC4.2-status
     assert resp_existing.headers["content-type"].startswith("application/problem+json")
     result_problem_type = resp_existing.json()["type"]
     assert result_problem_type == expected_type  # AC4.2-problem-type
-    body_existing = {k: v for k, v in resp_existing.json().items() if k not in ("instance", "correlation_id")}
-    body_unknown = {k: v for k, v in resp_unknown.json().items() if k not in ("instance", "correlation_id")}
-    assert body_existing == body_unknown  # AC4.2-no-leak
+    result_body_existing = {k: v for k, v in resp_existing.json().items() if k not in ("instance", "correlation_id")}
+    result_body_unknown = {k: v for k, v in resp_unknown.json().items() if k not in ("instance", "correlation_id")}
+    assert result_body_existing == result_body_unknown  # AC4.2-no-leak
 
 
 def test_fr04_every_v1_route_uses_same_scope_dependency(app):
@@ -134,11 +135,15 @@ def test_fr04_every_v1_route_uses_same_scope_dependency(app):
         if not names:
             routes_without_dependency.append(route.path)
         dependency_names |= {n.split(".")[0] for n in names}
-    assert len(routes_without_dependency) == 0  # AC4.3-no-bypass
-    assert len(dependency_names) == 1  # AC4.3-single-dependency
+    result_routes_without_dependency = routes_without_dependency
+    result_distinct_dependency_count = len(dependency_names)
+    result_v1_route_count = len(v1_routes)
+    assert len(result_routes_without_dependency) == 0  # AC4.3-no-bypass
+    assert result_distinct_dependency_count == 1  # AC4.3-single-dependency
     assert dependency_names == {expected_dependency}
     assert deps.require_scope.__name__ == expected_dependency
-    assert len(v1_routes) == int("7")  # AC4.3-route-count
+    v1_route_count = "7"
+    assert result_v1_route_count == int(v1_route_count)  # AC4.3-route-count
 
 
 def test_sec_t04_insufficient_scope_403_no_existence_leak(client, db_url):
@@ -148,9 +153,9 @@ def test_sec_t04_insufficient_scope_403_no_existence_leak(client, db_url):
     resp_unknown = _call(client, "read", "DELETE", f"/v1/tasks/{UNKNOWN_ID}")
     assert resp_existing.status_code == int(expected_status)  # AC4.2-status
     assert resp_unknown.status_code == int(expected_status)  # AC4.2-status
-    body_existing = {k: v for k, v in resp_existing.json().items() if k not in ("instance", "correlation_id")}
-    body_unknown = {k: v for k, v in resp_unknown.json().items() if k not in ("instance", "correlation_id")}
-    assert body_existing == body_unknown  # AC4.2-no-leak
+    result_body_existing = {k: v for k, v in resp_existing.json().items() if k not in ("instance", "correlation_id")}
+    result_body_unknown = {k: v for k, v in resp_unknown.json().items() if k not in ("instance", "correlation_id")}
+    assert result_body_existing == result_body_unknown  # AC4.2-no-leak
 
 
 def test_fr04_authorization_precedes_resource_lookup(client, monkeypatch):
@@ -164,6 +169,7 @@ def test_fr04_authorization_precedes_resource_lookup(client, monkeypatch):
     monkeypatch.setattr(task_repo, "get", spy)
     expected_status = "403"
     resp = _call(client, "write", "DELETE", f"/v1/tasks/{UNKNOWN_ID}")
-    assert resp.status_code == int(expected_status)  # AC4.2-status
+    result_status_code = resp.status_code
+    assert result_status_code == int(expected_status)  # AC4.2-status
     result_resource_lookup_count = len(lookups)
     assert result_resource_lookup_count == 0  # AC4.2-before-lookup
