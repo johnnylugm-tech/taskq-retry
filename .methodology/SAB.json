@@ -54,7 +54,8 @@
         "taskq_api.repository.api_keys",
         "taskq_api.repository.rate_buckets",
         "taskq_api.repository.health",
-        "taskq_api.repository"
+        "taskq_api.repository",
+        "taskq_api.db"
       ],
       "allowed_dependencies": [
         "models",

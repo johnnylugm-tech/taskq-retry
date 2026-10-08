@@ -339,6 +339,7 @@ sab:
         - "taskq_api.repository.api_keys"
         - "taskq_api.repository.rate_buckets"
         - "taskq_api.repository.health"
+        - "taskq_api.db"
       allowed_dependencies: ["models", "independence"]
     - name: models
       modules:

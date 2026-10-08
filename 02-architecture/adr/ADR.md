@@ -285,3 +285,10 @@ Each NFR gets a machine-checkable gate.
 
 ### Alternatives Considered
 - Mocked-only integration tests: rejected, would not exercise high-risk modules for real (NFR-12).
+
+## Architecture Amendment — `taskq_api.db` declared in layer `repository`
+
+- **When**: 2026-10-08T14:10:17.316771+00:00
+- **Amended**: layer 'repository'
+- **Reason**: db.get_session is the per-request Session provider (FR-06 one Session per request); it imports sqlalchemy and is consumed by service.auth, so it can only sit in the repository layer without an upward import
+- **Recorded by**: `harness_cli.py amend-sab --declare` (Gate 1 Architecture Amendment Protocol)
