@@ -90,7 +90,7 @@ def test_fr09_readyz_200_when_db_ok_and_migration_at_head(client, monkeypatch):
     result_status_code = resp.status_code
     assert result_status_code == int(expected_status)  # AC9.1-status
     result_ready = resp.json().get("status") in ("ready", "ok")
-    assert result_ready is True  # AC9.2-ready
+    assert result_ready == True  # noqa: E712  # AC9.2-ready
 
 
 def test_fr09_readyz_503_when_db_unavailable(db_url, monkeypatch):
