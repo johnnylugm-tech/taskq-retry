@@ -20,6 +20,10 @@ TAIL_BYTES = 4096
 _SECRET = re.compile(r"sk-[A-Za-z0-9]{8,}")
 
 
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
 def _tail(data: bytes) -> str:
     text = data[-TAIL_BYTES:].decode(errors="replace")
     return _SECRET.sub("[REDACTED]", text)
@@ -67,7 +71,7 @@ async def execute(engine: DbEngine, run_id: str, command: str, timeout: Optional
     _set_status(
         engine, run_id, status, exit_code=exit_code, stdout_tail=_tail(out), stderr_tail=_tail(err),
         duration_ms=int((time.monotonic() - start) * 1000),
-        finished_at=datetime.now(timezone.utc).replace(tzinfo=None))
+        finished_at=_utcnow())
 
 
 class Executor:
@@ -80,8 +84,7 @@ class Executor:
         self._engine = engine
         self._drain_timeout = drain_timeout
         self._task_timeout = task_timeout
-        self._max_concurrent = max_concurrent
-        self._sem: Optional[asyncio.Semaphore] = None
+        self._sem = asyncio.Semaphore(max_concurrent)
         self._group: Optional[asyncio.TaskGroup] = None
         self._jobs: set[asyncio.Task[None]] = set()
         self.running = 0
@@ -89,14 +92,8 @@ class Executor:
 
     async def start(self) -> None:
         """Open the TaskGroup that owns every submitted job."""
-        self._sem = asyncio.Semaphore(self._max_concurrent)
         self._group = asyncio.TaskGroup()
         await self._group.__aenter__()
-
-    def _semaphore(self) -> asyncio.Semaphore:
-        if self._sem is None:
-            self._sem = asyncio.Semaphore(self._max_concurrent)
-        return self._sem
 
     def submit(self, run_id: str, command: str) -> None:
         """Enqueue a run without blocking; it waits for a free concurrency slot."""
@@ -109,14 +106,14 @@ class Executor:
         try:
             await self.run(run_id, command)
         except asyncio.CancelledError:
-            _set_status(self._engine, run_id, "interrupted", finished_at=datetime.now(timezone.utc).replace(tzinfo=None))
+            _set_status(self._engine, run_id, "interrupted", finished_at=_utcnow())
             raise
         except Exception:  # a failed run must not abort sibling jobs in the TaskGroup
             pass
 
     async def run(self, run_id: str, command: str) -> None:
         """Execute under the concurrency cap and wait for completion."""
-        async with self._semaphore():
+        async with self._sem:
             self.running += 1
             self.peak_running = max(self.peak_running, self.running)
             try:
