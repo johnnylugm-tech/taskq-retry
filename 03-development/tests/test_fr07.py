@@ -50,6 +50,14 @@ def _columns(db_file: Path, table: str) -> list:
         con.close()
 
 
+def _indexes(db_file: Path, table: str) -> set:
+    con = sqlite3.connect(db_file)
+    try:
+        return {r[1] for r in con.execute(f"PRAGMA index_list({table})")}
+    finally:
+        con.close()
+
+
 def _insert_task(con, idx: int, result_json=None) -> str:
     task_id = f"00000000-0000-4000-8000-{idx:012d}"
     con.execute(
@@ -118,8 +126,20 @@ def test_fr07_v2_downgrade_preserves_v1_data(tmp_path):
     con.commit()
     con.close()
     before = _dump(db_file, "tasks", "id")
+    assert "ix_tasks_name" in _indexes(db_file, "tasks")
+    dup = sqlite3.connect(db_file)
+    try:
+        with pytest.raises(sqlite3.IntegrityError):
+            dup.execute(
+                "INSERT INTO tasks (id, command, name, status, created_at) "
+                "VALUES ('dup-id', 'echo hello', 'task-0', 'pending', '2026-01-01 00:00:00')"
+            )
+    finally:
+        dup.rollback()
+        dup.close()
 
     command.downgrade(cfg, target_revision)
+    assert "ix_tasks_name" not in _indexes(db_file, "tasks")
 
     result_tables_after = _tables(db_file)
     result_tasks_count_after = len(_dump(db_file, "tasks", "id"))
