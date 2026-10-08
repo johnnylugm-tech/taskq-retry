@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlalchemy import create_engine
 
-from taskq_api.api import routes_tasks
+from taskq_api.api import routes_runs, routes_tasks
 from taskq_api.errors import install_handlers
 
 
@@ -25,4 +25,5 @@ def create_app() -> FastAPI:
     app.state.engine = engine
     install_handlers(app)
     app.include_router(routes_tasks.router)
+    app.include_router(routes_runs.router)
     return app

@@ -1,6 +1,6 @@
 """Task result ORM model.
 
-[FR-01] Citations: SPEC.md:98, SPEC.md:312.
+[FR-01] [FR-02] Citations: SPEC.md:97-98, SPEC.md:312.
 """
 from datetime import datetime
 from typing import Optional
@@ -19,6 +19,7 @@ class TaskResult(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     task_id: Mapped[str] = mapped_column(String(36), ForeignKey("tasks.id"), nullable=False, index=True)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="pending")
     exit_code: Mapped[Optional[int]] = mapped_column(Integer)
     stdout_tail: Mapped[str] = mapped_column(Text, default="")
     stderr_tail: Mapped[str] = mapped_column(Text, default="")
