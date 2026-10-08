@@ -42,7 +42,6 @@
 
 ## Gaps
 
-- **FR without design (SAD)**: FR-03, FR-04, FR-05, FR-06, FR-07, FR-08, FR-09, FR-10
 - **FR without Code**: FR-01, FR-02, FR-03, FR-04, FR-05, FR-06, FR-07, FR-08, FR-09, FR-10
 - **FR without Test**: FR-01, FR-02, FR-03, FR-04, FR-05, FR-06, FR-07, FR-08, FR-09, FR-10
 
@@ -50,17 +49,17 @@
 
 | NFR ID | Test Coverage | Status |
 |--------|--------------|--------|
-| NFR-01 | — — absent: AC-N1.1 ← no TEST_SPEC case cites it, AC-N1.2 ← no TEST_SPEC case cites it, AC-N1.3 ← no TEST_SPEC case cites it, AC-N1.4 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-02 | — — absent: AC-N2.1 ← no TEST_SPEC case cites it, AC-N2.2 ← no TEST_SPEC case cites it, AC-N2.3 ← no TEST_SPEC case cites it, AC-N2.4 ← no TEST_SPEC case cites it, AC-N2.5 ← no TEST_SPEC case cites it, AC-N2.6 ← no TEST_SPEC case cites it, AC-N2.7 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-03 | — — absent: AC-N3.1 ← no TEST_SPEC case cites it, AC-N3.2 ← no TEST_SPEC case cites it, AC-N3.3 ← no TEST_SPEC case cites it, AC-N3.4 ← no TEST_SPEC case cites it, AC-N3.5 ← no TEST_SPEC case cites it, AC-N3.6 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-04 | — — absent: AC-N4.1 ← no TEST_SPEC case cites it, AC-N4.2 ← no TEST_SPEC case cites it, AC-N4.3 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-05 | — — absent: AC-N5.1 ← no TEST_SPEC case cites it, AC-N5.2 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-06 | — — absent: AC-N6.1 ← no TEST_SPEC case cites it, AC-N6.2 ← no TEST_SPEC case cites it, AC-N6.3 ← no TEST_SPEC case cites it, AC-N6.4 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-07 | — — absent: AC-N7.1 ← no TEST_SPEC case cites it, AC-N7.2 ← no TEST_SPEC case cites it, AC-N7.3 ← no TEST_SPEC case cites it, AC-N7.4 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-08 | — — absent: AC-N8.1 ← no TEST_SPEC case cites it, AC-N8.2 ← no TEST_SPEC case cites it, AC-N8.3 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-09 | — — absent: AC-N9.1 ← no TEST_SPEC case cites it, AC-N9.2 ← no TEST_SPEC case cites it, AC-N9.3 ← no TEST_SPEC case cites it, AC-N9.4 ← no TEST_SPEC case cites it, AC-N9.5 ← no TEST_SPEC case cites it, AC-N9.6 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-10 | — — absent: AC-N10.1 ← no TEST_SPEC case cites it, AC-N10.2 ← no TEST_SPEC case cites it, AC-N10.3 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-11 | — — absent: AC-N11.1 ← no TEST_SPEC case cites it, AC-N11.2 ← no TEST_SPEC case cites it, AC-N11.3 ← no TEST_SPEC case cites it, AC-N11.4 ← no TEST_SPEC case cites it | PARTIAL |
-| NFR-12 | — — absent: AC-N12.1 ← no TEST_SPEC case cites it, AC-N12.2 ← no TEST_SPEC case cites it | PARTIAL |
+| NFR-01 | — — absent: AC-N1.1 ← test_nfr01_get_task_p95_under_30ms_at_10k_rows (absent), AC-N1.2 ← test_nfr01_list_tasks_limit_50_p95_under_80ms_at_10k_rows (absent), AC-N1.3 ← test_nfr01_list_sql_statement_count_constant_regardless_of_rows (absent), AC-N1.4 ← test_nfr01_benchmarks_use_pytest_benchmark (absent) | PARTIAL |
+| NFR-02 | — — absent: AC-N2.1 ← test_nfr02_no_shell_true_eval_exec_in_source (absent), AC-N2.2 ← test_nfr02_no_string_concatenated_sql_in_source (absent), AC-N2.3 ← test_nfr02_api_key_hashed_and_compared_constant_time (absent), AC-N2.4 ← test_nfr02_403_body_does_not_reveal_resource_existence (absent), AC-N2.5 ← test_nfr02_422_body_has_no_stack_sql_or_path (absent), AC-N2.5 ← test_nfr02_error_body_has_no_stack_sql_or_path (absent), AC-N2.6 ← test_nfr02_cors_allowlisted_origin_receives_allow_header (absent), AC-N2.6 ← test_nfr02_cors_denies_all_origins_by_default_and_honours_allowlist (absent), AC-N2.7 ← test_nfr02_bandit_reports_zero_high_and_zero_medium (absent) | PARTIAL |
+| NFR-03 | — — absent: AC-N3.1 ← test_nfr03_transaction_commit_on_success_rollback_on_exception (absent), AC-N3.2 ← test_nfr03_no_bare_except_or_except_exception_pass (absent), AC-N3.3 ← test_nfr03_cancelled_error_is_reraised (absent), AC-N3.4 ← test_nfr03_db_failure_yields_readyz_503_without_infinite_retry (absent), AC-N3.5 ← test_nfr03_timeout_leaves_no_orphan_subprocess (absent), AC-N3.6 ← test_nfr03_failed_migration_rolls_back_to_previous_revision (absent) | PARTIAL |
+| NFR-04 | — — absent: AC-N4.1 ← test_nfr04_sensitive_lines_replaced_with_redacted (absent), AC-N4.2 ← test_nfr04_db_url_password_absent_from_error_body (absent), AC-N4.2 ← test_nfr04_db_url_password_absent_from_logs_errors_and_metrics (absent), AC-N4.2 ← test_nfr04_db_url_password_absent_from_metrics_response (absent), AC-N4.3 ← test_nfr04_api_key_plaintext_not_persisted_anywhere (absent) | PARTIAL |
+| NFR-05 | — — absent: AC-N5.1 ← test_nfr05_public_docstrings_reference_fr_or_nfr (absent), AC-N5.2 ← test_nfr05_openapi_every_endpoint_has_summary_and_description (absent) | PARTIAL |
+| NFR-06 | — — absent: AC-N6.1 ← test_nfr06_importlinter_declares_layers_and_independence_contracts (absent), AC-N6.2 ← test_nfr06_sqlalchemy_forbidden_outside_repository_rejects_seeded_violation (absent), AC-N6.3 ← test_nfr06_lint_imports_exits_zero (absent), AC-N6.4 ← test_nfr06_no_wildcard_ignore_imports_or_downgraded_contracts (absent) | PARTIAL |
+| NFR-07 | — — absent: AC-N7.1 ← test_nfr07_runtime_deps_pinned_and_lock_file_complete (absent), AC-N7.2 ← test_nfr07_all_dependency_licenses_in_allowlist (absent), AC-N7.3 ← test_nfr07_license_scan_covers_full_dependency_tree (absent), AC-N7.4 ← test_nfr07_sbom_json_has_name_version_license_and_direct_transitive (absent) | PARTIAL |
+| NFR-08 | — — absent: AC-N8.1 ← test_nfr08_harness_config_enables_mutation_testing (absent), AC-N8.2 ← test_nfr08_mutation_score_at_least_70 (absent), AC-N8.3 ← test_nfr08_mutation_scope_limited_to_service_and_repository_with_rationale (absent) | PARTIAL |
+| NFR-09 | — — absent: AC-N9.1 ← test_nfr09_no_skip_skipif_xfail_or_stub_tests (absent), AC-N9.3 ← test_nfr09_every_test_function_has_assert (absent), AC-N9.4 ← test_nfr09_no_test_exclusion_flags_or_config (absent), AC-N9.5 ← test_nfr09_migration_tests_use_real_sqlite_file (absent), AC-N9.6 ← test_nfr09_verified_status_only_after_passing_run (absent) | PARTIAL |
+| NFR-10 | — — absent: AC-N10.2 ← test_nfr10_integration_tests_use_asgi_transport_not_handlers (absent), AC-N10.3 ← test_nfr10_integration_suite_covers_required_scenarios (absent) | PARTIAL |
+| NFR-11 | — — absent: AC-N11.1 ← test_nfr11_maintainability_index_at_least_80 (absent), AC-N11.2 ← test_nfr11_cyclomatic_complexity_at_most_10 (absent), AC-N11.3 ← test_nfr11_file_and_directory_size_limits (absent), AC-N11.4 ← test_nfr11_api_handlers_at_most_40_lines (absent) | PARTIAL |
+| NFR-12 | — — absent: AC-N12.1 ← test_deploy_smoke_service_starts_and_healthz_readyz_return_200 (absent), AC-N12.1 ← test_nfr12_verify_system_target_chains_required_steps (absent) | PARTIAL |
 | NFR-99 | — | PENDING |
 <!-- AUTO-GEN:END -->

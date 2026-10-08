@@ -1,14 +1,16 @@
 {
   "fr": "ADR.md",
   "review_status": "APPROVE",
-  "reason": "I re-read ADR.md (266 lines), SAD.md (485 lines) and the SRS heading index from disk. Both SAD carry-over caveats are handled. ADR-003 records the models/sqlalchemy exclusion for the NFR-06 conflict (SAD.md:190), keeps the pure-domain alternative, and is marked Proposed / Requires Verification, which matches the SAD. ADR-009 records that the template's 'retry 3 times' strategy is not used (SAD.md:473) and that there is no circuit breaker. Spot checks of ADR-005, ADR-004, ADR-007 and ADR-008 against SAD.md:154-173 and 242-244 found them consistent: TaskGroup, semaphore, shlex with no shell, pool_pre_ping, FOR UPDATE with SQLite serialization, keyset pagination. ADR-011 matches the deferred FR-01 item at SAD.md:36. Every ADR has Status, Context, Decision, Rationale, Consequences and Alternat",
+  "reason": "I re-read ADR.md, SAD.md and SRS.md from disk. ADR.md has 12 ADRs, each with Status, Context, Decision, Rationale, Consequences and Alternatives Considered, which is the template structure plus an extra Alternatives section. The SAD:190 caveat is handled: ADR-003 records the models-excluded forbidden contract and marks it Proposed and Requires Verification, matching SAD.md:190. ADR-009 matches SAD.md:681, which says the template 'retry 3 times' strategy is not used. ADR-005 matches SAD.md:156 and SAD.md:252 (TaskGroup, semaphore, drain, `interrupted`). ADR-011 isolates the FR-01 blacklist as SRS.md:77 requires. The traceability matrix covers FR-01 to FR-10 and the relevant NFRs, and the open NFR-99 items are not invented. I did not check the SAB block; the SAD gap about it is left for the ",
   "citations": [
     "02-architecture/SAD.md:190",
-    "02-architecture/SAD.md:473",
     "02-architecture/SAD.md:156",
-    "02-architecture/SAD.md:36",
-    "02-architecture/adr/ADR.md:51",
-    "02-architecture/adr/ADR.md:182"
+    "02-architecture/SAD.md:252",
+    "02-architecture/SAD.md:681",
+    "01-requirements/SRS.md:77",
+    "01-requirements/SRS.md:157",
+    "02-architecture/adr/ADR.md:72",
+    "02-architecture/adr/ADR.md:203"
   ],
   "docs_embedded": [
     "SRS.md",
@@ -19,20 +21,20 @@
   "gaps": [
     {
       "severity": "low",
-      "evidence_type": "over_interpretation",
-      "canonical_ref": "02-architecture/adr/ADR.md:51",
-      "message": "ADR-003 is Proposed, so the models/sqlalchemy exclusion still needs stakeholder ratification before the SAB or .importlinter relies on it. The SAB generation step should record it as an open decision and not silently treat it as final.",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "02-architecture/SAD.md:300",
+      "message": "SAB block between SAB:START and SAB:END still needs to be verified by the SAB generation sub-task. ADR-011 refers to a decision_issue in the SAB block, so the two must stay consistent.",
       "fr_id": null,
       "category": "nit"
     },
     {
       "severity": "low",
-      "evidence_type": "methodology_artifact",
-      "canonical_ref": "02-architecture/SAD.md:296",
-      "message": "The SAB block between SAB:START and SAB:END is still empty. The SAB generation sub-task must fill it with the NFR-06 scope and the ADR-011 decision_issue.",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "02-architecture/adr/ADR.md:72",
+      "message": "ADR-003 is Proposed, not Accepted, and awaits stakeholder verification. ADR-002 and ADR-004 build on its models exclusion. The dependency is documented, but the status should be updated once the stakeholder decides.",
       "fr_id": null,
       "category": "nit"
     }
   ],
-  "reviewed_sha256": "c944efc19bd37b9619f79b54fdfeb4c28081be01657f0b138310044c77ce03c9"
+  "reviewed_sha256": "5e05563002793177d8872f236cd36a6f83398c81d79b8b637e3cb54ebb0a57c5"
 }

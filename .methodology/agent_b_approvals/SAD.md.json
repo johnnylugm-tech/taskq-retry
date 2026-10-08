@@ -1,16 +1,15 @@
 {
   "fr": "SAD.md",
   "review_status": "APPROVE",
-  "reason": "I re-read SAD.md in full and checked SRS.md dimensions and NFR-08 scope. All 10 FRs map to at least one module in the §2.2 table. The §2.4 dependency graph is acyclic: api to service to repository to models, with config and errors as leaves. The §2.1 tree keeps every directory at 15 files or fewer (api 9, service 11, repository 8, models 6) and splits subpackages by responsibility. The §4 NFR dimensions match SRS.md verbatim (performance, security, error_handling, documentation, architecture_constraints, license_compliance, mutation_testing and the rest). NFR-08 scope is limited to service and repository. The SAB markers are present but the block is empty. §5 says the YAML is generated in the later SAB phase, so no phase, type or scope_layers values could be checked. The SEC block has full",
+  "reason": "Re-read SAD.md and the SRS NFR sections from disk. All 10 FRs map to modules in both §2.2 and fr_module_traceability. The dependency graph is acyclic, and the SAB layers only allow downward edges. The SAB:START marker (line 300) and SEC:START marker (line 513) are present. `phase: 2` is a bare int. All 12 NFR `type` values are in the legal vocabulary, and each `dimension` matches the SRS verbatim. NFR-08 carries `scope_layers: [service, repository]`, which matches the SRS limit to service/ and repository/. Directories hold 11 files or fewer. Every threat has a single-test `verified_by`, and every boundary has at least one threat. One real deviation: the SAD excludes `models` from the sqlalchemy ban, whereas SRS AC-N6.2 says no layer other than `repository` may import it. The SAD states thi",
   "citations": [
-    "02-architecture/SAD.md:296",
-    "02-architecture/SAD.md:305",
-    "02-architecture/SAD.md:111-127",
-    "02-architecture/SAD.md:192-202",
-    "02-architecture/SAD.md:273-286",
-    "02-architecture/SAD.md:109",
-    "01-requirements/SRS.md:295",
-    "01-requirements/SRS.md:301"
+    "02-architecture/SAD.md:190 (models/sqlalchemy deviation flagged for ADR)",
+    "02-architecture/SAD.md:300 (SAB:START marker)",
+    "02-architecture/SAD.md:305 (phase: 2 bare int)",
+    "02-architecture/SAD.md:429 (NFR-08 scope_layers)",
+    "02-architecture/SAD.md:482 (forbidden contract excludes models)",
+    "02-architecture/SAD.md:513 (SEC:START marker)",
+    "01-requirements/SRS.md:275 (AC-N6.2 sqlalchemy outside repository)"
   ],
   "docs_embedded": [
     "SRS.md",
@@ -20,20 +19,12 @@
   "gaps": [
     {
       "severity": "low",
-      "evidence_type": "methodology_artifact",
-      "canonical_ref": "02-architecture/SAD.md:296",
-      "message": "The SAB block between SAB:START and SAB:END is empty; the YAML (phase as bare int, nfr_traceability with dimension/type, scope_layers for NFR-08) must be filled in by the SAB generation sub-task and re-checked there.",
-      "fr_id": null,
-      "category": "nit"
-    },
-    {
-      "severity": "low",
       "evidence_type": "over_interpretation",
-      "canonical_ref": "02-architecture/SAD.md:190",
-      "message": "A literal reading of NFR-06 conflicts with models importing sqlalchemy. The SAD resolves this by excluding models from the forbidden contract and marks it Requires Verification for ADR ratification. Ensure the ADR records the decision.",
+      "canonical_ref": "01-requirements/SRS.md:275",
+      "message": "SRS AC-N6.2 says layers other than repository may not import sqlalchemy. SAD §2.3.5 and the SAB forbidden contract exempt `models`, because declarative ORM needs it, and the NFR-06 target text reads 'outside repository and models'. The deviation is declared and left for ADR ratification. The ADR should record it explicitly.",
       "fr_id": null,
       "category": "nit"
     }
   ],
-  "reviewed_sha256": "f4e75be0ec37debe7ceff5e88f16b356c09e2f611d2d63be1d62f1f8f1ede019"
+  "reviewed_sha256": "d7a64bd381e34345f86a8c75fee7a002f551c4c7123d95ab4b529817658f4d2c"
 }
