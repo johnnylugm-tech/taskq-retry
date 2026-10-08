@@ -27,6 +27,8 @@ def _tail(data: bytes) -> str:
 def _set_status(engine: Engine, run_id: str, status: str, **fields) -> None:
     with Session(engine) as session:
         row = repo.get(session, run_id)
+        if row is None:
+            raise RuntimeError(f"run {run_id} not found")
         if not runner.is_transition_allowed(row.status, status):
             raise RuntimeError(f"illegal run transition {row.status} -> {status}")
         row.status = status

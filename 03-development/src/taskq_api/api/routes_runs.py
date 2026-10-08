@@ -63,4 +63,4 @@ async def run_task(task_id: str, request: Request, session: Session = Depends(re
             description="Run history, newest first (scope read).")
 def list_runs(task_id: str, session: Session = Depends(require_scope("read"))):
     svc.get(session, task_id)
-    return RunPage(items=repo.list_for_task(session, task_id))
+    return RunPage(items=[RunOut.model_validate(r) for r in repo.list_for_task(session, task_id)])

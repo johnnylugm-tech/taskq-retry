@@ -17,8 +17,8 @@ def add(session: Session, task_id: str, run_id: str) -> TaskResult:
     return row
 
 
-def get(session: Session, run_id: str) -> TaskResult:
-    """Fetch a run row by id."""
+def get(session: Session, run_id: str) -> TaskResult | None:
+    """Fetch a run row by id, or None."""
     return session.get(TaskResult, run_id)
 
 

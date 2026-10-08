@@ -12,11 +12,11 @@ layers =
     taskq_api.models
 
 [importlinter:contract:independence-config-errors]
-name = Config and errors are independent leaves
+name = Errors and db are independent leaves
 type = independence
 modules =
-    taskq_api.config
     taskq_api.errors
+    taskq_api.db
 
 [importlinter:contract:forbid-sqlalchemy-outside-repository]
 name = SQLAlchemy only in repository and models
@@ -25,9 +25,19 @@ source_modules =
     taskq_api.api
     taskq_api.service
     taskq_api.errors
-    taskq_api.config
     taskq_api.app
     taskq_api.__main__
 forbidden_modules =
     sqlalchemy
 allow_indirect_imports = True
+
+[importlinter:contract:db-is-infrastructure-leaf]
+name = Database session module does not import upper layers
+type = forbidden
+source_modules =
+    taskq_api.db
+forbidden_modules =
+    taskq_api.api
+    taskq_api.service
+    taskq_api.repository
+    taskq_api.app
