@@ -203,3 +203,16 @@ def test_sec_t10_session_released_on_exception(tmp_path, monkeypatch):
                 raise ValueError("request failed")
     result_checked_out_connections = engine.pool.checkedout()
     assert result_checked_out_connections == 0  # T10-released
+
+
+def test_fr06_unit_of_work_commits_and_guards_use_outside_with(tmp_path, monkeypatch):
+    engine = _engine(tmp_path, monkeypatch)
+    uow = unit_of_work.UnitOfWork(engine)
+    with pytest.raises(RuntimeError):
+        uow.get_run("missing")  # used outside its 'with' block
+    with uow as active:
+        assert active is uow
+        assert active.get_run(str(uuid.uuid4())) is None
+    with pytest.raises(ValueError):
+        with unit_of_work.UnitOfWork(engine):
+            raise ValueError("boom")
