@@ -220,3 +220,26 @@ def test_fr09_repo_current_revision_reads_alembic_version(db_url):
         assert health_repo.current_revision(engine) == "abc123"
     finally:
         engine.dispose()
+
+
+def test_fr09_metrics_latency_percentiles_reflect_seeded_durations(db_url):
+    """[FR-09] SPEC.md:158 - percentiles are computed from recorded run durations."""
+    from taskq_api.models.task_result import TaskResult
+
+    durations = list(range(10, 110, 10))  # 10..100 ms, ten runs
+    engine = create_engine(db_url)
+    with Session(engine) as s:
+        task = Task(command="echo hi", name="timed", status="done")
+        s.add(task)
+        s.flush()
+        for d in durations:
+            s.add(TaskResult(id=str(uuid.uuid4()), task_id=task.id, status="done", duration_ms=d))
+        s.commit()
+    engine.dispose()
+    with TestClient(create_app()) as c:
+        resp = c.get("/v1/metrics", headers={"X-API-Key": ADMIN_KEY})
+    latency = resp.json()["latency_percentiles"]
+    assert resp.status_code == 200
+    assert latency["p50"] == 50.0
+    assert latency["p90"] == 90.0
+    assert latency["p99"] == 100.0
