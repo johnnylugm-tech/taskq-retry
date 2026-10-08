@@ -2,7 +2,7 @@
 
 **Checkpoint**: `P1-exit-20261008`  
 **Phase**: P1 — Spec & Discovery  
-**Generated**: 2026-10-08T08:51:29Z
+**Generated**: 2026-10-08T08:53:45Z
 
 > ⚠️  **開始下一個工作階段前，請先執行 `/compact` 壓縮上下文**，再從「接下來的工作」繼續。
 
@@ -89,8 +89,21 @@ P1 phase completed — pushed for record.
   - ? / peer-b-r1: **complete**
   - ? / forward-ref-check: **complete**
   - ? / preview-next-phase-r1: **complete**
+  - ? / push-1: **complete**
 
 **Recently Committed Files:**
+  - `.methodology/.state.lock`
+  - `.methodology/agent_b_approvals/SPEC_TRACKING.md.json`
+  - `.methodology/agent_b_approvals/SRS.md.json`
+  - `.methodology/agent_b_approvals/TEST_INVENTORY.yaml.json`
+  - `.methodology/state.json`
+  - `.methodology/trace/attestation.json`
+  - `.methodology/workflow_blocks.jsonl`
+  - `01-requirements/SPEC_TRACKING.md`
+  - `01-requirements/SRS.md`
+  - `HANDOVER.md`
+  - `TEST_INVENTORY.yaml`
+  - `srs_vs_spec_diff.json`
   - `harness`
   - `.gitignore`
   - `.gitleaks.toml`
@@ -99,18 +112,6 @@ P1 phase completed — pushed for record.
   - `.methodology/phase2_plan.md`
   - `.methodology/phase3_plan.md`
   - `.methodology/phase4_plan.md`
-  - `.methodology/phase5_plan.md`
-  - `.methodology/phase6_plan.md`
-  - `.methodology/phase7_plan.md`
-  - `.methodology/phase8_plan.md`
-  - `.methodology/phase9_plan.md`
-  - `.methodology/plan_status.md`
-  - `.methodology/state.json`
-  - `.methodology/trace/attestation.json`
-  - `01-requirements/SPEC_TRACKING.md`
-  - `01-requirements/SRS.md`
-  - `01-requirements/TRACEABILITY_MATRIX.md`
-  - `02-architecture/SAD.md`
 
 ## 接下來的工作
 
