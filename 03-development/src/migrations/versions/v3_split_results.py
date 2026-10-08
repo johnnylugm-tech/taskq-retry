@@ -4,9 +4,11 @@ Citations: SPEC.md:130-143.
 """
 import json
 import uuid
+from typing import Any
 
 import sqlalchemy as sa
 from alembic import context, op
+from sqlalchemy.engine import Connection
 
 revision = "v3"
 down_revision = "v2"
@@ -22,10 +24,11 @@ def _derived_id(task_id: str) -> str:
     return str(uuid.uuid5(_NS, task_id))
 
 
-def _move_json_to_results(bind, results) -> None:
+def _move_json_to_results(bind: Connection, results: sa.Table) -> None:
     rows = bind.execute(sa.text("SELECT id, result_json FROM tasks WHERE result_json IS NOT NULL")).fetchall()
-    for task_id, payload in rows:
-        data = json.loads(payload)
+    for row in rows:
+        task_id = str(row[0])
+        data = json.loads(str(row[1]))
         bind.execute(
             sa.insert(results).values(
                 id=data.get("id", _derived_id(task_id)),
@@ -37,16 +40,17 @@ def _move_json_to_results(bind, results) -> None:
         )
 
 
-def _move_results_to_json(bind) -> None:
+def _move_results_to_json(bind: Connection) -> None:
     rows = bind.execute(
         sa.text(
             "SELECT id, task_id, status, exit_code, stdout_tail, stderr_tail, duration_ms, finished_at "
             "FROM task_results ORDER BY finished_at, id"
         )
     ).fetchall()
-    for rid, task_id, status, *rest in rows:
+    for rid, raw_task_id, status, *rest in rows:
+        task_id = str(raw_task_id)
         *fields, finished_at = rest
-        data = dict(zip(_FIELDS, fields))
+        data: dict[str, Any] = dict(zip(_FIELDS, fields))
         if rid != _derived_id(task_id):
             data["id"] = rid
         if status != _DEFAULT_STATUS:
