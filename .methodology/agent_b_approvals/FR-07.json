@@ -1,0 +1,59 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each normative FR-07 requirement maps to an assertion that fails on violation. v1 creates tasks and api_keys at test_fr07.py:202 and 149, and downgrade base leaves no tables at :113 and :209. v2 adds tags and task_tags (:202, :267), the unique tasks.name index is checked at :129-136 (a duplicate insert raises IntegrityError), and downgrade drops the index and tables while leaving v1 rows identical (:142, :147-148). v3 drops result_json at head (:203) and moves data back to result_json on downgrade (:168, :175-179). Values survive the v3 round trip, including unicode, quotes and NULL (:307-318), and the upgrade, downgrade -1, upgrade round trip compares rows column by column (:232-241). Destructive DROP shortcuts are scanned at :252, and offline SQL is asserted at :267 and :273. I ran the file and all 10 tests pass. Minor weaknesses: the shortcut regex only matches execute(\"DROP...\") literals, and offline SQL does not assert the v2 index or the downgrades. Real downgrade behavior is still pinned by the data tests, so neither weakens a requirement.",
+  "citations": [
+    "SPEC.md:130-143",
+    "03-development/tests/test_fr07.py:113",
+    "03-development/tests/test_fr07.py:129",
+    "03-development/tests/test_fr07.py:142",
+    "03-development/tests/test_fr07.py:147",
+    "03-development/tests/test_fr07.py:175",
+    "03-development/tests/test_fr07.py:203",
+    "03-development/tests/test_fr07.py:209",
+    "03-development/tests/test_fr07.py:238",
+    "03-development/tests/test_fr07.py:252",
+    "03-development/tests/test_fr07.py:267",
+    "03-development/tests/test_fr07.py:315"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "03-development/tests/test_fr07.py:248",
+      "message": "The destructive-shortcut regex only matches op.execute with a literal DROP TABLE/INDEX string. A variable, a sa.text(...) wrapper or a concatenated string would evade it. The data round-trip tests cover real downgrade behavior, so the gap is minor.",
+      "fr_id": "FR-07"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "e50d0d538866329690a993759989d8ecb7ae07364b7407ae1625da018c646472",
+    "declared_tests": [
+      "test_fr07_downgrades_do_not_use_destructive_drop_shortcuts",
+      "test_fr07_migrations_offline_sql_generation_asserted",
+      "test_fr07_round_trip_upgrade_downgrade_upgrade_preserves_sample_data",
+      "test_fr07_three_revisions_each_have_working_downgrade",
+      "test_fr07_upgrade_head_and_downgrade_base_succeed_no_residual_tables",
+      "test_fr07_upgrade_unknown_revision_fails",
+      "test_fr07_v2_downgrade_preserves_v1_data",
+      "test_fr07_v3_downgrade_moves_results_back_to_result_json",
+      "test_sec_t09_v3_roundtrip_preserves_data"
+    ],
+    "assertion_digests": {
+      "test_fr07_downgrades_do_not_use_destructive_drop_shortcuts": "673763549153e02f87a12b4cc6b8929ae4d32026e0c86e5a4440595e272806a7",
+      "test_fr07_migrations_offline_sql_generation_asserted": "c4a5314cf715e1c0cc15546adbe2e05ce6505de1ccfd6d67922dfa7be8b79ae7",
+      "test_fr07_round_trip_upgrade_downgrade_upgrade_preserves_sample_data": "28ce63089f010429bac1d6b5c8a39302373e2628d8e418fefbdd4ad8b52b934d",
+      "test_fr07_three_revisions_each_have_working_downgrade": "2eed2555a11e6f2d46040b2192242d7e580a17bbc6bfe3d63e459d615bb2935e",
+      "test_fr07_upgrade_head_and_downgrade_base_succeed_no_residual_tables": "0fe953c588791587afa1f2dc96682e54893fdb88ad3357252304d3d8e193c1ce",
+      "test_fr07_upgrade_unknown_revision_fails": "d2b0430c730828ff284a7de2c6b469dd50276bb800a7b5481744668fa69986a0",
+      "test_fr07_v2_downgrade_preserves_v1_data": "877fb9a2e9d1416b533d404547d4053aa2b4f35e92e2c5c0b1e1da44d3c3d178",
+      "test_fr07_v3_downgrade_moves_results_back_to_result_json": "e5eadf308b1b85d94c060767e15da4c64e5dd4dbef55247c911a45250fc80df1",
+      "test_sec_t09_v3_roundtrip_preserves_data": "b5c8a3ffc0755706a8af7bb7c41809aa7ca547d1bcfa93a36145317a9552840c"
+    },
+    "test_files": [
+      "03-development/tests/test_fr07.py"
+    ]
+  }
+}
