@@ -3,10 +3,11 @@
 [FR-05] Citations: SPEC.md:115-120. Enforcement happens in the shared
 `require_scope` dependency (SAD section 4); /healthz and /readyz never use it.
 """
-import os
 from typing import NamedTuple
 
 from fastapi import FastAPI
+
+from taskq_api import config as config_module
 
 
 class RateConfig(NamedTuple):
@@ -18,8 +19,7 @@ class RateConfig(NamedTuple):
 
 def load_rate_config() -> RateConfig:
     """Read TASKQ_RATE_BURST (default 20) and TASKQ_RATE_PER_SEC (default 5.0); both must be positive. [FR-05]"""
-    config = RateConfig(int(os.environ.get("TASKQ_RATE_BURST", "20")),
-                        float(os.environ.get("TASKQ_RATE_PER_SEC", "5.0")))
+    config = RateConfig(config_module.rate_burst(), config_module.rate_per_sec())
     if config.burst < 1 or config.per_sec <= 0:
         raise ValueError("TASKQ_RATE_BURST must be >= 1 and TASKQ_RATE_PER_SEC > 0")
     return config

@@ -18,6 +18,13 @@ modules =
     taskq_api.errors
     taskq_api.db
 
+[importlinter:contract:independence-config-errors-leaves]
+name = Config and errors are independent leaves
+type = independence
+modules =
+    taskq_api.config
+    taskq_api.errors
+
 [importlinter:contract:forbid-sqlalchemy-outside-repository]
 name = SQLAlchemy only in repository and models
 type = forbidden
@@ -25,6 +32,7 @@ source_modules =
     taskq_api.api
     taskq_api.service
     taskq_api.errors
+    taskq_api.config
     taskq_api.app
     taskq_api.__main__
 forbidden_modules =
