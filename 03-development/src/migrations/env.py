@@ -13,6 +13,8 @@ if context.is_offline_mode():
     with context.begin_transaction():
         context.run_migrations()
 else:
+    if url is None:
+        raise RuntimeError("sqlalchemy.url is not configured")
     engine = create_engine(url)
     with engine.connect() as connection:
         context.configure(connection=connection)
