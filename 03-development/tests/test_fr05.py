@@ -246,3 +246,20 @@ def test_fr05_rate_config_rejects_non_positive(monkeypatch):
     monkeypatch.setenv("TASKQ_RATE_BURST", "0")
     with pytest.raises(ValueError):
         middleware.load_rate_config()
+
+
+def test_fr05_insert_conflict_without_existing_row_reraises(make_app, monkeypatch):
+    from sqlalchemy.exc import IntegrityError
+
+    make_app(3, 0.01)
+    engine = make_app.state["engine"]
+    key_id = make_app.state["id_a"]
+
+    def conflict(session, bucket):
+        raise IntegrityError("insert", {}, Exception("conflict"))
+
+    monkeypatch.setattr(rate_buckets, "get_for_update", lambda session, kid: None)
+    monkeypatch.setattr(rate_buckets, "add", conflict)
+    with Session(engine) as s:
+        with pytest.raises(IntegrityError):
+            rate_limit.consume(s, key_id, 3, 0.01)
