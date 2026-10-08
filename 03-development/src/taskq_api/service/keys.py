@@ -5,8 +5,7 @@
 import secrets
 import uuid
 
-from sqlalchemy.orm import Session
-
+from taskq_api.db import Session
 from taskq_api.models.api_key import ApiKey
 from taskq_api.repository import api_keys as repo
 from taskq_api.service.auth import hash_key

@@ -5,8 +5,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from taskq_api.models.task_result import TaskResult
-from taskq_api.service.runner import INITIAL_STATUS
+from taskq_api.models.task_result import INITIAL_STATUS, TaskResult
 
 
 def add(session: Session, task_id: str, run_id: str) -> TaskResult:

@@ -4,13 +4,14 @@
 [FR-04] Citations: SPEC.md:113 (all /v1 routes visible with the shared dependency).
 """
 import os
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from sqlalchemy import create_engine
 
 from taskq_api.api import routes_metrics, routes_runs, routes_tasks
 from taskq_api.api.middleware import install_rate_limit
+from taskq_api.db import create_engine
 from taskq_api.errors import install_handlers
 
 
@@ -19,7 +20,7 @@ def create_app() -> FastAPI:
     engine = create_engine(os.environ["TASKQ_DB_URL"])
 
     @asynccontextmanager
-    async def lifespan(app: FastAPI):
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         yield
         engine.dispose()
 
@@ -29,11 +30,11 @@ def create_app() -> FastAPI:
     install_rate_limit(app)
 
     @app.get("/healthz")
-    def healthz():
+    def healthz() -> dict[str, str]:
         return {"status": "ok"}
 
     @app.get("/readyz")
-    def readyz():
+    def readyz() -> dict[str, str]:
         return {"status": "ready"}
 
     # [FR-04] register APIRoutes directly so every /v1 route is inspectable on app.routes.

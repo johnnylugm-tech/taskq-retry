@@ -6,9 +6,7 @@ import base64
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
-
+from taskq_api.db import IntegrityError, Session
 from taskq_api.errors import ApiError
 from taskq_api.models.task import Task
 from taskq_api.repository import tasks as repo
@@ -50,7 +48,7 @@ def _encode_cursor(task: Task) -> str:
     return base64.urlsafe_b64encode(f"{task.created_at.isoformat()}|{task.id}".encode()).decode()
 
 
-def list_page(session: Session, status: Optional[str], limit: int, cursor: Optional[str]):
+def list_page(session: Session, status: Optional[str], limit: int, cursor: Optional[str]) -> tuple[list[Task], Optional[str]]:
     """Return (items, next_cursor) using keyset pagination."""
     after = _decode_cursor(cursor) if cursor else None
     rows = repo.list_page(session, status, limit + 1, after)

@@ -8,10 +8,9 @@ import re
 import shlex
 import time
 from datetime import datetime, timezone
+from typing import Any
 
-from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
-
+from taskq_api.db import Engine, Session
 from taskq_api.repository import results as repo
 from taskq_api.service import runner
 
@@ -24,7 +23,7 @@ def _tail(data: bytes) -> str:
     return _SECRET.sub("[REDACTED]", text)
 
 
-def _set_status(engine: Engine, run_id: str, status: str, **fields) -> None:
+def _set_status(engine: Engine, run_id: str, status: str, **fields: Any) -> None:
     with Session(engine) as session:
         row = repo.get(session, run_id)
         if row is None:

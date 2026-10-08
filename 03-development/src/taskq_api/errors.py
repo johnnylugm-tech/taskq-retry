@@ -45,10 +45,10 @@ def install_handlers(app: FastAPI) -> None:
     """Register problem+json handlers on the app."""
 
     @app.exception_handler(ApiError)
-    async def _api_error(request: Request, exc: ApiError):
+    async def _api_error(request: Request, exc: ApiError) -> JSONResponse:
         return _problem(request, exc.status, exc.type, exc.title, exc.detail, exc.headers)
 
     @app.exception_handler(RequestValidationError)
-    async def _validation(request: Request, exc: RequestValidationError):
+    async def _validation(request: Request, exc: RequestValidationError) -> JSONResponse:
         detail = "; ".join(f"{'.'.join(str(p) for p in e['loc'])}: {e['msg']}" for e in exc.errors())
         return _problem(request, 422, "/errors/validation", "Validation error", detail)

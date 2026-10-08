@@ -11,6 +11,8 @@ from sqlalchemy.orm import Mapped, mapped_column
 from taskq_api.models.base import Base
 from taskq_api.models.task import _now
 
+INITIAL_STATUS = "pending"
+
 
 class TaskResult(Base):
     """Execution result row belonging to a task."""

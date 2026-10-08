@@ -6,9 +6,7 @@ import math
 import time
 from dataclasses import dataclass
 
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
-
+from taskq_api.db import IntegrityError, Session
 from taskq_api.models.rate_bucket import RateBucket
 from taskq_api.repository import rate_buckets as repo
 

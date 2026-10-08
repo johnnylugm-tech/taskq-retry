@@ -5,7 +5,12 @@
 from typing import Iterator
 
 from fastapi import Request
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+
+__all__ = ["Engine", "IntegrityError", "Session", "create_engine", "get_session"]
 
 
 def get_session(request: Request) -> Iterator[Session]:

@@ -2,7 +2,9 @@
 
 [FR-02] Citations: SPEC.md:97.
 """
-INITIAL_STATUS = "pending"
+from taskq_api.models.task_result import INITIAL_STATUS
+
+__all__ = ["INITIAL_STATUS", "is_transition_allowed"]
 
 _TRANSITIONS = {
     "pending": {"running"},

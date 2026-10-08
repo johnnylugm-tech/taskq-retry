@@ -5,7 +5,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import delete, select, tuple_
+from sqlalchemy import delete, func, select, tuple_
 from sqlalchemy.orm import Session
 
 from taskq_api.models.task import Task
@@ -40,3 +40,9 @@ def delete_with_results(session: Session, task: Task) -> None:
     """Delete result rows and the task (no commit)."""
     session.execute(delete(TaskResult).where(TaskResult.task_id == task.id))
     session.execute(delete(Task).where(Task.id == task.id))
+
+
+def count_by_status(session: Session) -> dict[str, int]:
+    """Return task counts grouped by status."""
+    rows = session.execute(select(Task.status, func.count()).group_by(Task.status)).all()
+    return {status: count for status, count in rows}

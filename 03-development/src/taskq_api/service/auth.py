@@ -4,12 +4,11 @@
 """
 import hashlib
 import hmac
-from typing import Callable
+from typing import Any, Callable
 
 from fastapi import Depends, Header, Request
-from sqlalchemy.orm import Session
 
-from taskq_api.db import get_session
+from taskq_api.db import Session, get_session
 from taskq_api.errors import ApiError
 from taskq_api.repository import api_keys as repo
 from taskq_api.service import rate_limit
@@ -27,7 +26,7 @@ def _unauthenticated() -> ApiError:
     return ApiError(401, "/errors/unauthenticated", "Unauthenticated", "missing or invalid API key")
 
 
-def require_scope(scope: str) -> Callable:
+def require_scope(scope: str) -> Callable[..., Session]:
     """Build a dependency requiring at least `scope`; returns the open session."""
 
     def dep(request: Request, x_api_key: str | None = Header(default=None),

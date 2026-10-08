@@ -5,9 +5,7 @@
 import argparse
 import os
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-
+from taskq_api.db import Session, create_engine
 from taskq_api.service import keys
 
 
