@@ -27,5 +27,9 @@ class UnitOfWork:
 
     def get_run(self, run_id: str) -> Optional[TaskResult]:
         """Fetch a run row inside this transaction."""
-        assert self._session is not None
-        return results.get(self._session, run_id)
+        return results.get(self._require_session(), run_id)
+
+    def _require_session(self) -> DbSession:
+        if self._session is None:
+            raise RuntimeError("UnitOfWork used outside its 'with' block")
+        return self._session
