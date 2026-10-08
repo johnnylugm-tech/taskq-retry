@@ -307,3 +307,44 @@ def test_sec_t13_concurrency_cap_enforced(engine):
     assert result_peak_running <= int(max_concurrent)  # AC8.2-peak
     assert result_completed_count == int(tasks_submitted)  # AC8.2-all-complete
     assert float(tasks_submitted) > int(max_concurrent)  # AC8.2-oversubscribed
+
+
+def test_fr08_set_status_unknown_run_raises(engine):
+    with pytest.raises(RuntimeError, match="not found"):
+        executor._set_status(engine, "no-such-run", "running")
+
+
+def test_fr08_set_status_illegal_transition_raises(engine):
+    run_id = _seed(engine, "echo hi")
+    with pytest.raises(RuntimeError, match="illegal run transition"):
+        executor._set_status(engine, run_id, "done")
+    assert _status(engine, run_id) == "pending"
+
+
+def test_fr08_failed_job_does_not_abort_sibling_jobs(engine):
+    good = _seed(engine, "echo ok")
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=10.0)
+        await ex.start()
+        ex.submit("no-such-run", "echo bad")  # execute() raises RuntimeError inside the job
+        ex.submit(good, "echo ok")
+        await ex.drain()
+
+    asyncio.run(scenario())
+    assert _status(engine, good) == "done"
+
+
+def test_fr08_drain_before_start_is_noop(engine):
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=1.0, task_timeout=10.0)
+        await ex.drain()
+
+    asyncio.run(scenario())
+
+
+def test_fr08_execute_defaults_timeout_from_env(engine, monkeypatch):
+    monkeypatch.setenv("TASKQ_TASK_TIMEOUT", "10")
+    run_id = _seed(engine, "echo hi")
+    asyncio.run(executor.execute(engine, run_id, "echo hi"))
+    assert _status(engine, run_id) == "done"
