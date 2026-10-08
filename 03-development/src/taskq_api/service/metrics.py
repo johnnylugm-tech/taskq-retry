@@ -3,6 +3,7 @@
 [FR-09] Citations: SPEC.md:158.
 """
 import threading
+from typing import Any
 
 from taskq_api.repository import tasks as repo
 from taskq_api.repository.session import DbSession
@@ -35,7 +36,7 @@ def percentile(sorted_values: list[int], pct: int) -> float:
     return float(sorted_values[rank - 1])
 
 
-def snapshot(session: DbSession, rejections: RejectionCounter) -> dict:
+def snapshot(session: DbSession, rejections: RejectionCounter) -> dict[str, Any]:
     """Assemble the /v1/metrics body. [FR-09]"""
     durations = sorted(repo.durations_ms(session))
     return {
