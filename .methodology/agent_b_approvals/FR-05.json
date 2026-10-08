@@ -1,0 +1,57 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each SPEC.md FR-05 clause maps to an assertion that fails if it is violated. Capacity from TASKQ_RATE_BURST: the first 3 requests return 200 and the 4th returns 429 (test_fr05.py:102,105). Refill rate from TASKQ_RATE_PER_SEC: Retry-After equals \"2\" at rate 0.5 (test_fr05.py:277), and refill math is checked at test_fr05.py:81,90. Per-token isolation: test_fr05.py:161,163. 429 and problem+json: test_fr05.py:105-108. Retry-After in seconds: test_fr05.py:110,277. DB-persisted state and cross-worker consistency: one row with the expected tokens at test_fr05.py:126-129, and 20 concurrent sessions allow exactly BURST at test_fr05.py:193-194. Single transaction: commit count equals request count at test_fr05.py:131. Row-level lock: the compiled SELECT contains FOR UPDATE at test_fr05.py:304, plus BEGIN IMMEDIATE on SQLite at test_fr05.py:305. /healthz and /readyz exempt: 30 requests all return 200 and no bucket row is created (test_fr05.py:141-142,150-151). The burst and rate values are written into the env that the app reads, so they are not self-satisfying constants.",
+  "citations": [
+    "SPEC.md:117",
+    "SPEC.md:118",
+    "SPEC.md:119",
+    "SPEC.md:120",
+    "03-development/tests/test_fr05.py:102",
+    "03-development/tests/test_fr05.py:105",
+    "03-development/tests/test_fr05.py:108",
+    "03-development/tests/test_fr05.py:110",
+    "03-development/tests/test_fr05.py:126",
+    "03-development/tests/test_fr05.py:131",
+    "03-development/tests/test_fr05.py:141",
+    "03-development/tests/test_fr05.py:151",
+    "03-development/tests/test_fr05.py:161",
+    "03-development/tests/test_fr05.py:193",
+    "03-development/tests/test_fr05.py:277",
+    "03-development/tests/test_fr05.py:304"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "d4aef0c34798d1a10aa2f1c21708940641052949b272c9aada26e18a859c8c2f",
+    "declared_tests": [
+      "test_fr05_bucket_state_persisted_in_db_with_row_lock_single_transaction",
+      "test_fr05_consume_token_state_transition_under_concurrent_load",
+      "test_fr05_health_endpoints_not_rate_limited",
+      "test_fr05_over_limit_returns_429_with_retry_after",
+      "test_fr05_per_token_isolation",
+      "test_fr05_readyz_not_rate_limited",
+      "test_fr05_refill_never_exceeds_capacity",
+      "test_fr05_token_bucket_capacity_and_refill_rate_from_config",
+      "test_fr05_unauthenticated_request_does_not_consume_token",
+      "test_sec_t05_burst_exceeded_returns_429"
+    ],
+    "assertion_digests": {
+      "test_fr05_bucket_state_persisted_in_db_with_row_lock_single_transaction": "1986e6453bf80daa2fb468821968f445d47f25fdb992b09a3fe9c2cbda61196d",
+      "test_fr05_consume_token_state_transition_under_concurrent_load": "830a29c533aa737d487c2209ee0d78b1c9bce145acd383e2d62a761173c15c58",
+      "test_fr05_health_endpoints_not_rate_limited": "83501bd04acc6cfe379561de794904ff74704c162ee8f1764e7a9d9e7befee23",
+      "test_fr05_over_limit_returns_429_with_retry_after": "4277b36fe432f8a6161ae513fc05639555c005f745fcd2ae1106757c2200b878",
+      "test_fr05_per_token_isolation": "ab86a701d273f986617102a9f47f2fb23594b419edbd25ffd853e8c08684782b",
+      "test_fr05_readyz_not_rate_limited": "7b301e753b7ba1c63eba2757a63a6ac9437daa2ef5168dce42a9bfb80b5de0bd",
+      "test_fr05_refill_never_exceeds_capacity": "19a8ace58e8555b5d6f8459c5b2d346388e7a7f070ca174c4a5c896b0cc3e6d7",
+      "test_fr05_token_bucket_capacity_and_refill_rate_from_config": "5470b652196765f771abb8be022162a77764c9ace84a9310bcc2e2a51f74a75e",
+      "test_fr05_unauthenticated_request_does_not_consume_token": "7f56dd40eea00f0b7949b60584a570d5fef235552933d6da7e56e0ab857a194f",
+      "test_sec_t05_burst_exceeded_returns_429": "ec8ac403377488a5dc653f1f8d1036f3ce47c60fc1f0a8f7c3b8e12670ca0b16"
+    },
+    "test_files": [
+      "03-development/tests/test_fr05.py"
+    ]
+  }
+}
