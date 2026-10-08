@@ -189,3 +189,34 @@ def test_sec_t16_db_url_password_absent_from_logs(tmp_path, monkeypatch, caplog)
     assert ready.status_code == 503
     assert db_url_password not in result_log_text  # T16-logs
     assert db_url_password not in result_metrics_body  # T16-metrics
+
+
+def test_fr09_percentile_empty_returns_zero_and_nearest_rank():
+    assert metrics_service.percentile([], 95) == 0.0
+    assert metrics_service.percentile([1, 2, 3, 4], 50) == 2.0
+
+
+def test_fr09_head_revision_is_non_empty_string():
+    assert health_service.head_revision()
+
+
+def test_fr09_repo_ping_and_current_revision_without_alembic_table(db_url):
+    engine = create_engine(db_url)
+    try:
+        health_repo.ping(engine)
+        assert health_repo.current_revision(engine) is None
+    finally:
+        engine.dispose()
+
+
+def test_fr09_repo_current_revision_reads_alembic_version(db_url):
+    from sqlalchemy import text
+
+    engine = create_engine(db_url)
+    try:
+        with engine.begin() as conn:
+            conn.execute(text("CREATE TABLE alembic_version (version_num VARCHAR(32))"))
+            conn.execute(text("INSERT INTO alembic_version VALUES ('abc123')"))
+        assert health_repo.current_revision(engine) == "abc123"
+    finally:
+        engine.dispose()
