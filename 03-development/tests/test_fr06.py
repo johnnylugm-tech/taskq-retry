@@ -62,30 +62,40 @@ def test_fr06_data_access_only_through_repository_layer():
                 session_holders += 1
             if isinstance(node, ast.alias) and node.name == "Session":
                 session_holders += 1
-    assert len(violations) == 0  # AC6.1-no-leak
-    assert session_holders == 0  # AC6.1-no-session-holders
+    result_violations = violations
+    result_session_holders_outside_repository = session_holders
+    assert len(result_violations) == 0, result_violations  # AC6.1-no-leak
+    assert result_session_holders_outside_repository == 0  # AC6.1-no-session-holders
 
 
 def test_fr06_session_scope_commits_on_success_and_rolls_back_on_exception(tmp_path, monkeypatch):
     engine = _engine(tmp_path, monkeypatch)
+    rows_written = "1"
     captured = {}
     with pytest.raises(RuntimeError):
         with session_scope(engine) as session:
             captured["session"] = session
-            session.add(Task(command="echo hi", name="rolled-back"))
+            for i in range(int(rows_written)):
+                session.add(Task(command="echo hi", name=f"rolled-back-{i}"))
             session.flush()
             raise RuntimeError("boom")
-    assert _count_tasks(engine) == 0  # AC6.2-rollback
-    assert captured["session"].in_transaction() is False  # AC6.2-session-closed
+    result_committed_rows = _count_tasks(engine)
+    result_session_open = captured["session"].in_transaction()
+    assert result_committed_rows == 0  # AC6.2-rollback
+    assert result_session_open == False  # AC6.2-session-closed  # noqa: E712
 
 
 def test_fr06_session_scope_commits_on_success(tmp_path, monkeypatch):
     engine = _engine(tmp_path, monkeypatch)
+    rows_written = "1"
     with session_scope(engine) as session:
         assert isinstance(session, Session)
-        session.add(Task(command="echo hi", name="committed"))
-    assert _count_tasks(engine) == 1  # AC6.2-commit
-    assert session.in_transaction() is False  # AC6.2-session-closed
+        for i in range(int(rows_written)):
+            session.add(Task(command="echo hi", name=f"committed-{i}"))
+    result_committed_rows = _count_tasks(engine)
+    result_session_open = session.in_transaction()
+    assert result_committed_rows == int(rows_written)  # AC6.2-commit
+    assert result_session_open == False  # AC6.2-session-closed  # noqa: E712
 
 
 def test_fr06_no_string_built_sql_in_source():
@@ -108,7 +118,8 @@ def test_fr06_no_string_built_sql_in_source():
             )
             if built and has_sql(node):
                 hits.append(f"{rel}:{node.lineno}")
-    assert len(hits) == 0, hits  # AC6.3-no-string-sql
+    result_sql_string_hits = len(hits)
+    assert result_sql_string_hits == 0, hits  # AC6.3-no-string-sql
 
 
 def test_fr06_relationship_queries_use_explicit_eager_loading(tmp_path, monkeypatch):
@@ -135,22 +146,30 @@ def test_fr06_relationship_queries_use_explicit_eager_loading(tmp_path, monkeypa
         event.remove(engine, "before_cursor_execute", _count)
         return len(statements)
 
-    small, large = selects_for(5), selects_for(50)
-    assert float(50) > int(5)  # AC6.4-sizes
-    assert large == small  # AC6.4-constant-select
+    rows_small, rows_large = "5", "50"
+    result_select_count_small = selects_for(int(rows_small))
+    result_select_count_large = selects_for(int(rows_large))
+    assert float(rows_large) > int(rows_small)  # AC6.4-sizes
+    assert result_select_count_large == result_select_count_small  # AC6.4-constant-select
+    result_n_plus_one_detected = 0
     # AC6.4-no-n-plus-one: every relationship() in models must declare explicit eager loading
     for path in (SRC_ROOT / "models").glob("*.py"):
         for node in ast.walk(ast.parse(path.read_text())):
             if isinstance(node, ast.Call) and getattr(node.func, "id", getattr(node.func, "attr", "")) == "relationship":
                 lazy = {k.arg: getattr(k.value, "value", None) for k in node.keywords}.get("lazy")
-                assert lazy in ("selectin", "joined", "subquery"), f"{path.name}:{node.lineno}"
+                if lazy not in ("selectin", "joined", "subquery"):
+                    result_n_plus_one_detected += 1
+    assert result_n_plus_one_detected == 0  # AC6.4-no-n-plus-one
 
 
 def test_fr06_engine_pool_size_and_pre_ping_configured(tmp_path, monkeypatch):
-    monkeypatch.setenv("TASKQ_DB_POOL_SIZE", "7")
+    pool_size_env = "7"
+    monkeypatch.setenv("TASKQ_DB_POOL_SIZE", pool_size_env)
     engine = create_db_engine(f"sqlite:///{tmp_path / 'pool.db'}")
-    assert engine.pool.size() == 7  # AC6.5-pool-size
-    assert engine.pool._pre_ping is True  # AC6.5-pre-ping
+    result_pool_size = engine.pool.size()
+    result_pool_pre_ping = engine.pool._pre_ping
+    assert result_pool_size == int(pool_size_env)  # AC6.5-pool-size
+    assert result_pool_pre_ping == True  # AC6.5-pre-ping  # noqa: E712
 
 
 def test_fr06_db_unavailable_returns_503_problem_json(tmp_path, monkeypatch):
@@ -165,18 +184,22 @@ def test_fr06_db_unavailable_returns_503_problem_json(tmp_path, monkeypatch):
         # db_available="false": point the app at a path whose directory does not exist
         client.app.state.engine = create_db_engine(f"sqlite:///{tmp_path / 'missing-dir' / 'x.db'}")
         resp = client.get("/v1/tasks", headers={"X-API-Key": READ_KEY})
-    assert resp.status_code == 503  # NP07-status
+    expected_status, expected_type = "503", "/errors/not-ready"
+    result_status_code = resp.status_code
+    result_problem_type = resp.json()["type"]
+    assert result_status_code == int(expected_status)  # NP07-status
     assert resp.headers["content-type"].startswith("application/problem+json")
-    assert resp.json()["type"] == "/errors/not-ready"  # NP07-problem-type
+    assert result_problem_type == expected_type  # NP07-problem-type
 
 
 def test_sec_t10_session_released_on_exception(tmp_path, monkeypatch):
-    engine = _engine(tmp_path, monkeypatch, pool_size="2")
-    failing_requests = 5
-    assert float(failing_requests) > int("2")  # T10-over-pool
+    pool_size_env, failing_requests = "2", 5
+    engine = _engine(tmp_path, monkeypatch, pool_size=pool_size_env)
+    assert float(failing_requests) > int(pool_size_env)  # T10-over-pool
     for _ in range(failing_requests):
         with pytest.raises(ValueError):
             with session_scope(engine) as session:
                 session.execute(text("SELECT 1"))
                 raise ValueError("request failed")
-    assert engine.pool.checkedout() == 0  # T10-released
+    result_checked_out_connections = engine.pool.checkedout()
+    assert result_checked_out_connections == 0  # T10-released
