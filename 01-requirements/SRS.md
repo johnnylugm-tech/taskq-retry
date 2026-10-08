@@ -71,9 +71,9 @@ Citation: SPEC.md:79-91.
 
 **Acceptance criteria (FR-01)**
 - **AC-1.1**: `POST /v1/tasks` requires scope `write`, validates body by `TaskCreate` pydantic model; valid request with a write key → 201 + task id — decided by SPEC §8 #4 (SPEC.md:360).
-- **AC-1.2**: `GET /v1/tasks/{id}` requires scope `read` and returns 取得單一任務全欄位 (SPEC.md:82).
-- **AC-1.3**: `GET /v1/tasks` requires scope `read` and supports `?status=`、`?limit=`、`?cursor=` (SPEC.md:83).
-- **AC-1.4**: `DELETE /v1/tasks/{id}` requires scope `admin` and deletes the task 連同結果列, 同一交易 (SPEC.md:84).
+- **AC-1.2**: `GET /v1/tasks/{id}` requires scope `read` and returns 取得單一任務全欄位 (SPEC.md:84).
+- **AC-1.3**: `GET /v1/tasks` requires scope `read` and supports `?status=`、`?limit=`、`?cursor=` (SPEC.md:85).
+- **AC-1.4**: `DELETE /v1/tasks/{id}` requires scope `admin` and deletes the task 連同結果列, 同一交易 (SPEC.md:86).
 - **AC-1.5**: 驗證規則同第 1 輪 FR-01 (非空 / ≤1000 字元 / 注入字元黑名單 / 名稱唯一); 違反 → HTTP 422 + problem+json (SPEC.md:88). The 注入字元黑名單 content is not defined in SPEC.md — see NFR-99 item 1.
 - **AC-1.6**: 未知 id → HTTP 404 + problem+json — decided by SPEC §8 #7 (SPEC.md:363).
 - **AC-1.7**: 分頁為 cursor-based (不得用 offset) (SPEC.md:90).

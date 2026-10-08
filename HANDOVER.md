@@ -2,7 +2,7 @@
 
 **Checkpoint**: `P1-exit-20261008`  
 **Phase**: P1 — Spec & Discovery  
-**Generated**: 2026-10-08T08:53:45Z
+**Generated**: 2026-10-08T12:59:57Z
 
 > ⚠️  **開始下一個工作階段前，請先執行 `/compact` 壓縮上下文**，再從「接下來的工作」繼續。
 
@@ -55,7 +55,7 @@ P1 phase completed — pushed for record.
 
 - `01-requirements/SRS.md` ✅ (488L)
 - `01-requirements/SPEC_TRACKING.md` ✅ (41L)
-- `01-requirements/TRACEABILITY_MATRIX.md` ✅ (67L)
+- `01-requirements/TRACEABILITY_MATRIX.md` ✅ (66L)
 
 ## 目前執行狀況
 
@@ -90,18 +90,24 @@ P1 phase completed — pushed for record.
   - ? / forward-ref-check: **complete**
   - ? / preview-next-phase-r1: **complete**
   - ? / push-1: **complete**
+  - ? / push-2: **complete**
+  - ? / stale-approvals-1: **complete**
+  - ? / advance: **complete**
+  - ? / stale-approvals-2: **complete**
+  - ? / loadpy-srs_vs_spec_diff-json-a1: **complete**
+  - ? / persist-SRS.md-try2: **complete**
 
 **Recently Committed Files:**
+  - `.methodology/state.json`
+  - `HANDOVER.md`
   - `.methodology/.state.lock`
   - `.methodology/agent_b_approvals/SPEC_TRACKING.md.json`
   - `.methodology/agent_b_approvals/SRS.md.json`
   - `.methodology/agent_b_approvals/TEST_INVENTORY.yaml.json`
-  - `.methodology/state.json`
   - `.methodology/trace/attestation.json`
   - `.methodology/workflow_blocks.jsonl`
   - `01-requirements/SPEC_TRACKING.md`
   - `01-requirements/SRS.md`
-  - `HANDOVER.md`
   - `TEST_INVENTORY.yaml`
   - `srs_vs_spec_diff.json`
   - `harness`

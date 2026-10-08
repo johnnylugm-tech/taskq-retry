@@ -1,13 +1,15 @@
 {
   "fr": "SRS.md",
   "review_status": "APPROVE",
-  "reason": "I read all three deliverables from disk. The SRS lists 100 distinct AC ids, and TEST_INVENTORY.yaml has exactly the same 100 ids (set diff is empty), each with one tc_id. FR-01..FR-10 and NFR-01..NFR-12 plus NFR-99 agree across the SRS FR Block and the SPEC_TRACKING rows. The open issues (NFR-99-1..7) are recorded explicitly rather than invented.",
+  "reason": "I compared the AC IDs in SRS.md and TEST_INVENTORY.yaml. Both contain the same 100 IDs, with none missing or extra, and the inventory has 100 tc_ids. All 10 FRs and 12 NFRs plus NFR-99 appear in SRS.md, its FR Block and SPEC_TRACKING.md. The seven NFR-99 open issues are recorded in SRS section 7 and covered by TC-N99-01. I did not check the AC-to-FR/NFR mapping row by row.",
   "citations": [
-    "SRS.md:90 (AC-2.3 state machine without interrupted, tracked as NFR-99-2)",
-    "SRS.md:451 (FR Block JSON, 10 FR and 13 NFR entries)",
-    "TEST_INVENTORY.yaml:6 (format_version and test_inventory root)",
-    "TEST_INVENTORY.yaml:3 (harness-verified ACs N9.2, N10.1, N12.2 declared as Deferred)",
-    "SPEC_TRACKING.md:19 (FR-01 row, deferral notes cite NFR-99-1)"
+    "SRS.md:449",
+    "SRS.md:405",
+    "SRS.md:351",
+    "SPEC_TRACKING.md:21",
+    "SPEC_TRACKING.md:32",
+    "TEST_INVENTORY.yaml:550",
+    "TEST_INVENTORY.yaml:728"
   ],
   "docs_embedded": [
     "SRS.md",
@@ -18,12 +20,12 @@
   "gaps": [
     {
       "severity": "low",
-      "evidence_type": "over_interpretation",
-      "canonical_ref": "SRS.md:90",
-      "message": "AC-2.3 lists the state machine as pending, running, done, failed or timeout, while FR-08 (AC-8.1) marks drained tasks as interrupted. The conflict is already recorded as NFR-99-2 in section 7, so it needs stakeholder confirmation and no document change.",
-      "fr_id": "FR-02",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "SPEC_TRACKING.md:21",
+      "message": "Notes column cites only NFR-99-1 to NFR-99-4. NFR-99-5 to NFR-99-7 are in SRS section 7 but not cross-referenced here. This is cosmetic because NFRs are intentionally not rows in this file.",
+      "fr_id": null,
       "category": "nit"
     }
   ],
-  "reviewed_sha256": "a7dca9cfb5dc4a5b86514ab52a30e04417cdbac7625d73f310d527d4d56e9a97"
+  "reviewed_sha256": "6e15bdeb271e3b96fc30009b3b6e08ca5e50cac1ff135929c41dee462b567fb5"
 }
