@@ -1,6 +1,7 @@
 """FastAPI application factory.
 
 [FR-01] Citations: SPEC.md:79-91.
+[FR-04] Citations: SPEC.md:113 (all /v1 routes visible with the shared dependency).
 """
 import os
 from contextlib import asynccontextmanager
@@ -8,7 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlalchemy import create_engine
 
-from taskq_api.api import routes_runs, routes_tasks
+from taskq_api.api import routes_metrics, routes_runs, routes_tasks
 from taskq_api.errors import install_handlers
 
 
@@ -33,6 +34,7 @@ def create_app() -> FastAPI:
     def readyz():
         return {"status": "ready"}
 
-    app.include_router(routes_tasks.router)
-    app.include_router(routes_runs.router)
+    # [FR-04] register APIRoutes directly so every /v1 route is inspectable on app.routes.
+    for router in (routes_tasks.router, routes_runs.router, routes_metrics.router):
+        app.router.routes.extend(router.routes)
     return app
