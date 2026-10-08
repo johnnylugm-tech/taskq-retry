@@ -1,0 +1,62 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-06 bullet maps to an assertion that fails on violation. (1) No Session in the business layer: test_fr06.py:68-69 fail on any sqlalchemy import or `Session` name outside repository/ and models/. (2) One Session per request, commit on success, rollback on exception: :85-86 (rows rolled back, session closed), :98-99 (rows committed), :229-231 (the get_session dependency rolls back and releases), and :206 (no connections left checked out). (3) No string-built SQL: :123 fails on any f-string, `+`, `%` or `.format` that contains a SQL keyword in src. (4) Eager loading: :163 fails on any `relationship()` in models without lazy=selectin/joined, and :154 requires the SELECT count to stay equal between 5 and 50 rows. (5) Connection pool: :172 compares pool.size() with the env value 7, and :173 requires pre_ping to be True. All 9 tests in the file pass. One weakness: src/ has no `relationship()` today, so :154 is trivially constant and :163 is the only real guard on N+1.",
+  "citations": [
+    "SPEC.md:124",
+    "SPEC.md:125",
+    "SPEC.md:126",
+    "SPEC.md:127",
+    "SPEC.md:128",
+    "03-development/tests/test_fr06.py:68",
+    "03-development/tests/test_fr06.py:69",
+    "03-development/tests/test_fr06.py:85",
+    "03-development/tests/test_fr06.py:86",
+    "03-development/tests/test_fr06.py:98",
+    "03-development/tests/test_fr06.py:123",
+    "03-development/tests/test_fr06.py:154",
+    "03-development/tests/test_fr06.py:163",
+    "03-development/tests/test_fr06.py:172",
+    "03-development/tests/test_fr06.py:173",
+    "03-development/tests/test_fr06.py:206",
+    "03-development/tests/test_fr06.py:231"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "SPEC.md:127",
+      "message": "No relationship() exists in src, so the constant-SELECT-count check at test_fr06.py:154 passes trivially. Only the static lazy= check at :163 guards N+1, and it does not detect loop-per-row queries in repository code outside list_page.",
+      "fr_id": "FR-06"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "6000a6a3adf5d653c939096b1a9f34ab2b47ebf27fec3c5e441e9ea1dec46a28",
+    "declared_tests": [
+      "test_fr06_data_access_only_through_repository_layer",
+      "test_fr06_db_unavailable_returns_503_problem_json",
+      "test_fr06_engine_pool_size_and_pre_ping_configured",
+      "test_fr06_no_string_built_sql_in_source",
+      "test_fr06_relationship_queries_use_explicit_eager_loading",
+      "test_fr06_session_scope_commits_on_success",
+      "test_fr06_session_scope_commits_on_success_and_rolls_back_on_exception",
+      "test_sec_t10_session_released_on_exception"
+    ],
+    "assertion_digests": {
+      "test_fr06_data_access_only_through_repository_layer": "6c575f97885c34dd490ff85aee6d3af53d9503235b61d68c75d4f8c58a70648b",
+      "test_fr06_db_unavailable_returns_503_problem_json": "9eea0dbb49fcb6093dc2feff72ab04c6a0a1515760ca9cf352e14c9036894161",
+      "test_fr06_engine_pool_size_and_pre_ping_configured": "471f418d59f076707dcc978a4cb0d5e5d514e8278e6afa1f5ae23878c17443f2",
+      "test_fr06_no_string_built_sql_in_source": "777a48b6c57e8f108310b64ad2e438e1226027a2a5ef4f6d704b26687506fdd1",
+      "test_fr06_relationship_queries_use_explicit_eager_loading": "47ea2c979a978979aa0580ae9603fba4ab54a61aed6d87790ea1835b58aa624c",
+      "test_fr06_session_scope_commits_on_success": "1b17e7813b8ab4b160401fa976a69c7f540e65cada4bc3bd561f9c71c2d19c9a",
+      "test_fr06_session_scope_commits_on_success_and_rolls_back_on_exception": "643f98642ff8bd3fce77feb50b724d27216daf260c17239c5377ba79293e2065",
+      "test_sec_t10_session_released_on_exception": "edc72c2581c16eff5e0ebd818e16cd748b3b6cb6875b92089c023932077a4672"
+    },
+    "test_files": [
+      "03-development/tests/test_fr06.py"
+    ]
+  }
+}
