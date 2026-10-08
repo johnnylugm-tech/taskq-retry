@@ -77,7 +77,11 @@ def _problem(resp):
 
 
 class _SqlProbe:
-    """Counts transactions begun and OFFSET-bearing statements on any engine."""
+    """Counts transactions begun and OFFSET-bearing statements on any engine.
+
+    A transaction that touches `rate_buckets` is FR-05's per-request limiter update,
+    not part of the operation under test, so it is not counted in `transactions`.
+    """
 
     def __init__(self):
         self.transactions = 0
@@ -85,8 +89,12 @@ class _SqlProbe:
 
     def _begin(self, conn):
         self.transactions += 1
+        conn.info["fr01_rate_limit_txn"] = False
 
     def _exec(self, conn, cursor, statement, params, context, executemany):
+        if "rate_buckets" in statement and not conn.info.get("fr01_rate_limit_txn"):
+            conn.info["fr01_rate_limit_txn"] = True
+            self.transactions -= 1
         if "OFFSET" in statement.upper():
             self.offset_statements += 1
 
