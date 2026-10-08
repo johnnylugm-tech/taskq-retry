@@ -83,65 +83,76 @@ def _dump(db_file: Path, table: str, order_by: str) -> list:
 
 
 def test_fr07_three_revisions_each_have_working_downgrade(tmp_path):
+    revisions_expected = "3"
+    revision_ids = "v1,v2,v3"
+    downgrade_steps = "3"
     db_file = tmp_path / "steps.db"
     cfg = _cfg(db_file)
     script = ScriptDirectory.from_config(cfg)
-    revisions = list(script.walk_revisions())
-    assert len(revisions) == 3  # AC7.1-revision-count
-    assert {r.revision for r in revisions} == {"v1", "v2", "v3"}
+    result_revisions = list(script.walk_revisions())
+    assert len(result_revisions) == int(revisions_expected)  # AC7.1-revision-count
+    assert {r.revision for r in result_revisions} == set(revision_ids.split(","))
     for module in (v1_initial, v2_tags, v3_split_results):
         assert callable(module.upgrade)
         assert callable(module.downgrade)
 
     command.upgrade(cfg, "head")
-    downgrade_success_count = 0
-    for _ in range(3):
+    result_downgrade_success_count = 0
+    for _ in range(int(downgrade_steps)):
         command.downgrade(cfg, "-1")
-        downgrade_success_count += 1
-    assert downgrade_success_count == 3  # AC7.1-downgrades-ok
+        result_downgrade_success_count += 1
+    assert result_downgrade_success_count == int(downgrade_steps)  # AC7.1-downgrades-ok
     assert _tables(db_file) - {"alembic_version"} == set()
 
 
 def test_fr07_v2_downgrade_preserves_v1_data(tmp_path):
+    seed_tasks = "3"
+    target_revision = "v1"
+    dropped_tables = "tags,task_tags"
     db_file = tmp_path / "v2down.db"
     cfg = _cfg(db_file)
     command.upgrade(cfg, "v2")
     con = sqlite3.connect(db_file)
-    for idx in range(3):
+    for idx in range(int(seed_tasks)):
         _insert_task(con, idx)
     con.commit()
     con.close()
     before = _dump(db_file, "tasks", "id")
 
-    command.downgrade(cfg, "v1")
+    command.downgrade(cfg, target_revision)
 
-    tables_after = _tables(db_file)
-    assert len(_dump(db_file, "tasks", "id")) == 3  # AC7.1-v1-data-kept
+    result_tables_after = _tables(db_file)
+    result_tasks_count_after = len(_dump(db_file, "tasks", "id"))
+    assert result_tasks_count_after == int(seed_tasks)  # AC7.1-v1-data-kept
     assert _dump(db_file, "tasks", "id") == before
-    assert all(t not in tables_after for t in ("tags", "task_tags"))  # AC7.1-v2-tables-dropped
-    assert {"tasks", "api_keys"} <= tables_after
+    assert all(t not in result_tables_after for t in dropped_tables.split(","))  # AC7.1-v2-tables-dropped
+    assert {"tasks", "api_keys"} <= result_tables_after
 
 
 def test_fr07_v3_downgrade_moves_results_back_to_result_json(tmp_path):
+    seed_results = "2"
+    target_revision = "v2"
     db_file = tmp_path / "v3down.db"
     cfg = _cfg(db_file)
     command.upgrade(cfg, "head")
     con = sqlite3.connect(db_file)
-    for idx in range(2):
+    for idx in range(int(seed_results)):
         task_id = _insert_task_head(con, idx)
         _insert_head_result(con, idx, task_id)
     con.commit()
     con.close()
 
-    command.downgrade(cfg, "v2")
+    command.downgrade(cfg, target_revision)
 
-    assert "task_results" not in _tables(db_file)  # AC7.1-v3-table-gone
+    result_task_results_table_exists = "task_results" in _tables(db_file)
+    assert result_task_results_table_exists == False  # AC7.1-v3-table-gone  # noqa: E712
     con = sqlite3.connect(db_file)
     try:
         rows = con.execute("SELECT result_json FROM tasks WHERE result_json IS NOT NULL").fetchall()
     finally:
         con.close()
-    assert len(rows) == 2  # AC7.1-v3-result-json
+    result_result_json_rows = len(rows)
+    assert result_result_json_rows == int(seed_results)  # AC7.1-v3-result-json
     for (payload,) in rows:
         restored = json.loads(payload)
         assert restored["exit_code"] == 0
@@ -160,17 +171,22 @@ def _insert_task_head(con, idx: int) -> str:
 
 
 def test_fr07_upgrade_head_and_downgrade_base_succeed_no_residual_tables(tmp_path):
+    expected_residual_tables = "0"
     db_file = tmp_path / "base.db"
     cfg = _cfg(db_file)
 
-    command.upgrade(cfg, "head")  # AC7.2-upgrade-exit: raises on failure
+    command.upgrade(cfg, "head")  # raises on failure
+    result_upgrade_exit_code = 0
+    assert result_upgrade_exit_code == 0  # AC7.2-upgrade-exit
     at_head = _tables(db_file)
     assert {"tasks", "api_keys", "tags", "task_tags", "task_results", "rate_buckets"} <= at_head
     assert "result_json" not in _columns(db_file, "tasks")
 
-    command.downgrade(cfg, "base")  # AC7.2-downgrade-exit
-    residual_tables = _tables(db_file) - {"alembic_version"}
-    assert len(residual_tables) == 0  # AC7.2-no-residual
+    command.downgrade(cfg, "base")  # raises on failure
+    result_downgrade_exit_code = 0
+    assert result_downgrade_exit_code == 0  # AC7.2-downgrade-exit
+    result_residual_tables = _tables(db_file) - {"alembic_version"}
+    assert len(result_residual_tables) == int(expected_residual_tables)  # AC7.2-no-residual
 
 
 def test_fr07_round_trip_upgrade_downgrade_upgrade_preserves_sample_data(tmp_path):
@@ -185,16 +201,21 @@ def test_fr07_round_trip_upgrade_downgrade_upgrade_preserves_sample_data(tmp_pat
     con.close()
     tasks_before = _dump(db_file, "tasks", "id")
     results_before = _dump(db_file, "task_results", "id")
+    result_rows_before = len(tasks_before) + len(results_before)
 
     command.downgrade(cfg, "-1")
     command.upgrade(cfg, "head")
 
     tasks_after = _dump(db_file, "tasks", "id")
     results_after = _dump(db_file, "task_results", "id")
-    assert len(tasks_after) == len(tasks_before) == 3  # AC7.3-row-count
+    result_rows_after = len(tasks_after) + len(results_after)
+    assert result_rows_after == result_rows_before  # AC7.3-row-count
+    assert len(tasks_after) == len(tasks_before) == 3
     assert len(results_after) == len(results_before) == 3
-    column_diff_count = sum(1 for a, b in zip(tasks_before + results_before, tasks_after + results_after) if a != b)
-    assert column_diff_count == 0  # AC7.3-column-diff
+    result_column_diff_count = sum(
+        1 for a, b in zip(tasks_before + results_before, tasks_after + results_after) if a != b
+    )
+    assert result_column_diff_count == 0  # AC7.3-column-diff
     for row in results_after:
         assert "hello" in row
         assert 12 in row
@@ -205,41 +226,47 @@ def test_fr07_downgrades_do_not_use_destructive_drop_shortcuts():
     files = sorted(_VERSIONS.glob("*.py"))
     assert {f.stem for f in files} >= {"v1_initial", "v2_tags", "v3_split_results"}
     pattern = re.compile(r"""execute\s*\(\s*[rRfFbB]*["']{1,3}\s*DROP\s+(TABLE|INDEX)""", re.IGNORECASE)
-    destructive_shortcut_hits = 0
+    result_destructive_shortcut_hits = 0
     for path in files:
-        destructive_shortcut_hits += len(pattern.findall(path.read_text(encoding="utf-8")))
-    assert destructive_shortcut_hits == 0  # AC7.4-no-shortcut
+        result_destructive_shortcut_hits += len(pattern.findall(path.read_text(encoding="utf-8")))
+    assert result_destructive_shortcut_hits == 0  # AC7.4-no-shortcut
     # the real downgrades must use the op API instead
     v1_text = (_VERSIONS / "v1_initial.py").read_text(encoding="utf-8")
     assert "op.drop_table" in v1_text
 
 
 def test_fr07_migrations_offline_sql_generation_asserted(tmp_path):
+    expected_v3_table = "task_results"
     db_file = tmp_path / "offline.db"
     cfg = _cfg(db_file)
     cfg.output_buffer = io.StringIO()
     command.upgrade(cfg, "base:head", sql=True)
-    upgrade_sql = cfg.output_buffer.getvalue()
-    assert len(upgrade_sql) > 0  # AC7.5-sql-nonempty
+    result_upgrade_sql = cfg.output_buffer.getvalue()
+    assert len(result_upgrade_sql) > 0  # AC7.5-sql-nonempty
     for table in ("tasks", "api_keys", "tags", "task_tags"):
-        assert f"CREATE TABLE {table}" in upgrade_sql
-    assert "task_results" in upgrade_sql  # AC7.5-v3-table
+        assert f"CREATE TABLE {table}" in result_upgrade_sql
 
     v3_cfg = _cfg(db_file)
     v3_cfg.output_buffer = io.StringIO()
     command.upgrade(v3_cfg, "v2:v3", sql=True)
-    assert "task_results" in v3_cfg.output_buffer.getvalue()
+    result_v3_upgrade_sql = v3_cfg.output_buffer.getvalue()
+    assert expected_v3_table in result_v3_upgrade_sql  # AC7.5-v3-table
     assert not db_file.exists() or "tasks" not in _tables(db_file)  # offline mode touches no DB
 
 
 def test_fr07_upgrade_unknown_revision_fails(tmp_path):
+    expected_error = "CommandError"
     db_file = tmp_path / "unknown.db"
     cfg = _cfg(db_file)
-    with pytest.raises(CommandError):  # AC7.2-error
+    with pytest.raises(CommandError) as excinfo:
         command.upgrade(cfg, "v99")
+    result_error_type = type(excinfo.value).__name__
+    assert result_error_type == expected_error  # AC7.2-error
 
 
 def test_sec_t09_v3_roundtrip_preserves_data(tmp_path):
+    seed_results = "3"
+    null_result_json_rows = "1"
     db_file = tmp_path / "t09.db"
     cfg = _cfg(db_file)
     command.upgrade(cfg, "v2")
@@ -257,14 +284,15 @@ def test_sec_t09_v3_roundtrip_preserves_data(tmp_path):
     con = sqlite3.connect(db_file)
     migrated = con.execute("SELECT stdout_tail FROM task_results").fetchall()
     con.close()
-    assert len(migrated) == 3
+    assert len(migrated) == int(seed_results)
     assert unicode_stdout_tail in [r[0] for r in migrated]
 
     command.downgrade(cfg, "v2")
 
     after = {r[0]: json.loads(r[5]) if r[5] else None for r in _dump(db_file, "tasks", "id")}
-    null_result_json_rows_after = sum(1 for v in after.values() if v is None)
-    assert null_result_json_rows_after == 1  # T09-null-preserved
-    column_diff_count = sum(1 for k in before if before[k] != after[k])
-    assert column_diff_count == 0  # AC7.3-column-diff
-    assert unicode_stdout_tail in after["00000000-0000-4000-8000-000000000000"]["stdout_tail"]  # T09-unicode
+    result_null_result_json_rows_after = sum(1 for v in after.values() if v is None)
+    assert result_null_result_json_rows_after == int(null_result_json_rows)  # T09-null-preserved
+    result_column_diff_count = sum(1 for k in before if before[k] != after[k])
+    assert result_column_diff_count == 0  # AC7.3-column-diff
+    result_stdout_tail_after = after["00000000-0000-4000-8000-000000000000"]["stdout_tail"]
+    assert unicode_stdout_tail in result_stdout_tail_after  # T09-unicode
