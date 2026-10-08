@@ -1,13 +1,17 @@
 # Harness-executed: pytest-cov
-# returncode: 0
-# agent_score: 98.5 | threshold: 80.0
+# returncode: 1
+# agent_score: 100.0 | threshold: 80.0
 
-........................................................................ [ 67%]
-..................................                                       [100%]
+.............................................F...............F.......... [ 61%]
+..............................................                           [100%]
 =============================== warnings summary ===============================
 .venv/lib/python3.11/site-packages/fastapi/testclient.py:1
   /Users/johnny/projects/taskq-retry/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
     from starlette.testclient import TestClient as TestClient  # noqa
+
+03-development/tests/test_fr09.py::test_sec_t16_db_url_password_absent_from_logs
+  /Users/johnny/projects/taskq-retry/03-development/tests/test_fr09.py:183: SAWarning: Query string argument(s) 'password' are not accepted by the pysqlite driver and are being ignored; SQLite URI arguments require that 'uri=true' also be present in the URL. (Background on this warning at: https://sqlalche.me/e/21/squa)
+    app.state.engine = create_engine(db_url)  # unreachable host: readyz must fail without leaking
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 ================================ tests coverage ================================
@@ -26,11 +30,12 @@ Name                                                         Stmts   Miss  Cover
 03-development/src/taskq_api/api/__init__.py                     0      0   100%
 03-development/src/taskq_api/api/deps.py                         2      0   100%
 03-development/src/taskq_api/api/middleware.py                  13      0   100%
-03-development/src/taskq_api/api/routes_metrics.py               8      1    88%   16
+03-development/src/taskq_api/api/routes_health.py                9      0   100%
+03-development/src/taskq_api/api/routes_metrics.py               9      0   100%
 03-development/src/taskq_api/api/routes_runs.py                 40      0   100%
 03-development/src/taskq_api/api/routes_tasks.py                21      0   100%
 03-development/src/taskq_api/api/schemas.py                     19      0   100%
-03-development/src/taskq_api/app.py                             33      0   100%
+03-development/src/taskq_api/app.py                             29      0   100%
 03-development/src/taskq_api/config.py                          13      0   100%
 03-development/src/taskq_api/errors.py                          25      0   100%
 03-development/src/taskq_api/models/__init__.py                  0      0   100%
@@ -41,19 +46,25 @@ Name                                                         Stmts   Miss  Cover
 03-development/src/taskq_api/models/task_result.py              17      0   100%
 03-development/src/taskq_api/repository/__init__.py              0      0   100%
 03-development/src/taskq_api/repository/api_keys.py             10      3    70%   15-17
+03-development/src/taskq_api/repository/health.py               10      0   100%
 03-development/src/taskq_api/repository/rate_buckets.py         13      0   100%
 03-development/src/taskq_api/repository/results.py              13      0   100%
 03-development/src/taskq_api/repository/session.py              28      0   100%
-03-development/src/taskq_api/repository/tasks.py                25      2    92%   47-48
+03-development/src/taskq_api/repository/tasks.py                28      0   100%
 03-development/src/taskq_api/repository/unit_of_work.py         20      0   100%
 03-development/src/taskq_api/service/__init__.py                 0      0   100%
-03-development/src/taskq_api/service/auth.py                    29      0   100%
+03-development/src/taskq_api/service/auth.py                    30      0   100%
 03-development/src/taskq_api/service/executor.py                93      0   100%
+03-development/src/taskq_api/service/health.py                  22      0   100%
 03-development/src/taskq_api/service/keys.py                    11      4    64%   16-23
+03-development/src/taskq_api/service/metrics.py                 24      0   100%
 03-development/src/taskq_api/service/rate_limit.py              36      0   100%
 03-development/src/taskq_api/service/runner.py                   5      0   100%
 03-development/src/taskq_api/service/tasks.py                   41      0   100%
 03-development/src/taskq_api/service/validation.py               7      1    86%   14
 ------------------------------------------------------------------------------------------
-TOTAL                                                          665     23    97%
-106 passed, 1 warning in 11.57s
+TOTAL                                                          731     20    97%
+=========================== short test summary info ============================
+FAILED 03-development/tests/test_fr03.py::test_fr03_readyz_does_not_require_auth
+FAILED 03-development/tests/test_fr05.py::test_fr05_readyz_not_rate_limited
+2 failed, 116 passed, 2 warnings in 11.68s

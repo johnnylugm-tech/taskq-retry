@@ -1,0 +1,64 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each normative FR-08 behaviour maps to an assertion that fails if it is violated. Graceful drain: test_fr08.py:104 requires 'interrupted' and :105 bounds drain time, so an unbounded drain fails; :129 requires 'done', so an immediate cancel fails; :159 checks TASKQ_DRAIN_TIMEOUT. Concurrency cap: :202, :223 and :312 check peak_running, which executor.py increments inside the semaphore, so removing the cap pushes the peak above 2 or 3; :158 checks TASKQ_MAX_CONCURRENT. Timeout kill: :181 requires 'timeout', :182 and :108 require no live pid, :183 requires a negative returncode (killed), and :184 requires returncode to be set, which means wait() was awaited. Cancellation: :250 fails if CancelledError is swallowed, and :252-255 check the slot is released and the subprocess killed. Weakness: no test directly asserts the use of asyncio.TaskGroup or asyncio.wait_for. Only their observable behaviour is pinned.",
+  "citations": [
+    "SPEC.md:145-150",
+    "03-development/tests/test_fr08.py:104",
+    "03-development/tests/test_fr08.py:105",
+    "03-development/tests/test_fr08.py:108",
+    "03-development/tests/test_fr08.py:129",
+    "03-development/tests/test_fr08.py:158",
+    "03-development/tests/test_fr08.py:159",
+    "03-development/tests/test_fr08.py:181",
+    "03-development/tests/test_fr08.py:182",
+    "03-development/tests/test_fr08.py:183",
+    "03-development/tests/test_fr08.py:184",
+    "03-development/tests/test_fr08.py:202",
+    "03-development/tests/test_fr08.py:223",
+    "03-development/tests/test_fr08.py:250",
+    "03-development/tests/test_fr08.py:255"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "SPEC.md:146",
+      "message": "No assertion checks that background execution is managed by asyncio.TaskGroup or that the timeout is implemented with asyncio.wait_for. Only the observable behaviour (drain, kill, timeout status) is tested. Replacing these mechanisms with equivalent ones would not fail any test.",
+      "fr_id": "FR-08"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "4b7c4f5dbebe62dbdb102614cdf69e5e59d145494a0666680b505adfd4c1f025",
+    "declared_tests": [
+      "test_fr08_cancelled_error_propagates_not_swallowed",
+      "test_fr08_command_not_found_marks_failed",
+      "test_fr08_concurrency_cap_queues_excess_tasks",
+      "test_fr08_drain_waits_for_in_flight_task_to_finish",
+      "test_fr08_drain_with_no_inflight_tasks_returns_immediately",
+      "test_fr08_graceful_drain_waits_then_marks_interrupted",
+      "test_fr08_submit_state_transition_under_concurrent_load",
+      "test_fr08_timeout_kills_process_and_awaits_wait_no_orphans",
+      "test_sec_t12_timeout_kills_subprocess_no_orphan",
+      "test_sec_t13_concurrency_cap_enforced"
+    ],
+    "assertion_digests": {
+      "test_fr08_cancelled_error_propagates_not_swallowed": "83f79131a7fb469f7b5e06d9c5ce432a2e745e88144d4f2091ff428a43be1bb1",
+      "test_fr08_command_not_found_marks_failed": "f2d120b97446a5079847b8a312689b3300d66b4698a1d78243f59946023796e0",
+      "test_fr08_concurrency_cap_queues_excess_tasks": "dd3031e612abe9de4695b5623aeca6047e0afe0b756f7e9b999f0ff7a43177e7",
+      "test_fr08_drain_waits_for_in_flight_task_to_finish": "f8e60651e0fb7189801e6d1c45838952c6ca4df124c036a81b38de78e69c145a",
+      "test_fr08_drain_with_no_inflight_tasks_returns_immediately": "1eba83bf537a589e1339b3a38adff78e4f363e133b0d52ea9fa3d7c3ecbf32d5",
+      "test_fr08_graceful_drain_waits_then_marks_interrupted": "54a5debc0e11b61cf0411586bdd7cc31df2fa72c9932473c80f4a30830707892",
+      "test_fr08_submit_state_transition_under_concurrent_load": "93386d69be7472f1be54af8ae2e58387f542cb29edf8c8b987cacdc767f1223a",
+      "test_fr08_timeout_kills_process_and_awaits_wait_no_orphans": "a8cc5c89395706fe029a1428cff39de3e909da25923218d9012c5e451b641131",
+      "test_sec_t12_timeout_kills_subprocess_no_orphan": "88b8d8b4fa112927e320d3fc1c952d62cf12f4e52c04353f2cddff53548d0736",
+      "test_sec_t13_concurrency_cap_enforced": "b6e625008ba47d5c467752252516c81035a0809e194718fc00b86bd69329dd61"
+    },
+    "test_files": [
+      "03-development/tests/test_fr08.py"
+    ]
+  }
+}
