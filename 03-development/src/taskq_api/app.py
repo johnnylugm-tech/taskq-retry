@@ -10,6 +10,7 @@ from fastapi import FastAPI
 from sqlalchemy import create_engine
 
 from taskq_api.api import routes_metrics, routes_runs, routes_tasks
+from taskq_api.api.middleware import install_rate_limit
 from taskq_api.errors import install_handlers
 
 
@@ -25,6 +26,7 @@ def create_app() -> FastAPI:
     app = FastAPI(title="taskq", lifespan=lifespan)
     app.state.engine = engine
     install_handlers(app)
+    install_rate_limit(app)
 
     @app.get("/healthz")
     def healthz():

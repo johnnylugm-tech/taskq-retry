@@ -14,17 +14,21 @@ PROBLEM_JSON = "application/problem+json"
 class ApiError(Exception):
     """Error carrying an HTTP status and problem type."""
 
-    def __init__(self, status: int, type_: str, title: str, detail: str = ""):
+    def __init__(self, status: int, type_: str, title: str, detail: str = "",
+                 headers: dict[str, str] | None = None):
         super().__init__(title)
+        self.headers = headers
         self.status = status
         self.type = type_
         self.title = title
         self.detail = detail
 
 
-def _problem(request: Request, status: int, type_: str, title: str, detail: str) -> JSONResponse:
+def _problem(request: Request, status: int, type_: str, title: str, detail: str,
+             headers: dict[str, str] | None = None) -> JSONResponse:
     return JSONResponse(
         status_code=status,
+        headers=headers,
         media_type=PROBLEM_JSON,
         content={
             "type": type_,
@@ -42,7 +46,7 @@ def install_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(ApiError)
     async def _api_error(request: Request, exc: ApiError):
-        return _problem(request, exc.status, exc.type, exc.title, exc.detail)
+        return _problem(request, exc.status, exc.type, exc.title, exc.detail, exc.headers)
 
     @app.exception_handler(RequestValidationError)
     async def _validation(request: Request, exc: RequestValidationError):
