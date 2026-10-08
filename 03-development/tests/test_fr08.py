@@ -1,0 +1,261 @@
+"""FR-08: asynchronous executor (TaskGroup drain, concurrency cap, timeout kill, cancellation).
+
+Execution is in-process (real asyncio subprocess, tmp sqlite DB); no shared TASKQ_HOME.
+GREEN TODO: ``executor.Executor(engine, max_concurrent, drain_timeout, task_timeout)`` with
+``async start()``, ``submit(run_id, command)`` (non-blocking enqueue), ``async run(run_id, command)``
+(semaphore-gated, awaits completion), ``async drain()``, and attributes ``peak_running`` / ``running``.
+``runner`` must allow ``running -> interrupted``; ``create_app()`` must expose ``app.state.executor``.
+"""
+import asyncio
+import os
+import time
+import uuid
+
+import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+
+from taskq_api.app import create_app
+from taskq_api.models.base import Base
+from taskq_api.models.task import Task
+from taskq_api.models.task_result import TaskResult
+from taskq_api.service import executor, runner  # noqa: F401
+
+
+@pytest.fixture
+def engine(tmp_path, monkeypatch):
+    url = f"sqlite:///{tmp_path / 'taskq.db'}"
+    monkeypatch.setenv("TASKQ_DB_URL", url)
+    eng = create_engine(url)
+    Base.metadata.create_all(eng)
+    yield eng
+    eng.dispose()
+
+
+@pytest.fixture
+def spawned(monkeypatch):
+    """Record every subprocess the executor spawns so orphans can be checked."""
+    procs = []
+    real = asyncio.create_subprocess_exec
+
+    async def recording(*args, **kwargs):
+        proc = await real(*args, **kwargs)
+        procs.append(proc)
+        return proc
+
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", recording)
+    return procs
+
+
+def _seed(engine, command):
+    run_id = str(uuid.uuid4())
+    with Session(engine) as s:
+        task = Task(command=command, name=f"t-{run_id}")
+        s.add(task)
+        s.flush()
+        s.add(TaskResult(id=run_id, task_id=task.id, status="pending"))
+        s.commit()
+    return run_id
+
+
+def _status(engine, run_id):
+    with Session(engine) as s:
+        return s.get(TaskResult, run_id).status
+
+
+def _row(engine, run_id):
+    with Session(engine) as s:
+        r = s.get(TaskResult, run_id)
+        return r.status, r.exit_code
+
+
+def _alive(pid):
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    return True
+
+
+def _orphans(procs):
+    return sum(1 for p in procs if _alive(p.pid))
+
+
+def test_fr08_graceful_drain_waits_then_marks_interrupted(engine, spawned):
+    # AC8.1-final-status, AC8.1-drain-bounded, AC8.1-runtime-over-drain, AC8.1-no-orphan-after-drain
+    run_id = _seed(engine, "sleep 5")
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=1.0, task_timeout=30.0)
+        await ex.start()
+        ex.submit(run_id, "sleep 5")
+        await asyncio.sleep(0.2)
+        t0 = time.monotonic()
+        await ex.drain()
+        return time.monotonic() - t0
+
+    drain_seconds = asyncio.run(scenario())
+    assert _status(engine, run_id) == "interrupted"
+    assert drain_seconds <= 1.0 + 1.0
+    assert drain_seconds >= 0.5
+    assert _orphans(spawned) == 0
+
+
+def test_fr08_drain_waits_for_in_flight_task_to_finish(engine):
+    # AC8.1-final-status, AC8.1-drain-bounded, AC8.1-runtime-within-drain
+    run_id = _seed(engine, "sleep 0.5")
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=30.0)
+        await ex.start()
+        ex.submit(run_id, "sleep 0.5")
+        await asyncio.sleep(0.1)
+        t0 = time.monotonic()
+        await ex.drain()
+        return time.monotonic() - t0
+
+    drain_seconds = asyncio.run(scenario())
+    assert _status(engine, run_id) == "done"
+    assert drain_seconds <= 5.0 + 1.0
+
+
+def test_fr08_drain_with_no_inflight_tasks_returns_immediately(engine, monkeypatch):
+    # AC8.1-empty-drain, AC8.1-empty-inflight
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=30.0, task_timeout=30.0)
+        await ex.start()
+        assert ex.running == 0
+        t0 = time.monotonic()
+        await ex.drain()
+        return time.monotonic() - t0
+
+    assert asyncio.run(scenario()) < 1
+
+    # the app lifespan owns an executor and drains it on shutdown
+    monkeypatch.setenv("TASKQ_DRAIN_TIMEOUT", "30.0")
+    monkeypatch.setenv("TASKQ_MAX_CONCURRENT", "2")
+    monkeypatch.setenv("TASKQ_TASK_TIMEOUT", "10.0")
+    t0 = time.monotonic()
+    with TestClient(create_app()) as client:
+        assert client.app.state.executor.running == 0
+    assert time.monotonic() - t0 < 5
+
+
+def test_fr08_timeout_kills_process_and_awaits_wait_no_orphans(engine, spawned):
+    # AC8.1-final-status, AC8.3-no-orphan, AC8.3-killed, AC8.3-wait-awaited
+    run_id = _seed(engine, "sleep 30")
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=0.5)
+        await ex.start()
+        await ex.run(run_id, "sleep 30")
+        await ex.drain()
+
+    asyncio.run(scenario())
+    assert _status(engine, run_id) == "timeout"
+    assert len(spawned) == 1
+    assert _orphans(spawned) == 0
+    assert spawned[0].returncode is not None and spawned[0].returncode < 0
+
+
+def test_fr08_concurrency_cap_queues_excess_tasks(engine):
+    # AC8.2-peak, AC8.2-all-complete, AC8.2-oversubscribed
+    ids = [_seed(engine, "sleep 0.5") for _ in range(5)]
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=10.0, task_timeout=10.0)
+        await ex.start()
+        await asyncio.gather(*(ex.run(i, "sleep 0.5") for i in ids))
+        await ex.drain()
+        return ex.peak_running
+
+    peak = asyncio.run(scenario())
+    assert 5 > 2
+    assert peak <= 2
+    assert sum(1 for i in ids if _status(engine, i) == "done") == 5
+
+
+def test_fr08_submit_state_transition_under_concurrent_load(engine):
+    # NP13-peak-exact, NP13-final-running, NP13-completed (one executor shared by 20 callers)
+    ids = [_seed(engine, "sleep 0.1") for _ in range(20)]
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=3, drain_timeout=10.0, task_timeout=10.0)
+        await ex.start()
+        await asyncio.gather(*(ex.run(i, "sleep 0.1") for i in ids))
+        peak, final_running = ex.peak_running, ex.running
+        await ex.drain()
+        return peak, final_running
+
+    peak, final_running = asyncio.run(scenario())
+    assert peak == 3
+    assert final_running == 0
+    assert sum(1 for i in ids if _status(engine, i) == "done") == 20
+
+
+def test_fr08_cancelled_error_propagates_not_swallowed(engine, monkeypatch):
+    # AC8.4-type, AC8.4-not-swallowed
+    run_id = _seed(engine, "echo hi")
+
+    async def cancelled(*args, **kwargs):
+        raise asyncio.CancelledError()
+
+    monkeypatch.setattr(executor, "execute", cancelled)
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=10.0)
+        await ex.start()
+        await ex.run(run_id, "echo hi")
+
+    with pytest.raises(asyncio.CancelledError):
+        asyncio.run(scenario())
+
+
+def test_fr08_command_not_found_marks_failed(engine):
+    # AC8.1-final-status, AC8.3-failed-run
+    run_id = _seed(engine, "nonexistent-binary-xyz")
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=10.0)
+        await ex.start()
+        await ex.run(run_id, "nonexistent-binary-xyz")
+        await ex.drain()
+
+    asyncio.run(scenario())
+    status, exit_code = _row(engine, run_id)
+    assert status == "failed"
+    assert exit_code != 0
+
+
+def test_sec_t12_timeout_kills_subprocess_no_orphan(engine, spawned):
+    # AC8.1-final-status, AC8.3-no-orphan, AC8.3-killed, AC8.3-wait-awaited
+    run_id = _seed(engine, "sleep 60")
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=0.5)
+        await ex.start()
+        await ex.run(run_id, "sleep 60")
+        await ex.drain()
+
+    asyncio.run(scenario())
+    assert _status(engine, run_id) == "timeout"
+    assert _orphans(spawned) == 0
+    assert spawned[0].returncode is not None and spawned[0].returncode < 0
+
+
+def test_sec_t13_concurrency_cap_enforced(engine):
+    # AC8.2-peak, AC8.2-all-complete, AC8.2-oversubscribed
+    ids = [_seed(engine, "sleep 0.2") for _ in range(10)]
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=10.0, task_timeout=10.0)
+        await ex.start()
+        await asyncio.gather(*(ex.run(i, "sleep 0.2") for i in ids))
+        await ex.drain()
+        return ex.peak_running
+
+    peak = asyncio.run(scenario())
+    assert 10 > 2
+    assert peak <= 2
+    assert sum(1 for i in ids if _status(engine, i) == "done") == 10
