@@ -155,6 +155,8 @@ def test_fr08_drain_with_no_inflight_tasks_returns_immediately(engine, monkeypat
     t0 = time.monotonic()
     with TestClient(create_app()) as client:
         assert client.app.state.executor.running == 0
+        assert client.app.state.executor._max_concurrent == 2  # TASKQ_MAX_CONCURRENT is honoured
+        assert client.app.state.executor._drain_timeout == 30.0  # TASKQ_DRAIN_TIMEOUT is honoured
     assert time.monotonic() - t0 < 5
 
 
@@ -223,31 +225,34 @@ def test_fr08_submit_state_transition_under_concurrent_load(engine):
     assert result_completed_count == int(concurrent_callers)  # NP13-completed
 
 
-def test_fr08_cancelled_error_propagates_not_swallowed(engine, monkeypatch):
-    # AC8.4-type, AC8.4-not-swallowed
+def test_fr08_cancelled_error_propagates_not_swallowed(engine, spawned):
+    # AC8.4-type, AC8.4-not-swallowed: cancel a real running subprocess through the real handlers
     expected_exception_type = "CancelledError"
-    run_id = _seed(engine, "echo hi")
-
-    async def cancelled(*args, **kwargs):
-        raise asyncio.CancelledError()
-
-    monkeypatch.setattr(executor, "execute", cancelled)
+    run_id = _seed(engine, "sleep 30")
 
     async def scenario():
-        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=10.0)
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=60.0)
         await ex.start()
-        await ex.run(run_id, "echo hi")
+        job = asyncio.ensure_future(ex.run(run_id, "sleep 30"))
+        await asyncio.sleep(0.5)
+        job.cancel()
+        raised = None
+        try:
+            await job
+        except asyncio.CancelledError as exc:
+            raised = type(exc).__name__
+        running_after = ex.running
+        await ex.drain()
+        return raised, running_after
 
-    result_swallowed = False
-    result_exception_type = None
-    try:
-        asyncio.run(scenario())
-    except asyncio.CancelledError as exc:
-        result_exception_type = type(exc).__name__
-    else:
-        result_swallowed = True
+    result_exception_type, running_after = asyncio.run(scenario())
+    result_swallowed = result_exception_type is None
     assert result_exception_type == expected_exception_type  # AC8.4-type
     assert result_swallowed == False  # AC8.4-not-swallowed  # noqa: E712
+    assert running_after == 0
+    assert len(spawned) == 1
+    assert _orphans(spawned) == 0
+    assert spawned[0].returncode is not None and spawned[0].returncode < 0
 
 
 def test_fr08_command_not_found_marks_failed(engine):
