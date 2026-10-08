@@ -4,7 +4,7 @@
 """
 import hashlib
 import hmac
-from typing import Any, Callable
+from typing import Callable
 
 from fastapi import Depends, Header, Request
 

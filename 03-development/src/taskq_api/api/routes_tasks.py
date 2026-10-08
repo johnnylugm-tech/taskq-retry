@@ -31,7 +31,7 @@ def get_task(task_id: str, session: Session = Depends(require_scope("read"))) ->
 def list_tasks(status: Optional[TaskStatus] = None, limit: int = Query(50, ge=1, le=200),
                cursor: Optional[str] = None, session: Session = Depends(require_scope("read"))) -> TaskPage:
     items, next_cursor = svc.list_page(session, status, limit, cursor)
-    return TaskPage(items=items, next_cursor=next_cursor)
+    return TaskPage(items=[TaskOut.model_validate(i) for i in items], next_cursor=next_cursor)
 
 
 @router.delete("/{task_id}", status_code=204, summary="Delete task",
