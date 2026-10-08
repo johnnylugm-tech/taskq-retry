@@ -22,6 +22,43 @@ def _derived_id(task_id: str) -> str:
     return str(uuid.uuid5(_NS, task_id))
 
 
+def _move_json_to_results(bind, results) -> None:
+    rows = bind.execute(sa.text("SELECT id, result_json FROM tasks WHERE result_json IS NOT NULL")).fetchall()
+    for task_id, payload in rows:
+        data = json.loads(payload)
+        bind.execute(
+            sa.insert(results).values(
+                id=data.get("id", _derived_id(task_id)),
+                task_id=task_id,
+                status=data.get("status", _DEFAULT_STATUS),
+                finished_at=data.get("finished_at"),
+                **{f: data.get(f) for f in _FIELDS},
+            )
+        )
+
+
+def _move_results_to_json(bind) -> None:
+    rows = bind.execute(
+        sa.text(
+            "SELECT id, task_id, status, exit_code, stdout_tail, stderr_tail, duration_ms, finished_at "
+            "FROM task_results ORDER BY finished_at, id"
+        )
+    ).fetchall()
+    for rid, task_id, status, *rest in rows:
+        *fields, finished_at = rest
+        data = dict(zip(_FIELDS, fields))
+        if rid != _derived_id(task_id):
+            data["id"] = rid
+        if status != _DEFAULT_STATUS:
+            data["status"] = status
+        if finished_at is not None:
+            data["finished_at"] = str(finished_at)
+        bind.execute(
+            sa.text("UPDATE tasks SET result_json = :p WHERE id = :t"),
+            {"p": json.dumps(data, ensure_ascii=False), "t": task_id},
+        )
+
+
 def upgrade() -> None:
     results = op.create_table(
         "task_results",
@@ -36,44 +73,13 @@ def upgrade() -> None:
     )
     op.create_index("ix_task_results_task_id", "task_results", ["task_id"])
     if not context.is_offline_mode():
-        bind = op.get_bind()
-        rows = bind.execute(sa.text("SELECT id, result_json FROM tasks WHERE result_json IS NOT NULL")).fetchall()
-        for task_id, payload in rows:
-            data = json.loads(payload)
-            bind.execute(
-                sa.insert(results).values(
-                    id=data.get("id", _derived_id(task_id)),
-                    task_id=task_id,
-                    status=data.get("status", _DEFAULT_STATUS),
-                    finished_at=data.get("finished_at"),
-                    **{f: data.get(f) for f in _FIELDS},
-                )
-            )
+        _move_json_to_results(op.get_bind(), results)
     op.drop_column("tasks", "result_json")
 
 
 def downgrade() -> None:
     op.add_column("tasks", sa.Column("result_json", sa.Text, nullable=True))
     if not context.is_offline_mode():
-        bind = op.get_bind()
-        rows = bind.execute(
-            sa.text(
-                "SELECT id, task_id, status, exit_code, stdout_tail, stderr_tail, duration_ms, finished_at "
-                "FROM task_results ORDER BY finished_at, id"
-            )
-        ).fetchall()
-        for rid, task_id, status, *rest in rows:
-            *fields, finished_at = rest
-            data = dict(zip(_FIELDS, fields))
-            if rid != _derived_id(task_id):
-                data["id"] = rid
-            if status != _DEFAULT_STATUS:
-                data["status"] = status
-            if finished_at is not None:
-                data["finished_at"] = str(finished_at)
-            bind.execute(
-                sa.text("UPDATE tasks SET result_json = :p WHERE id = :t"),
-                {"p": json.dumps(data, ensure_ascii=False), "t": task_id},
-            )
+        _move_results_to_json(op.get_bind())
     op.drop_index("ix_task_results_task_id", table_name="task_results")
     op.drop_table("task_results")
