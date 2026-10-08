@@ -168,7 +168,7 @@ def test_fr09_metrics_unauthenticated_returns_401(client):
 
 def test_sec_t16_db_url_password_absent_from_logs(tmp_path, monkeypatch, caplog):
     db_url_password = "s3cretPassw0rd"
-    db_url = "postgresql://taskq:s3cretPassw0rd@db.internal/taskq"
+    db_url = "sqlite:////nonexistent-dir-fr09/taskq.db?password=s3cretPassw0rd"
     # Real app on SQLite; the secret URL is only configured on the failing-engine path.
     local = f"sqlite:///{tmp_path / 'taskq.db'}"
     monkeypatch.setenv("TASKQ_DB_URL", local)
