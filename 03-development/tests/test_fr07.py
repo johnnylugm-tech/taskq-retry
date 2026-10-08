@@ -296,3 +296,30 @@ def test_sec_t09_v3_roundtrip_preserves_data(tmp_path):
     assert result_column_diff_count == 0  # AC7.3-column-diff
     result_stdout_tail_after = after["00000000-0000-4000-8000-000000000000"]["stdout_tail"]
     assert unicode_stdout_tail in result_stdout_tail_after  # T09-unicode
+
+
+def test_fr07_v3_downgrade_keeps_non_default_status_and_finished_at(tmp_path):
+    db_file = tmp_path / "v3down_extra.db"
+    cfg = _cfg(db_file)
+    command.upgrade(cfg, "head")
+    con = sqlite3.connect(db_file)
+    task_id = _insert_task_head(con, 0)
+    con.execute(
+        "INSERT INTO task_results (id, task_id, status, exit_code, stdout_tail, stderr_tail, duration_ms, finished_at) "
+        "VALUES (?, ?, 'failed', 1, 'x', 'err', 5, '2026-01-02 00:00:00')",
+        ("10000000-0000-4000-8000-000000000000", task_id),
+    )
+    con.commit()
+    con.close()
+
+    command.downgrade(cfg, "v2")
+
+    con = sqlite3.connect(db_file)
+    try:
+        (payload,) = con.execute("SELECT result_json FROM tasks WHERE id = ?", (task_id,)).fetchone()
+    finally:
+        con.close()
+    restored = json.loads(payload)
+    assert restored["status"] == "failed"
+    assert restored["finished_at"] == "2026-01-02 00:00:00"
+    assert restored["id"] == "10000000-0000-4000-8000-000000000000"
