@@ -5,13 +5,13 @@
 import secrets
 import uuid
 
-from taskq_api.db import Session
+from taskq_api.repository.session import DbSession
 from taskq_api.models.api_key import ApiKey
 from taskq_api.repository import api_keys as repo
 from taskq_api.service.auth import hash_key
 
 
-def create_key(session: Session, scope: str) -> str:
+def create_key(session: DbSession, scope: str) -> str:
     """Store the SHA-256 of a fresh key and return the plaintext (shown once)."""
     plaintext = "tq-" + secrets.token_urlsafe(32)
     repo.add(session, ApiKey(

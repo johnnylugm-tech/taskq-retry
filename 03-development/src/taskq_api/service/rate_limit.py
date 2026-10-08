@@ -6,7 +6,7 @@ import math
 import time
 from dataclasses import dataclass
 
-from taskq_api.db import IntegrityError, Session
+from taskq_api.repository.session import DbIntegrityError, DbSession
 from taskq_api.models.rate_bucket import RateBucket
 from taskq_api.repository import rate_buckets as repo
 
@@ -24,21 +24,21 @@ def refill(tokens: float, rate_burst: int, rate_per_sec: float, elapsed_seconds:
     return min(float(rate_burst), tokens + rate_per_sec * elapsed_seconds)
 
 
-def _locked_bucket(session: Session, key_id: str, rate_burst: int, now: float) -> RateBucket:
+def _locked_bucket(session: DbSession, key_id: str, rate_burst: int, now: float) -> RateBucket:
     bucket = repo.get_for_update(session, key_id)
     if bucket is not None:
         return bucket
     try:
         with session.begin_nested():
             return repo.add(session, RateBucket(key_id=key_id, tokens=float(rate_burst), refilled_at=now))
-    except IntegrityError:  # a concurrent first request created the row
+    except DbIntegrityError:  # a concurrent first request created the row
         bucket = repo.get_for_update(session, key_id)
         if bucket is None:
             raise
         return bucket
 
 
-def consume(session: Session, key_id: str, rate_burst: int, rate_per_sec: float) -> Decision:
+def consume(session: DbSession, key_id: str, rate_burst: int, rate_per_sec: float) -> Decision:
     """Take one token for `key_id` in a single row-locked transaction, committing the new state. [FR-05]"""
     repo.begin_exclusive(session)
     now = time.time()

@@ -8,7 +8,7 @@ from typing import Callable
 
 from fastapi import Depends, Header, Request
 
-from taskq_api.db import Session, get_session
+from taskq_api.repository.session import DbSession, get_session
 from taskq_api.errors import ApiError
 from taskq_api.repository import api_keys as repo
 from taskq_api.service import rate_limit
@@ -26,11 +26,11 @@ def _unauthenticated() -> ApiError:
     return ApiError(401, "/errors/unauthenticated", "Unauthenticated", "missing or invalid API key")
 
 
-def require_scope(scope: str) -> Callable[..., Session]:
+def require_scope(scope: str) -> Callable[..., DbSession]:
     """Build a dependency requiring at least `scope`; returns the open session."""
 
     def dep(request: Request, x_api_key: str | None = Header(default=None),
-            session: Session = Depends(get_session)) -> Session:
+            session: DbSession = Depends(get_session)) -> DbSession:
         if not x_api_key:
             raise _unauthenticated()
         digest = hash_key(x_api_key)

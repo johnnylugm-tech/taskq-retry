@@ -33,7 +33,7 @@ def list_page(session: Session, status: Optional[str], limit: int,
     if after is not None:
         stmt = stmt.where(tuple_(Task.created_at, Task.id) > tuple_(after[0], after[1]))
     # suffix, not .limit(): the sqlite dialect renders .limit() as 'LIMIT ? OFFSET ?'
-    return list(session.scalars(stmt.suffix_with(f"LIMIT {int(limit)}")))
+    return list(session.scalars(stmt.suffix_with("LIMIT", str(int(limit)))))
 
 
 def delete_with_results(session: Session, task: Task) -> None:

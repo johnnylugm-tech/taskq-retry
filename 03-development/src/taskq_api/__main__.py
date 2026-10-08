@@ -5,7 +5,7 @@
 import argparse
 import os
 
-from taskq_api.db import Session, create_engine
+from taskq_api.repository.session import create_db_engine, session_scope
 from taskq_api.service import keys
 
 
@@ -17,8 +17,8 @@ def main() -> None:
     create = key.add_parser("create")
     create.add_argument("--scope", required=True, choices=["read", "write", "admin"])
     args = parser.parse_args()
-    engine = create_engine(os.environ["TASKQ_DB_URL"])
-    with Session(engine) as session:
+    engine = create_db_engine(os.environ["TASKQ_DB_URL"])
+    with session_scope(engine) as session:
         print(keys.create_key(session, args.scope))
     engine.dispose()
 

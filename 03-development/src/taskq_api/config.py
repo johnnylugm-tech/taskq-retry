@@ -10,3 +10,8 @@ def rate_burst() -> int:
 def rate_per_sec() -> float:
     """TASKQ_RATE_PER_SEC: token refill rate per second (default 5.0)."""
     return float(os.environ.get("TASKQ_RATE_PER_SEC", "5.0"))
+
+
+def db_pool_size() -> int:
+    """TASKQ_DB_POOL_SIZE: SQLAlchemy connection pool size (default 5). [FR-06]"""
+    return int(os.environ.get("TASKQ_DB_POOL_SIZE", "5"))

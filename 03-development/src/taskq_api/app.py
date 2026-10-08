@@ -11,13 +11,13 @@ from fastapi import FastAPI
 
 from taskq_api.api import routes_metrics, routes_runs, routes_tasks
 from taskq_api.api.middleware import install_rate_limit
-from taskq_api.db import create_engine
-from taskq_api.errors import install_handlers
+from taskq_api.errors import install_handlers, service_unavailable
+from taskq_api.repository.session import DbUnavailableError, create_db_engine
 
 
 def create_app() -> FastAPI:
     """Create the app, bound to the engine at TASKQ_DB_URL."""
-    engine = create_engine(os.environ["TASKQ_DB_URL"])
+    engine = create_db_engine(os.environ["TASKQ_DB_URL"])
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -27,6 +27,7 @@ def create_app() -> FastAPI:
     app = FastAPI(title="taskq", lifespan=lifespan)
     app.state.engine = engine
     install_handlers(app)
+    app.add_exception_handler(DbUnavailableError, lambda request, exc: service_unavailable(request))
     install_rate_limit(app)
 
     @app.get("/healthz")

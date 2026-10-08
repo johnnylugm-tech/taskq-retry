@@ -41,6 +41,11 @@ def _problem(request: Request, status: int, type_: str, title: str, detail: str,
     )
 
 
+def service_unavailable(request: Request) -> JSONResponse:
+    """503 problem+json when the database cannot be reached. [FR-06]"""
+    return _problem(request, 503, "/errors/not-ready", "Service Unavailable", "database unavailable")
+
+
 def install_handlers(app: FastAPI) -> None:
     """Register problem+json handlers on the app."""
 
