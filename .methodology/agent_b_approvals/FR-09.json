@@ -1,0 +1,55 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-09 requirement maps to an assertion that fails if it is violated. /healthz 200 and {\"status\":\"ok\"} map to test_fr09.py:82-83. /readyz 200 when the DB is up and the migration is at head maps to :91-93. /readyz 503 with a body naming the database as the failure maps to :107-109. The fail-closed case, a migration behind head, maps to :120-122, with the body naming the migration. /v1/metrics with no key returning 401 maps to :165-166, and with a write key returning 403 to :156-157. Task counts by status map to :145-146, checked against rows the test seeded. The rate-limit rejection count maps to :147, which is driven by a real 429 from the read key's bucket (:134-135). Latency percentiles map to :243-245, which are checked against seeded run durations, not just non-empty. Line :123 is tautological, but the 503, type and detail assertions around it carry the check. The readyz tests patch the revision lookups, so the real alembic comparison is not run end to end. The patched head/current mismatch does exercise the fail-closed logic. I did not run the tests.",
+  "citations": [
+    "SPEC.md:156",
+    "SPEC.md:157",
+    "SPEC.md:158",
+    "SPEC.md:160",
+    "03-development/tests/test_fr09.py:82",
+    "03-development/tests/test_fr09.py:83",
+    "03-development/tests/test_fr09.py:91",
+    "03-development/tests/test_fr09.py:107",
+    "03-development/tests/test_fr09.py:109",
+    "03-development/tests/test_fr09.py:120",
+    "03-development/tests/test_fr09.py:122",
+    "03-development/tests/test_fr09.py:145",
+    "03-development/tests/test_fr09.py:146",
+    "03-development/tests/test_fr09.py:147",
+    "03-development/tests/test_fr09.py:156",
+    "03-development/tests/test_fr09.py:165",
+    "03-development/tests/test_fr09.py:243",
+    "03-development/tests/test_fr09.py:245"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "a8b84b0a400934712d9ed47c4544c5643ee07426c351d478eb010b864a7ce6ca",
+    "declared_tests": [
+      "test_fr09_healthz_returns_200_status_ok",
+      "test_fr09_metrics_admin_returns_counts_latency_and_rate_limit_rejections",
+      "test_fr09_metrics_unauthenticated_returns_401",
+      "test_fr09_metrics_write_key_returns_403",
+      "test_fr09_readyz_200_when_db_ok_and_migration_at_head",
+      "test_fr09_readyz_503_when_db_unavailable",
+      "test_fr09_readyz_503_when_migration_not_at_head_fail_closed",
+      "test_sec_t16_db_url_password_absent_from_logs"
+    ],
+    "assertion_digests": {
+      "test_fr09_healthz_returns_200_status_ok": "e93ad422a1f2953ea30c475b1ad505918d0c6c9f42e7a77a695a6869518f27d2",
+      "test_fr09_metrics_admin_returns_counts_latency_and_rate_limit_rejections": "a04debc5ac9986c9a758cd512c82ee0ccc13e6d59f8799b5cb6ca301f327fdf4",
+      "test_fr09_metrics_unauthenticated_returns_401": "8ab3813f50afd321a81b171c84e2546aa9daec7529c543db9e22a22fca6fe9c4",
+      "test_fr09_metrics_write_key_returns_403": "39e7df665daa2abd10b131177cde12deff250323f9ca9034b00920ffc0c2c938",
+      "test_fr09_readyz_200_when_db_ok_and_migration_at_head": "4a846859c5d9ed16c085ae62ce13f9cbb5ddecf500708f262ee9da967f5e52bd",
+      "test_fr09_readyz_503_when_db_unavailable": "977b5989bcc0e90a09e8bfe0149b6e8b3e4d2e4649456d6dd03607d8df0b1135",
+      "test_fr09_readyz_503_when_migration_not_at_head_fail_closed": "5af89e996f3675aacebc58f458fe969a2aadbdb5c93e4deea0d514bdb3df3877",
+      "test_sec_t16_db_url_password_absent_from_logs": "b9e9832c74300b1551c27cf3a8c16fb73b3a405d5f78c5f7b8a66b5afc6c41c4"
+    },
+    "test_files": [
+      "03-development/tests/test_fr09.py"
+    ]
+  }
+}
