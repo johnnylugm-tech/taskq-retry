@@ -1,0 +1,51 @@
+# Harness-executed: pytest-cov
+# returncode: 0
+# agent_score: 100.0 | threshold: 80.0
+
+.....................................................................    [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/johnny/projects/taskq-retry/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.15-final-0 _______________
+
+Name                                                      Stmts   Miss  Cover   Missing
+---------------------------------------------------------------------------------------
+03-development/src/taskq_api/__init__.py                      0      0   100%
+03-development/src/taskq_api/__main__.py                     17     11    35%   14-23, 27
+03-development/src/taskq_api/api/__init__.py                  0      0   100%
+03-development/src/taskq_api/api/deps.py                      2      0   100%
+03-development/src/taskq_api/api/middleware.py               13      0   100%
+03-development/src/taskq_api/api/routes_metrics.py            8      1    88%   16
+03-development/src/taskq_api/api/routes_runs.py              40      0   100%
+03-development/src/taskq_api/api/routes_tasks.py             21      0   100%
+03-development/src/taskq_api/api/schemas.py                  19      0   100%
+03-development/src/taskq_api/app.py                          27      0   100%
+03-development/src/taskq_api/config.py                        5      0   100%
+03-development/src/taskq_api/db.py                           10      0   100%
+03-development/src/taskq_api/errors.py                       23      0   100%
+03-development/src/taskq_api/models/__init__.py               0      0   100%
+03-development/src/taskq_api/models/api_key.py               13      0   100%
+03-development/src/taskq_api/models/base.py                   2      0   100%
+03-development/src/taskq_api/models/rate_bucket.py            8      0   100%
+03-development/src/taskq_api/models/task.py                  14      0   100%
+03-development/src/taskq_api/models/task_result.py           17      0   100%
+03-development/src/taskq_api/repository/__init__.py           0      0   100%
+03-development/src/taskq_api/repository/api_keys.py          10      3    70%   15-17
+03-development/src/taskq_api/repository/rate_buckets.py      13      0   100%
+03-development/src/taskq_api/repository/results.py           13      0   100%
+03-development/src/taskq_api/repository/tasks.py             25      2    92%   47-48
+03-development/src/taskq_api/service/__init__.py              0      0   100%
+03-development/src/taskq_api/service/auth.py                 29      0   100%
+03-development/src/taskq_api/service/executor.py             45      4    91%   30, 32, 50-51
+03-development/src/taskq_api/service/keys.py                 11      4    64%   16-23
+03-development/src/taskq_api/service/rate_limit.py           36      0   100%
+03-development/src/taskq_api/service/runner.py                5      0   100%
+03-development/src/taskq_api/service/tasks.py                41      0   100%
+03-development/src/taskq_api/service/validation.py            7      1    86%   14
+---------------------------------------------------------------------------------------
+TOTAL                                                       474     26    95%
+69 passed, 1 warning in 4.19s

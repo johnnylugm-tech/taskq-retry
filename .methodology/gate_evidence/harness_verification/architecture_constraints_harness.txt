@@ -1,0 +1,22 @@
+# Harness-executed: import-linter
+# returncode: 0
+# agent_score: 100.0 | threshold: 100.0
+
+[1m=============[0m
+[1mImport Linter[0m
+[1m=============[0m
+[22m[0m
+[1m---------[0m
+[1mContracts[0m
+[1m---------[0m
+[22m[0m
+[1mAnalyzed 52 files, 117 dependencies.[0m
+[1m------------------------------------[0m
+[22m[0m
+[22mLayered architecture [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22mErrors and db are independent leaves [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22mConfig and errors are independent leaves [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22mSQLAlchemy only in repository and models [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22mDatabase session module does not import upper layers [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22m[0m
+[22mContracts: 5 kept, 0 broken.[0m

@@ -1,0 +1,140 @@
+{
+  "gate": 1,
+  "phase": 3,
+  "fr_id": "FR-05",
+  "overall_score": 100.0,
+  "quality_complete": true,
+  "rounds_used": 1,
+  "breakdown": {
+    "linting": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_evidence": "All checks passed!",
+      "score_source": "framework",
+      "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
+      "effective_threshold": 100.0,
+      "passed": true
+    },
+    "type_safety": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791469586849\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 32,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.049\n    }\n}\n\n",
+      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
+      "score_source": "framework",
+      "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
+      "effective_threshold": 100.0,
+      "passed": true
+    },
+    "test_coverage": {
+      "score": 100.0,
+      "threshold": 100,
+      "tests_passed": 31,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "tool_evidence": "31 passed, 1 warning; coverage 72/72 statements = 100% on FR-05 files; spec coverage 10/10",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-05.txt",
+      "coverage_scope": "per_fr",
+      "coverage_scope_fr": "FR-05",
+      "score_source": "framework",
+      "effective_threshold": 100.0,
+      "passed": true
+    },
+    "architecture_constraints": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_evidence": "Contracts: 5 kept, 0 broken. Analyzed 52 files, 117 dependencies.",
+      "score_source": "framework",
+      "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
+      "effective_threshold": 100.0,
+      "passed": true
+    }
+  },
+  "enforcer_sha": "6f9097121dfb25448da364b99d2fac95323d85b1",
+  "enforcer_surface": {
+    "core/quality_gate": "eab42d774787153ccb73ad481e18232488f29c0b",
+    "harness/harness_bridge.py": "7d818211b10719d38c09df27983c29aefbdaceb6",
+    "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
+  },
+  "evidence_digest": {
+    "secrets_scanning::.gitleaks.toml": {
+      "source": ".gitleaks.toml (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "4ee792a8dd8ca8022e0d9f658a30140cb275f083395cff0c5e0d745432f04614",
+      "bytes": 2157,
+      "head": "# Delivered by `init-project` — templates/.gitleaks.toml is the single\n# source; a project's copy is written once and not re-synced (same shape as\n# harness_quality_gate.yml, see core/ci_template.py). SKIP, never overwrite:\n# unlike the CI workflow this file is one projects already hand-author\n# (three corpus projects shipped their own before this template existed),\n# so init-project never touches an existing copy, with or without\n# --overwrite.\n#\n# Round 92. secrets_scanning (tier-1, threshold 100) treats a clean gitleaks\n# run as proof of no secrets. The framework itself writes free-text agent\n# excerpts (test names, coverage summaries) into `.methodology/*.json` and\n# commits them (Round 90: the record has to reach git). generic-api-key's\n# entropy rule fires on names like `test_invalid_api_key_returns_401` —\n# measured on a real project's committed Gate 1 evidence, which blocked P5.\n# Scoped to that ONE rule so a real credential under .methodology/ is still\n# caught by private-key / aws-access-token / github-pat / etc. — verified:\n# a private key planted under .methodology/ is still flagged under this\n# config; a real secret outside .methodology/ is unaffected.\n#\n# The path is `(^|/)\\.methodology...`, not `^\\.methodology...`: two of the"
+    },
+    "mutation_testing::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "0ddd6a09423cb3e12183ec9ac47a0abd7d92edfc98f34fee784816e46e618c78",
+      "bytes": 311,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n"
+    },
+    "test_coverage::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "0ddd6a09423cb3e12183ec9ac47a0abd7d92edfc98f34fee784816e46e618c78",
+      "bytes": 311,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n"
+    },
+    "linting": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "f0d0b1081d9d3ebb26c4c93543053ecdc0a58998f22c071dc4ddb26021b57645",
+      "bytes": 18,
+      "head": "All checks passed!"
+    },
+    "type_safety": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "9db958f0e4e961aeb6126af90f28daf35a36581aa836db5fc51747f03566027f",
+      "bytes": 250,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791469586849\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 32,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.049\n    }\n}"
+    },
+    "test_coverage": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "c6b652639b4b994b57a6a8bb3a12fe7fbd96c3d8b000f018b3dbc75fc749d013",
+      "bytes": 90,
+      "head": "31 passed, 1 warning; coverage 72/72 statements = 100% on FR-05 files; spec coverage 10/10"
+    },
+    "architecture_constraints": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "f513e357761fb0b24ff244db9b7d44b98ac29c5841f97005b682dfeaa05ee5ea",
+      "bytes": 65,
+      "head": "Contracts: 5 kept, 0 broken. Analyzed 52 files, 117 dependencies."
+    }
+  },
+  "composite_score": 100.0,
+  "verdict": "PASS",
+  "passed": true,
+  "spec_undelivered": [],
+  "spec_declared": 0,
+  "denominator_provenance": {},
+  "measurement_scope": {
+    "weight_covered": 1.0,
+    "weight_total": 1.0,
+    "weight_artifact_verified": 0,
+    "dimensions_scored": [
+      "architecture_constraints",
+      "linting",
+      "test_coverage",
+      "type_safety"
+    ],
+    "dimensions_unscored": [],
+    "dimensions_artifact_verified": [],
+    "dimensions_declared_absent": [
+      "documentation",
+      "error_handling",
+      "execute_verification_target",
+      "integration_coverage",
+      "license_compliance",
+      "mutation_testing",
+      "performance",
+      "readability",
+      "security",
+      "test_assertion_quality"
+    ]
+  }
+}
