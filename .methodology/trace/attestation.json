@@ -1,7 +1,7 @@
 {
   "schema": "harness/traceability/attestation/v1",
-  "git_sha": "5a551e565f1e01c513492c57a3b10cd422707419",
-  "content_sha256": "adb001143b93f0e78913ee04d683b3fad444fafd01b30b8406bc612ff664e715",
+  "git_sha": "f94e6452ab28b5cd3615c6354c0a38e62d58acc8",
+  "content_sha256": "c89a505e99683b8db114bc0b64801eea4c3effcaa967c43f8b8784b6bfaad30a",
   "tool": "scripts/build_trace_attestation.py",
   "overlay_used": null,
   "overlay_errors": [],
@@ -9,36 +9,86 @@
     "schema_version": "harness/traceability/overlay/v1",
     "project_id": "taskq-retry",
     "completeness": {
-      "total_requirements": 2,
+      "total_requirements": 10,
       "srs_coverage": "100.0%",
       "code_coverage": "0.0%",
       "test_coverage": "0.0%",
       "verification_rate": "0.0%",
-      "total_links": 2,
+      "total_links": 10,
       "missing_mappings": {
         "fr_without_srs": [],
         "fr_without_code": [
           "FR-01",
-          "FR-02"
+          "FR-02",
+          "FR-03",
+          "FR-04",
+          "FR-05",
+          "FR-06",
+          "FR-07",
+          "FR-08",
+          "FR-09",
+          "FR-10"
         ],
         "fr_without_test": [
           "FR-01",
-          "FR-02"
+          "FR-02",
+          "FR-03",
+          "FR-04",
+          "FR-05",
+          "FR-06",
+          "FR-07",
+          "FR-08",
+          "FR-09",
+          "FR-10"
         ],
-        "fr_without_design": []
+        "fr_without_design": [
+          "FR-03",
+          "FR-04",
+          "FR-05",
+          "FR-06",
+          "FR-07",
+          "FR-08",
+          "FR-09",
+          "FR-10"
+        ]
       }
     },
     "missing": {
       "fr_without_srs": [],
       "fr_without_code": [
         "FR-01",
-        "FR-02"
+        "FR-02",
+        "FR-03",
+        "FR-04",
+        "FR-05",
+        "FR-06",
+        "FR-07",
+        "FR-08",
+        "FR-09",
+        "FR-10"
       ],
       "fr_without_test": [
         "FR-01",
-        "FR-02"
+        "FR-02",
+        "FR-03",
+        "FR-04",
+        "FR-05",
+        "FR-06",
+        "FR-07",
+        "FR-08",
+        "FR-09",
+        "FR-10"
       ],
-      "fr_without_design": []
+      "fr_without_design": [
+        "FR-03",
+        "FR-04",
+        "FR-05",
+        "FR-06",
+        "FR-07",
+        "FR-08",
+        "FR-09",
+        "FR-10"
+      ]
     },
     "requirements": {
       "FR-01": {
@@ -52,6 +102,78 @@
       },
       "FR-02": {
         "fr_id": "FR-02",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-03": {
+        "fr_id": "FR-03",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-04": {
+        "fr_id": "FR-04",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-05": {
+        "fr_id": "FR-05",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-06": {
+        "fr_id": "FR-06",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-07": {
+        "fr_id": "FR-07",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-08": {
+        "fr_id": "FR-08",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-09": {
+        "fr_id": "FR-09",
+        "status": "pending",
+        "srs_section": "SRS.md",
+        "code_files": [],
+        "test_files": [],
+        "sad_module": "—",
+        "priority": "HIGH"
+      },
+      "FR-10": {
+        "fr_id": "FR-10",
         "status": "pending",
         "srs_section": "SRS.md",
         "code_files": [],
