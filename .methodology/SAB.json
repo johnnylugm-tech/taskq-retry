@@ -14,7 +14,8 @@
         "taskq_api.api.routes_tasks",
         "taskq_api.api.routes_runs",
         "taskq_api.api.routes_health",
-        "taskq_api.api.routes_metrics"
+        "taskq_api.api.routes_metrics",
+        "taskq_api.api"
       ],
       "allowed_dependencies": [
         "service",
@@ -34,7 +35,8 @@
         "taskq_api.service.executor",
         "taskq_api.service.health",
         "taskq_api.service.metrics",
-        "taskq_api.service.redaction"
+        "taskq_api.service.redaction",
+        "taskq_api.service"
       ],
       "allowed_dependencies": [
         "repository",
@@ -51,7 +53,8 @@
         "taskq_api.repository.results",
         "taskq_api.repository.api_keys",
         "taskq_api.repository.rate_buckets",
-        "taskq_api.repository.health"
+        "taskq_api.repository.health",
+        "taskq_api.repository"
       ],
       "allowed_dependencies": [
         "models",
@@ -65,7 +68,8 @@
         "taskq_api.models.task",
         "taskq_api.models.api_key",
         "taskq_api.models.task_result",
-        "taskq_api.models.rate_bucket"
+        "taskq_api.models.rate_bucket",
+        "taskq_api.models"
       ],
       "allowed_dependencies": []
     },
