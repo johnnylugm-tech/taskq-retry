@@ -1,6 +1,8 @@
 """Subprocess execution of a run.
 
 [FR-02] Citations: SPEC.md:96-98.
+[FR-08] Asynchronous executor: TaskGroup drain, concurrency cap, timeout kill, cancellation.
+Citations: SPEC.md:145-150, SPEC.md:381.
 """
 import asyncio
 import os
@@ -8,7 +10,7 @@ import re
 import shlex
 import time
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, Optional
 
 from taskq_api.repository.session import DbEngine
 from taskq_api.repository.unit_of_work import UnitOfWork
@@ -35,10 +37,11 @@ def _set_status(engine: DbEngine, run_id: str, status: str, **fields: Any) -> No
             setattr(row, k, v)
 
 
-async def execute(engine: DbEngine, run_id: str, command: str) -> None:
-    """Run `command` without a shell, enforcing TASKQ_TASK_TIMEOUT, and persist the outcome."""
+async def execute(engine: DbEngine, run_id: str, command: str, timeout: Optional[float] = None) -> None:
+    """Run `command` without a shell, enforcing the timeout (default TASKQ_TASK_TIMEOUT), and persist the outcome."""
     _set_status(engine, run_id, "running")
-    timeout = float(os.environ["TASKQ_TASK_TIMEOUT"])
+    if timeout is None:
+        timeout = float(os.environ["TASKQ_TASK_TIMEOUT"])
     start = time.monotonic()
     out = err = b""
     exit_code = None
@@ -57,7 +60,77 @@ async def execute(engine: DbEngine, run_id: str, command: str) -> None:
             proc.kill()
             await proc.wait()
             status = "timeout"
+        except asyncio.CancelledError:
+            proc.kill()
+            await proc.wait()
+            raise
     _set_status(
         engine, run_id, status, exit_code=exit_code, stdout_tail=_tail(out), stderr_tail=_tail(err),
         duration_ms=int((time.monotonic() - start) * 1000),
         finished_at=datetime.now(timezone.utc).replace(tzinfo=None))
+
+
+class Executor:
+    """Bounded background executor with graceful drain. [FR-08]
+
+    Citations: SPEC.md:146-150, SPEC.md:381.
+    """
+
+    def __init__(self, engine: DbEngine, max_concurrent: int, drain_timeout: float, task_timeout: float) -> None:
+        self._engine = engine
+        self._drain_timeout = drain_timeout
+        self._task_timeout = task_timeout
+        self._max_concurrent = max_concurrent
+        self._sem: Optional[asyncio.Semaphore] = None
+        self._group: Optional[asyncio.TaskGroup] = None
+        self._jobs: set[asyncio.Task[None]] = set()
+        self.running = 0
+        self.peak_running = 0
+
+    async def start(self) -> None:
+        """Open the TaskGroup that owns every submitted job."""
+        self._sem = asyncio.Semaphore(self._max_concurrent)
+        self._group = asyncio.TaskGroup()
+        await self._group.__aenter__()
+
+    def _semaphore(self) -> asyncio.Semaphore:
+        if self._sem is None:
+            self._sem = asyncio.Semaphore(self._max_concurrent)
+        return self._sem
+
+    def submit(self, run_id: str, command: str) -> None:
+        """Enqueue a run without blocking; it waits for a free concurrency slot."""
+        assert self._group is not None, "Executor.start() must be called before submit()"
+        job = self._group.create_task(self._job(run_id, command))
+        self._jobs.add(job)
+        job.add_done_callback(self._jobs.discard)
+
+    async def _job(self, run_id: str, command: str) -> None:
+        try:
+            await self.run(run_id, command)
+        except asyncio.CancelledError:
+            _set_status(self._engine, run_id, "interrupted", finished_at=datetime.now(timezone.utc).replace(tzinfo=None))
+            raise
+        except Exception:  # a failed run must not abort sibling jobs in the TaskGroup
+            pass
+
+    async def run(self, run_id: str, command: str) -> None:
+        """Execute under the concurrency cap and wait for completion."""
+        async with self._semaphore():
+            self.running += 1
+            self.peak_running = max(self.peak_running, self.running)
+            try:
+                await execute(self._engine, run_id, command, self._task_timeout)
+            finally:
+                self.running -= 1
+
+    async def drain(self) -> None:
+        """Wait up to drain_timeout for in-flight jobs; cancel (-> interrupted) the rest."""
+        if self._group is None:
+            return
+        if self._jobs:
+            _, pending = await asyncio.wait(set(self._jobs), timeout=self._drain_timeout)
+            for job in pending:
+                job.cancel()
+        group, self._group = self._group, None
+        await group.__aexit__(None, None, None)

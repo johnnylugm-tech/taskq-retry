@@ -8,10 +8,11 @@ __all__ = ["INITIAL_STATUS", "is_transition_allowed"]
 
 _TRANSITIONS = {
     "pending": {"running"},
-    "running": {"done", "failed", "timeout"},
+    "running": {"done", "failed", "timeout", "interrupted"},
     "done": set(),
     "failed": set(),
     "timeout": set(),
+    "interrupted": set(),
 }
 
 
