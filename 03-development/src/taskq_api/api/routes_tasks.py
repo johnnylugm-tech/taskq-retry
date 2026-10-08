@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session
 
 from taskq_api.api.schemas import TaskCreate, TaskOut, TaskPage, TaskStatus
-from taskq_api.auth import require_scope
+from taskq_api.api.deps import require_scope
 from taskq_api.service import tasks as svc
 
 router = APIRouter(prefix="/v1/tasks", tags=["tasks"])

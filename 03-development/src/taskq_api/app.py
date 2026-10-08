@@ -24,6 +24,15 @@ def create_app() -> FastAPI:
     app = FastAPI(title="taskq", lifespan=lifespan)
     app.state.engine = engine
     install_handlers(app)
+
+    @app.get("/healthz")
+    def healthz():
+        return {"status": "ok"}
+
+    @app.get("/readyz")
+    def readyz():
+        return {"status": "ready"}
+
     app.include_router(routes_tasks.router)
     app.include_router(routes_runs.router)
     return app
