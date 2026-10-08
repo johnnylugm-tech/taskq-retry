@@ -1,6 +1,6 @@
 """X-API-Key authentication and scope authorization.
 
-[FR-03] Citations: SPEC.md:101-107.
+[FR-03/FR-04] Citations: SPEC.md:101-113.
 """
 import hashlib
 import hmac
@@ -13,6 +13,7 @@ from taskq_api.db import get_session
 from taskq_api.errors import ApiError
 from taskq_api.repository import api_keys as repo
 
+# Hierarchical scopes: a higher rank includes every lower one (AC-4.1).
 _RANK = {"read": 1, "write": 2, "admin": 3}
 
 
