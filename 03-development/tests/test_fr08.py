@@ -155,7 +155,7 @@ def test_fr08_drain_with_no_inflight_tasks_returns_immediately(engine, monkeypat
     t0 = time.monotonic()
     with TestClient(create_app()) as client:
         assert client.app.state.executor.running == 0
-        assert client.app.state.executor._max_concurrent == 2  # TASKQ_MAX_CONCURRENT is honoured
+        assert client.app.state.executor._sem._value == 2  # TASKQ_MAX_CONCURRENT is honoured
         assert client.app.state.executor._drain_timeout == 30.0  # TASKQ_DRAIN_TIMEOUT is honoured
     assert time.monotonic() - t0 < 5
 
