@@ -2,6 +2,7 @@
 import ast
 import hashlib
 import re
+import types
 import uuid
 from pathlib import Path
 
@@ -15,7 +16,7 @@ from taskq_api.models.api_key import ApiKey
 from taskq_api.models.base import Base
 from taskq_api.models.task import Task
 from taskq_api.repository import unit_of_work  # noqa: F401  (SAB: FR-06 module)
-from taskq_api.repository.session import create_db_engine, session_scope
+from taskq_api.repository.session import create_db_engine, get_session, session_scope
 
 SRC_ROOT = Path(__file__).resolve().parent.parent / "src" / "taskq_api"
 READ_KEY = "read-key-0000000000000000"
@@ -157,7 +158,7 @@ def test_fr06_relationship_queries_use_explicit_eager_loading(tmp_path, monkeypa
         for node in ast.walk(ast.parse(path.read_text())):
             if isinstance(node, ast.Call) and getattr(node.func, "id", getattr(node.func, "attr", "")) == "relationship":
                 lazy = {k.arg: getattr(k.value, "value", None) for k in node.keywords}.get("lazy")
-                if lazy not in ("selectin", "joined", "subquery"):
+                if lazy not in ("selectin", "joined"):
                     result_n_plus_one_detected += 1
     assert result_n_plus_one_detected == 0  # AC6.4-no-n-plus-one
 
@@ -216,3 +217,15 @@ def test_fr06_unit_of_work_commits_and_guards_use_outside_with(tmp_path, monkeyp
     with pytest.raises(ValueError):
         with unit_of_work.UnitOfWork(engine):
             raise ValueError("boom")
+
+    # request-scoped dependency: exactly one Session per request, rolled back and released on failure
+    request = types.SimpleNamespace(app=types.SimpleNamespace(state=types.SimpleNamespace(engine=engine)))
+    dependency = get_session(request)
+    request_session = next(dependency)
+    request_session.add(Task(command="echo hi", name="request-rolled-back"))
+    request_session.flush()
+    with pytest.raises(ValueError):
+        dependency.throw(ValueError("request failed"))
+    assert request_session.in_transaction() is False
+    assert _count_tasks(engine) == 0
+    assert engine.pool.checkedout() == 0
