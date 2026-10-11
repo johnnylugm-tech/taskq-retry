@@ -1,0 +1,68 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each normative FR-03 clause maps to an assertion that fails if the clause is violated. (1) 401 + problem+json on /v1/*: test_fr03.py:80-82 for a missing key, and :263 (via :69-70) for every /v1 route; :87, :91 and :176 cover invalid, empty and forged keys. (2) SHA-256 storage with no plaintext: the CLI test at :147 and :150 finds a printed token whose sha256 equals the stored key_hash, and :151 asserts the plaintext is absent from the DB file. :226 checks the same in-process. The seeded-hash assertions at :118 and :210 are circular, because the test writes the hash itself. They are redundant, since the CLI path covers the requirement. (3) hmac.compare_digest: the spy at :105 and the assertions at :108/:110 and :198 fail if the code compares with == instead. (4) Plaintext printed once with the scope: :145 for scope, :149-150 for exactly one occurrence. (5) Revoked keys invalid: :158-159 and :182 seed revoked_at and demand 401. (6) /healthz and /readyz need no auth: :165 and :171 require 200 with no key. The `len(routes) >= 7` check at :261 is a sanity guard and does not stand in for any requirement.",
+  "citations": [
+    "SPEC.md:103",
+    "SPEC.md:104",
+    "SPEC.md:105",
+    "SPEC.md:106",
+    "SPEC.md:107",
+    "03-development/tests/test_fr03.py:80",
+    "03-development/tests/test_fr03.py:108",
+    "03-development/tests/test_fr03.py:147",
+    "03-development/tests/test_fr03.py:150",
+    "03-development/tests/test_fr03.py:151",
+    "03-development/tests/test_fr03.py:158",
+    "03-development/tests/test_fr03.py:165",
+    "03-development/tests/test_fr03.py:171",
+    "03-development/tests/test_fr03.py:198",
+    "03-development/tests/test_fr03.py:263"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "03-development/tests/test_fr03.py:118",
+      "message": "The assertions at :118 and :210 check a hash that the test's own _seed helper wrote, so they hold for any implementation. The SHA-256 requirement is enforced by the CLI test at :147-151, not by these lines.",
+      "fr_id": "FR-03"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "1786af90a55f2619284c073d74ca2c25f7d039696814f37d2fc4d212b0f870f2",
+    "declared_tests": [
+      "test_fr03_empty_api_key_header_returns_401",
+      "test_fr03_health_endpoints_do_not_require_auth",
+      "test_fr03_key_create_prints_plaintext_once_with_scope",
+      "test_fr03_key_stored_as_sha256_and_compared_with_compare_digest",
+      "test_fr03_missing_or_invalid_api_key_returns_401_problem_json",
+      "test_fr03_readyz_does_not_require_auth",
+      "test_fr03_revoked_key_is_rejected",
+      "test_fr03_unknown_api_key_value_returns_401",
+      "test_sec_t01_invalid_api_key_rejected",
+      "test_sec_t02_revoked_key_rejected",
+      "test_sec_t03_key_compare_uses_compare_digest",
+      "test_sec_t08_key_stored_as_sha256_only"
+    ],
+    "assertion_digests": {
+      "test_fr03_empty_api_key_header_returns_401": "e20d26af75fdf724ec79b59ba2c603db4f62bb2d28adba2b708060a88fe6d433",
+      "test_fr03_health_endpoints_do_not_require_auth": "32e273e4ee67e43dbbd38737738418eeb32a09b0f326f449bb066c9ac8a0abed",
+      "test_fr03_key_create_prints_plaintext_once_with_scope": "4821db5612f6d2300246d175764cea75e1700c87ce15089edb769eae978ebce1",
+      "test_fr03_key_stored_as_sha256_and_compared_with_compare_digest": "4d1249144ec013c59b0523fbedd9e918cca66658af0550804103ffea471b8765",
+      "test_fr03_missing_or_invalid_api_key_returns_401_problem_json": "e5cfddbf795432a30aa7f626aef4cbafb8730cd8d21499c8b82598c8562bd048",
+      "test_fr03_readyz_does_not_require_auth": "2e3cdd8e3a2c4be422e1ae5313cbc5983799215740c8522929f7ecd9344adcd1",
+      "test_fr03_revoked_key_is_rejected": "f732642a6274491d82eae482518e1d81f3ae723b45ed547c38aaa6ed1614f155",
+      "test_fr03_unknown_api_key_value_returns_401": "0f663893d91ada9ad95e3e1cf8bf9513a17fe1d597d274f5f0fc77217c5fc4fb",
+      "test_sec_t01_invalid_api_key_rejected": "828d8d6f35b63a4d525782381509127304d63c42772d07c4237d867e6736d8a4",
+      "test_sec_t02_revoked_key_rejected": "985a56cb1ecc20dc72fa328e18da8bad2baf88b51b88f42b1fc3b963ee6e1c06",
+      "test_sec_t03_key_compare_uses_compare_digest": "0f9f5302a7192cda7fb1e3f82f850f87acd7151dbb997d02b405c692572d4a67",
+      "test_sec_t08_key_stored_as_sha256_only": "de155f1db65cf1d249f139c7332c7f66fd7cf7126994b41abf0b99cd61593d0d"
+    },
+    "test_files": [
+      "03-development/tests/test_fr03.py"
+    ]
+  }
+}
