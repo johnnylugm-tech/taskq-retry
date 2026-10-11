@@ -27,5 +27,12 @@
       "category": "nit"
     }
   ],
-  "reviewed_sha256": "e99cc453aa800d31cc0e5ce557332f4bdfd18920738d9a05ca3ce63804adfa5a"
+  "reviewed_sha256": "e99cc453aa800d31cc0e5ce557332f4bdfd18920738d9a05ca3ce63804adfa5a",
+  "framework_writes": [
+    {
+      "from": "e99cc453aa800d31cc0e5ce557332f4bdfd18920738d9a05ca3ce63804adfa5a",
+      "to": "48ae95d38511d15c117f728a3446e801c23fbcee907d19c7c37c2e7fbe19c297",
+      "writer": "spec_tracking_render"
+    }
+  ]
 }
