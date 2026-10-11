@@ -212,3 +212,39 @@ def test_sec_t08_key_stored_as_sha256_only(db_url):
     db_file = Path(db_url.removeprefix("sqlite:///"))
     result_plaintext_occurrences_in_db = db_file.read_bytes().count(plaintext.encode())
     assert result_plaintext_occurrences_in_db == 0  # T08-no-plaintext-in-db
+
+
+def test_fr03_cli_main_in_process_creates_key(db_url, monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["taskq_api", "key", "create", "--scope", "admin"])
+    cli_main.main()
+    printed = capsys.readouterr().out.strip()
+    engine = create_engine(db_url)
+    with Session(engine) as s:
+        row = s.scalars(select(ApiKey)).one()
+    engine.dispose()
+    assert row.scope == "admin"
+    assert hashlib.sha256(printed.encode()).hexdigest() == row.key_hash
+
+
+def test_fr03_create_key_and_repo_lookup(db_url):
+    engine = create_engine(db_url)
+    with Session(engine) as s:
+        plaintext = key_service.create_key(s, "read")
+        digest = auth_service.hash_key(plaintext)
+        assert api_keys.get_active_by_hash(s, digest).scope == "read"
+        assert api_keys.get_active_by_hash(s, "0" * 64) is None
+    engine.dispose()
+
+
+def test_fr03_insufficient_scope_returns_403(client, db_url):
+    _seed(db_url, GOOD_KEY, scope="read")
+    resp = client.post("/v1/tasks", headers={"X-API-Key": GOOD_KEY},
+                       json={"name": "n", "command": "echo hi"})
+    assert resp.status_code == 403
+
+
+def test_fr03_rate_limited_returns_429(client, db_url):
+    _seed(db_url, GOOD_KEY, scope="read")
+    client.app.state.rate_config = (1, 0.0001)
+    codes = [client.get("/v1/tasks", headers={"X-API-Key": GOOD_KEY}).status_code for _ in range(3)]
+    assert 429 in codes
