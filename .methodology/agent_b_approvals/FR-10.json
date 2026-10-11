@@ -1,0 +1,73 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-10 requirement maps to an assertion that fails if it is violated. (1) Content-Type problem+json: test_fr10.py:126 and the per-status checks at 157, 166, 175, 184, 193, 207, 220 and 228. (2) Required body fields: test_fr10.py:137, plus the body status equal to the HTTP status at 138. (3) No leaks in detail: test_fr10.py:148 and 288, run on a 500 whose exception message holds SQL, a traceback, a .py path and CREATE TABLE. (4) correlation_id in the X-Correlation-Id header, the body and the log: test_fr10.py:239-241 (repeated at 293-295). (5) Status-to-type mapping for 422/401/403/404/409/429/503/500: the exact dict equality at test_fr10.py:115-117. None of these assertions is inverted or trivially true. The leak check covers only the 500 path and only five fragments, so a bare directory path or a leak in a 409/422 detail would pass; that is recorded as a gap.",
+  "citations": [
+    "SPEC.md:164",
+    "SPEC.md:165",
+    "SPEC.md:166",
+    "SPEC.md:167",
+    "03-development/tests/test_fr10.py:115",
+    "03-development/tests/test_fr10.py:126",
+    "03-development/tests/test_fr10.py:137",
+    "03-development/tests/test_fr10.py:148",
+    "03-development/tests/test_fr10.py:240",
+    "03-development/tests/test_fr10.py:241"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "SPEC.md:166",
+      "message": "The no-leak check on detail runs only against the 500 handler and only looks for five fragments (SELECT, Traceback, .py, sqlite, CREATE TABLE). A leak in the detail of a 409 or 422 response, or a directory path without .py, would not fail any assertion.",
+      "fr_id": "FR-10"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "0b12866fa2df149d2e95731bdd7ef5bd954d18d1ba1657f7b7033d85fffd0f96",
+    "declared_tests": [
+      "test_fr10_500_detail_has_no_sql_stack_path_or_schema",
+      "test_fr10_cancelled_error_not_converted_to_500",
+      "test_fr10_correlation_id_in_header_and_server_log",
+      "test_fr10_non_2xx_content_type_is_problem_json",
+      "test_fr10_problem_body_has_required_fields",
+      "test_fr10_status_401_type_unauthenticated",
+      "test_fr10_status_403_type_forbidden",
+      "test_fr10_status_404_type_not_found",
+      "test_fr10_status_409_type_conflict",
+      "test_fr10_status_422_type_validation",
+      "test_fr10_status_429_type_rate_limited",
+      "test_fr10_status_500_type_internal",
+      "test_fr10_status_503_type_not_ready",
+      "test_fr10_status_code_and_type_mapping_for_each_error",
+      "test_sec_t06_cors_default_denies_all_origins",
+      "test_sec_t14_500_body_has_no_internal_detail",
+      "test_sec_t17_correlation_id_in_header_and_log"
+    ],
+    "assertion_digests": {
+      "test_fr10_500_detail_has_no_sql_stack_path_or_schema": "dbc4352a1f3368e5869fa098462eb5b9e53470b5dd61a01392394110592bafbb",
+      "test_fr10_cancelled_error_not_converted_to_500": "a462d2f17a2a7fe1a847c60561e1fd1eccf7cd40f42b1e2b85a0901cbe79c20a",
+      "test_fr10_correlation_id_in_header_and_server_log": "07ab8b36d666fb8d3859b4ae74d60108516179022df495a5c09a35ab20f18d90",
+      "test_fr10_non_2xx_content_type_is_problem_json": "8e0df2ff897fb835b8e93df5ce6e34a4ac5289080865088fdda565ea85096d09",
+      "test_fr10_problem_body_has_required_fields": "d284a019b534e3e36cbd2692f70e6e17856cc95993e4c9a87544b0991907765e",
+      "test_fr10_status_401_type_unauthenticated": "f51d79c395338a4dd087ab2d35a80bd5c8bfb399e77419174ab93bef62632eac",
+      "test_fr10_status_403_type_forbidden": "3322717ef2c34753b5b6ba4a5241b84f337bb90af6b0733326db1f002a3d1ae6",
+      "test_fr10_status_404_type_not_found": "e24ff12e056cc2694b40836e86fde9837756ff62d0b4c5a6fe02f15ffbcfdaec",
+      "test_fr10_status_409_type_conflict": "98b5adeee494c66d37b17b1ca77ef1934d65ea6801a7e6a68c229411bfd74313",
+      "test_fr10_status_422_type_validation": "403033e22c2209b6086c988cf13745fbb0906d2fce56590c8e07d12a224d424b",
+      "test_fr10_status_429_type_rate_limited": "f012a19afc07706507585427f2e34e0d26a638288a6a8fd34121403949ee9787",
+      "test_fr10_status_500_type_internal": "d703555a3d8718448a977331b68b8b09a0726f5119f799ef8ca0c35d2d55ab03",
+      "test_fr10_status_503_type_not_ready": "a95d021ac64f6f1ec31815cca271647df3abfd14a58d10fd46b990d6e0e4639f",
+      "test_fr10_status_code_and_type_mapping_for_each_error": "e054b14aceb9b1541e1a0e469902e4e5c4563e2958d7a7995fb2bf4a579d78fa",
+      "test_sec_t06_cors_default_denies_all_origins": "de834e0a2346b0cf136195b5e035d89eac54685727e1072ffddcf67b7ff8dce2",
+      "test_sec_t14_500_body_has_no_internal_detail": "54d8cc499c2989c1688a27fc9e1e887000325490cc32331b67c627b429d99932",
+      "test_sec_t17_correlation_id_in_header_and_log": "d4a7172dd333426e859a2caada8b37863798707483d4ea0445001256ad29995c"
+    },
+    "test_files": [
+      "03-development/tests/test_fr10.py"
+    ]
+  }
+}

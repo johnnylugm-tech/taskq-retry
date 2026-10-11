@@ -1,7 +1,7 @@
 {
   "schema": "harness/traceability/attestation/v1",
-  "git_sha": "9bf5dcab127846da526a4fc859459792fdb3c503",
-  "content_sha256": "2f1d0605da229fde847350ff540fdf2a30403e48c029277152964d85f0fd3ab1",
+  "git_sha": "1e92c3b72fd12e54d23ffae1fad809a8830797c7",
+  "content_sha256": "cced07144c4fbc271ccf7a29353509e33ea7a08ea25a00c8ee924abd39f77a74",
   "tool": "scripts/build_trace_attestation.py",
   "overlay_used": null,
   "overlay_errors": [],
@@ -11,29 +11,21 @@
     "completeness": {
       "total_requirements": 10,
       "srs_coverage": "100.0%",
-      "code_coverage": "90.0%",
-      "test_coverage": "90.0%",
-      "verification_rate": "70.0%",
-      "total_links": 68,
+      "code_coverage": "100.0%",
+      "test_coverage": "100.0%",
+      "verification_rate": "100.0%",
+      "total_links": 71,
       "missing_mappings": {
         "fr_without_srs": [],
-        "fr_without_code": [
-          "FR-10"
-        ],
-        "fr_without_test": [
-          "FR-10"
-        ],
+        "fr_without_code": [],
+        "fr_without_test": [],
         "fr_without_design": []
       }
     },
     "missing": {
       "fr_without_srs": [],
-      "fr_without_code": [
-        "FR-10"
-      ],
-      "fr_without_test": [
-        "FR-10"
-      ],
+      "fr_without_code": [],
+      "fr_without_test": [],
       "fr_without_design": []
     },
     "requirements": {
@@ -45,7 +37,6 @@
           "03-development/src/taskq_api/api/routes_tasks.py",
           "03-development/src/taskq_api/api/schemas.py",
           "03-development/src/taskq_api/app.py",
-          "03-development/src/taskq_api/errors.py",
           "03-development/src/taskq_api/models/api_key.py",
           "03-development/src/taskq_api/models/base.py",
           "03-development/src/taskq_api/models/task.py",
@@ -79,12 +70,13 @@
       },
       "FR-03": {
         "fr_id": "FR-03",
-        "status": "in_progress",
+        "status": "verified",
         "srs_section": "SRS.md",
         "code_files": [
           "03-development/src/taskq_api/__main__.py",
           "03-development/src/taskq_api/repository/api_keys.py",
-          "03-development/src/taskq_api/service/keys.py"
+          "03-development/src/taskq_api/service/keys.py",
+          "03-development/tests/test_fr03.py"
         ],
         "test_files": [
           "03-development/tests/test_fr03.py"
@@ -108,7 +100,7 @@
       },
       "FR-05": {
         "fr_id": "FR-05",
-        "status": "in_progress",
+        "status": "verified",
         "srs_section": "SRS.md",
         "code_files": [
           "03-development/src/taskq_api/api/middleware.py",
@@ -196,10 +188,15 @@
       },
       "FR-10": {
         "fr_id": "FR-10",
-        "status": "pending",
+        "status": "verified",
         "srs_section": "SRS.md",
-        "code_files": [],
-        "test_files": [],
+        "code_files": [
+          "03-development/src/taskq_api/api/error_handlers.py",
+          "03-development/src/taskq_api/errors.py"
+        ],
+        "test_files": [
+          "03-development/tests/test_fr10.py"
+        ],
         "sad_module": "—",
         "priority": "HIGH"
       }
