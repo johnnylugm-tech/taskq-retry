@@ -1,0 +1,80 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-02 requirement maps to an assertion that fails if it is violated. (1) POST /run returns 202 with a run_id: test_fr02.py:103 and :105. Scope write: read key gets 403 at :296, and the write key is accepted at :83. (2) Spawn via create_subprocess_exec with the shlex-split argv, no shell, timeout equal to TASKQ_TASK_TIMEOUT: :128 fails if the spy is never called (shell path), :130 pins args == ('echo','ok'), :134 pins no shell kwarg, :136 pins the wait_for timeout to the 10.0 env value. :317 shows shell metacharacters are not interpreted. (3) State machine: done/failed/timeout end states at :145, :158, :170; legal and illegal transitions at :148-149, :161, :171, :187, :194; the executor rejects pending to done at :359-360; initial pending at :179. Timeout enforcement and no orphan process at :254 and :265. (4) task_results persistence: :204-213 check exit_code, stdout_tail, stderr_tail, duration_ms, finished_at, and that the columns exist. (5) GET /runs: read scope at :76 and :285, history newest first at :230-234 with three distinct run_ids compared against the reversed creation order. Weak spots, none enough to reject: duration_ms >= 0 at :210 is loose but is paired with a non-null check, and the intermediate running state is only covered through is_transition_allowed and executor._set_status.",
+  "citations": [
+    "SPEC.md:93",
+    "03-development/tests/test_fr02.py:103",
+    "03-development/tests/test_fr02.py:105",
+    "03-development/tests/test_fr02.py:130",
+    "03-development/tests/test_fr02.py:134",
+    "03-development/tests/test_fr02.py:136",
+    "03-development/tests/test_fr02.py:145",
+    "03-development/tests/test_fr02.py:158",
+    "03-development/tests/test_fr02.py:170",
+    "03-development/tests/test_fr02.py:187",
+    "03-development/tests/test_fr02.py:194",
+    "03-development/tests/test_fr02.py:206",
+    "03-development/tests/test_fr02.py:213",
+    "03-development/tests/test_fr02.py:234",
+    "03-development/tests/test_fr02.py:265",
+    "03-development/tests/test_fr02.py:296",
+    "03-development/tests/test_fr02.py:360"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "03-development/tests/test_fr02.py:210",
+      "message": "duration_ms >= 0 is a weak bound; a zero or constant duration would pass. The non-null check and the other columns still cover persistence.",
+      "fr_id": "FR-02"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "1429b00a77486459868994c2eb1cb640603e6ec0f11c9cabd1478bb043dc6e11",
+    "declared_tests": [
+      "test_fr02_initial_state_is_pending",
+      "test_fr02_list_runs_returns_history_newest_first",
+      "test_fr02_list_runs_unauthenticated_returns_401",
+      "test_fr02_run_result_persisted_in_task_results_columns",
+      "test_fr02_run_subprocess_timeout_enforced",
+      "test_fr02_run_task_read_key_returns_403",
+      "test_fr02_run_task_returns_202_with_run_id",
+      "test_fr02_run_task_unauthenticated_returns_401",
+      "test_fr02_run_unknown_task_returns_404",
+      "test_fr02_runner_uses_create_subprocess_exec_without_shell_and_timeout",
+      "test_fr02_state_machine_pending_running_done_failed_timeout",
+      "test_fr02_transition_done_to_running_rejected",
+      "test_fr02_transition_pending_to_done_rejected",
+      "test_fr02_transition_running_to_failed_valid",
+      "test_fr02_transition_running_to_timeout_valid",
+      "test_sec_t11_shell_metacharacters_not_interpreted",
+      "test_sec_t15_secret_patterns_redacted"
+    ],
+    "assertion_digests": {
+      "test_fr02_initial_state_is_pending": "c1ad2995711201a678a6d8f920d5f76f8bce979b92c03435f42126e42e9cfd7a",
+      "test_fr02_list_runs_returns_history_newest_first": "0ec9933cf5b84f6e9d7e75a0d6a3455c03528f3b1cf4129537f0b11562db1b1a",
+      "test_fr02_list_runs_unauthenticated_returns_401": "df71d57cfa50a9189f3d419e0d19a701243f63bd0cf1f15dfa7f0f60877fc568",
+      "test_fr02_run_result_persisted_in_task_results_columns": "cd0b848235aa0557be2f0dbcabf13f904c73158a5c8a83131e80949a286bceb8",
+      "test_fr02_run_subprocess_timeout_enforced": "a5268bc55b18376f3d08a8500d4604baaa9fe87bcb926627a4572fdd4512f2a5",
+      "test_fr02_run_task_read_key_returns_403": "36852f13f6215ed929870892126bf31e221b018335803c7c300372db1d9a3f47",
+      "test_fr02_run_task_returns_202_with_run_id": "de519e42ebf0126bfd95b3f1a331cc1ca36d19a63ad65286889cb238fd62fb28",
+      "test_fr02_run_task_unauthenticated_returns_401": "d29f959493276a7c1446c436d822f89625a0c7a27eb981a75680b9a1bad447c0",
+      "test_fr02_run_unknown_task_returns_404": "949b71d205cde7fb5400338e6c4aca17dd4df5cccab33c75629f7211a276289b",
+      "test_fr02_runner_uses_create_subprocess_exec_without_shell_and_timeout": "b5c4aa74ae9ede87f819b44d2ccb771e69caa65b9d3d5b3134f20200cbceb1b4",
+      "test_fr02_state_machine_pending_running_done_failed_timeout": "315f1ff932922981b9720b5a0a76a9db3d8d9a5c2662b228c25c147d4e5dad1f",
+      "test_fr02_transition_done_to_running_rejected": "408f09608f3650c0f351845e5e059841fb7eaa2cb141ce51d37ce5d9de6b9bb8",
+      "test_fr02_transition_pending_to_done_rejected": "1ac78cd73b63ae165314210dcbed7b14682cdbd9e2fbcb0b1ee6c7d660812446",
+      "test_fr02_transition_running_to_failed_valid": "3f1bb7ff77bccbfde3837b989c37ed208e4eb0843209b4cde2fc36e4ed2b85da",
+      "test_fr02_transition_running_to_timeout_valid": "e399644a8eb47a2524273b6fe9e4c9656b754b9cb80d43e654c215af6c1ade8d",
+      "test_sec_t11_shell_metacharacters_not_interpreted": "d58bb19fb0ed46a64aa9042efaf05faf197f57aae5ceb2ea38d87e75592d6dd8",
+      "test_sec_t15_secret_patterns_redacted": "034ac5be4c1eeafc32f7a374345ceb3ecf9cd21b8b347681365263be41aa111a"
+    },
+    "test_files": [
+      "03-development/tests/test_fr02.py"
+    ]
+  }
+}
