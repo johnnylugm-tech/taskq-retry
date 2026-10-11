@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 3,
-  "fr_id": "FR-09",
+  "fr_id": "FR-01",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -18,7 +18,8 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791473474279\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.142\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699125766\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"inform ... \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.178\n    }\n}\n\n",
+      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,13 +28,13 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 12,
+      "tests_passed": 23,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "12 passed, 2 warnings; FR-09 files coverage 100% (74/74 statements); spec coverage 8/8",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
+      "tool_evidence": "test_fr01.py 23 passed; FR-01 files coverage 130/130 statements = 100%; spec coverage 21/21",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-01.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-09",
+      "coverage_scope_fr": "FR-01",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -48,10 +49,10 @@
       "passed": true
     }
   },
-  "enforcer_sha": "6f9097121dfb25448da364b99d2fac95323d85b1",
+  "enforcer_sha": "29b0f1c3f5de6938ebcb25ba9efccc9d6552d8a5",
   "enforcer_surface": {
-    "core/quality_gate": "eab42d774787153ccb73ad481e18232488f29c0b",
-    "harness/harness_bridge.py": "7d818211b10719d38c09df27983c29aefbdaceb6",
+    "core/quality_gate": "0b02a24c30eeb053e185f9c4bac4e30b9ea2fc9d",
+    "harness/harness_bridge.py": "e2b2657201fc498c7774c9c3917560ff637e36b2",
     "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
   },
   "evidence_digest": {
@@ -86,16 +87,16 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6397ab1f9c02833487b0217e32d4ae6cad4c1c9eb112ee1fa6da446d15f3f2a6",
-      "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791473474279\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.142\n    }\n}"
+      "sha256": "58a1eb67b7cb1f0852761070d2099c91ba755543aa6aad9b4ab6c5903d291e37",
+      "bytes": 364,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699125766\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"inform ... \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.178\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "e9905925f096bd617c4c7fd06e45089f27e2667af8794e0064d6b26e64d6fcdb",
-      "bytes": 86,
-      "head": "12 passed, 2 warnings; FR-09 files coverage 100% (74/74 statements); spec coverage 8/8"
+      "sha256": "42eb6a96b2425af4d536e57547e6fa1d48f620d545587515a45b5aa3af60dd5d",
+      "bytes": 91,
+      "head": "test_fr01.py 23 passed; FR-01 files coverage 130/130 statements = 100%; spec coverage 21/21"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",

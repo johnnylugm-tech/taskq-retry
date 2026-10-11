@@ -1,15 +1,13 @@
 {
-  "classified_at": "2026-10-08T13:40:40Z",
+  "classified_at": "2026-10-11T04:57:22Z",
   "cli_tools": [
     "alembic",
-    "anyio",
     "bandit",
     "fastapi",
     "httpx",
     "lint-imports",
     "make",
     "mutmut",
-    "pip",
     "pip-licenses",
     "pydantic",
     "pytest",
@@ -44,5 +42,5 @@
     "required": []
   },
   "schema_version": 1,
-  "source_sha256": "f1b03a005ea97cdc01209409dcf20cbadf67755055f5661348e304d96da27e4a"
+  "source_sha256": "9c7a90e47e12899f87ae264768cf4d3ff41b5727e1cad598c3535696d0448341"
 }
