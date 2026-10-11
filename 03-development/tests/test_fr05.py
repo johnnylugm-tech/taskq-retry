@@ -9,6 +9,7 @@ import time
 import uuid
 
 import pytest
+from conftest import stamp_head
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, event, select
 from sqlalchemy.dialects import postgresql
@@ -49,6 +50,7 @@ def make_app(tmp_path, monkeypatch):
         monkeypatch.setenv("TASKQ_RATE_PER_SEC", str(per_sec))
         engine = create_engine(url)
         Base.metadata.create_all(engine)
+        stamp_head(engine)
         with Session(engine) as s:
             state["id_a"] = _add_key(s, KEY_A, "read")
             state["id_b"] = _add_key(s, KEY_B, "read")

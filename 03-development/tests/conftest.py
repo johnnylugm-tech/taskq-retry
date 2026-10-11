@@ -34,3 +34,16 @@ def _hang_guard():
     yield
     signal.setitimer(signal.ITIMER_REAL, 0)
     signal.signal(signal.SIGALRM, previous)
+
+
+def stamp_head(engine):
+    """[FR-09] Mark a `create_all` test DB as migrated to head, so /readyz (which fails
+    closed on a missing/old `alembic_version`, SPEC.md:157/160) reports ready."""
+    from sqlalchemy import text
+
+    from taskq_api.service.health import head_revision
+
+    with engine.begin() as conn:
+        conn.execute(text("CREATE TABLE IF NOT EXISTS alembic_version (version_num VARCHAR(32) NOT NULL)"))
+        conn.execute(text("DELETE FROM alembic_version"))
+        conn.execute(text("INSERT INTO alembic_version (version_num) VALUES (:v)"), {"v": head_revision()})

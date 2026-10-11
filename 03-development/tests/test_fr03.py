@@ -13,6 +13,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
+from conftest import stamp_head
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
@@ -36,6 +37,7 @@ def db_url(tmp_path, monkeypatch):
     monkeypatch.setenv("TASKQ_DB_URL", url)
     engine = create_engine(url)
     Base.metadata.create_all(engine)
+    stamp_head(engine)
     engine.dispose()
     return url
 
