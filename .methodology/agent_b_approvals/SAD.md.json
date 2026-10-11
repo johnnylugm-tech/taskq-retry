@@ -26,5 +26,19 @@
       "category": "nit"
     }
   ],
-  "reviewed_sha256": "d7a64bd381e34345f86a8c75fee7a002f551c4c7123d95ab4b529817658f4d2c"
+  "reviewed_sha256": "9dfd7f896d72dc170e567a2f3980cb98dfe742180b00d3ff5a07367e5b7331bc",
+  "change_reviews": [
+    {
+      "from": "d7a64bd381e34345f86a8c75fee7a002f551c4c7123d95ab4b529817658f4d2c",
+      "to": "9dfd7f896d72dc170e567a2f3980cb98dfe742180b00d3ff5a07367e5b7331bc",
+      "reason": "The only change adds taskq_api.repository.session to the SAB repository layer (SAD.md:342). It was already declared at SAD.md:335, so it is duplicated but harmless. It matches the module tree, FR-06 mapping, high-risk list in SPEC.md:427 and the recorded ADR amendment. Nothing is dropped or weakened.",
+      "citations": [
+        "02-architecture/SAD.md:335",
+        "02-architecture/SAD.md:342",
+        "02-architecture/adr/ADR.md:296",
+        "SPEC.md:427"
+      ],
+      "gaps": []
+    }
+  ]
 }

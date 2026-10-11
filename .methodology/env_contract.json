@@ -1,13 +1,17 @@
 {
-  "classified_at": "2026-10-11T04:57:22Z",
+  "classified_at": "2026-10-11T14:10:49Z",
   "cli_tools": [
     "alembic",
+    "anyio",
     "bandit",
     "fastapi",
+    "git",
     "httpx",
+    "importlinter",
     "lint-imports",
     "make",
     "mutmut",
+    "pip",
     "pip-licenses",
     "pydantic",
     "pytest",
@@ -16,9 +20,10 @@
     "python3.11",
     "radon",
     "sqlalchemy",
+    "sqlite3",
     "uvicorn"
   ],
-  "enforcer_sha": "6f9097121dfb25448da364b99d2fac95323d85b1",
+  "enforcer_sha": "29b0f1c3f5de6938ebcb25ba9efccc9d6552d8a5",
   "env_vars": {
     "dev_opt_in": [],
     "has_default": [
@@ -39,8 +44,15 @@
   },
   "infra_services": {
     "docker_compose_services": [],
-    "required": []
+    "required": [
+      {
+        "checked_via": "sqlite3 CLI present; python sqlalchemy importable",
+        "name": "sqlite",
+        "reachable": true,
+        "type": "SQLite (dev/test, file-based)"
+      }
+    ]
   },
   "schema_version": 1,
-  "source_sha256": "9c7a90e47e12899f87ae264768cf4d3ff41b5727e1cad598c3535696d0448341"
+  "source_sha256": "3e7cdb4772073babba776897e65f6be0e53b380f634bc822a3f778add574b214"
 }

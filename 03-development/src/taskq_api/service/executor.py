@@ -6,7 +6,6 @@ Citations: SPEC.md:145-150, SPEC.md:381.
 """
 import asyncio
 import os
-import re
 import shlex
 import time
 from datetime import datetime, timezone
@@ -15,9 +14,9 @@ from typing import Any, Optional
 from taskq_api.repository.session import DbEngine
 from taskq_api.repository.unit_of_work import UnitOfWork
 from taskq_api.service import runner
+from taskq_api.service.redaction import redact
 
 TAIL_BYTES = 4096
-_SECRET = re.compile(r"sk-[A-Za-z0-9]{8,}")
 
 
 def _utcnow() -> datetime:
@@ -26,7 +25,7 @@ def _utcnow() -> datetime:
 
 def _tail(data: bytes) -> str:
     text = data[-TAIL_BYTES:].decode(errors="replace")
-    return _SECRET.sub("[REDACTED]", text)
+    return redact(text)
 
 
 def _set_status(engine: DbEngine, run_id: str, status: str, **fields: Any) -> None:

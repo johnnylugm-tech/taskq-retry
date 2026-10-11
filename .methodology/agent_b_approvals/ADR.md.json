@@ -36,5 +36,25 @@
       "category": "nit"
     }
   ],
-  "reviewed_sha256": "5e05563002793177d8872f236cd36a6f83398c81d79b8b637e3cb54ebb0a57c5"
+  "reviewed_sha256": "14e7230bc5e16d4523e60d2615748892b0b526d130cf036bccfcb584b3822b2e",
+  "change_reviews": [
+    {
+      "from": "5e05563002793177d8872f236cd36a6f83398c81d79b8b637e3cb54ebb0a57c5",
+      "to": "14e7230bc5e16d4523e60d2615748892b0b526d130cf036bccfcb584b3822b2e",
+      "reason": "The change only appends two Architecture Amendment sections (lines 289-300). They place the per-request Session provider get_session in layer repository, then retarget it from a never-created taskq_api.db to taskq_api.repository.session. This matches the code and ADR-004, and it drops or weakens no requirement, constraint, threat or high-risk module.",
+      "citations": [
+        "02-architecture/adr/ADR.md:289",
+        "02-architecture/adr/ADR.md:296-300",
+        "02-architecture/adr/ADR.md:56-59",
+        "02-architecture/adr/ADR.md:102",
+        "02-architecture/adr/ADR.md:109",
+        "02-architecture/adr/ADR.md:277",
+        "03-development/src/taskq_api/repository/session.py:47",
+        "03-development/src/taskq_api/service/auth.py:11",
+        "SPEC.md",
+        "/Users/johnny/projects/taskq-retry/.importlinter"
+      ],
+      "gaps": []
+    }
+  ]
 }

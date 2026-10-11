@@ -1,7 +1,7 @@
 {
   "schema": "harness/traceability/attestation/v1",
-  "git_sha": "1e92c3b72fd12e54d23ffae1fad809a8830797c7",
-  "content_sha256": "cced07144c4fbc271ccf7a29353509e33ea7a08ea25a00c8ee924abd39f77a74",
+  "git_sha": "556bc1504099ac72a36b6c0958f2a65e04c5be0f",
+  "content_sha256": "cbb37d3a2c500fbbede0fa8c2082eadee83a8ffe3370f839d888774100af3485",
   "tool": "scripts/build_trace_attestation.py",
   "overlay_used": null,
   "overlay_errors": [],
@@ -14,7 +14,7 @@
       "code_coverage": "100.0%",
       "test_coverage": "100.0%",
       "verification_rate": "100.0%",
-      "total_links": 71,
+      "total_links": 73,
       "missing_mappings": {
         "fr_without_srs": [],
         "fr_without_code": [],
@@ -60,6 +60,7 @@
           "03-development/src/taskq_api/models/task_result.py",
           "03-development/src/taskq_api/repository/results.py",
           "03-development/src/taskq_api/service/executor.py",
+          "03-development/src/taskq_api/service/redaction.py",
           "03-development/src/taskq_api/service/runner.py"
         ],
         "test_files": [
@@ -178,6 +179,7 @@
           "03-development/src/taskq_api/repository/tasks.py",
           "03-development/src/taskq_api/service/health.py",
           "03-development/src/taskq_api/service/metrics.py",
+          "03-development/tests/conftest.py",
           "03-development/tests/test_fr09.py"
         ],
         "test_files": [
