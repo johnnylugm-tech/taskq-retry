@@ -2,6 +2,7 @@
 
 [FR-01] Citations: SPEC.md:88-89, SPEC.md:164-168.
 """
+import logging
 import uuid
 
 from fastapi import FastAPI, Request
@@ -9,6 +10,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 PROBLEM_JSON = "application/problem+json"
+logger = logging.getLogger("taskq_api.errors")
 
 
 class ApiError(Exception):
@@ -26,9 +28,11 @@ class ApiError(Exception):
 
 def _problem(request: Request, status: int, type_: str, title: str, detail: str,
              headers: dict[str, str] | None = None) -> JSONResponse:
+    correlation_id = str(uuid.uuid4())
+    logger.warning("problem %s status=%s path=%s correlation_id=%s", type_, status, request.url.path, correlation_id)
     return JSONResponse(
         status_code=status,
-        headers=headers,
+        headers={**(headers or {}), "X-Correlation-Id": correlation_id},
         media_type=PROBLEM_JSON,
         content={
             "type": type_,
@@ -36,9 +40,14 @@ def _problem(request: Request, status: int, type_: str, title: str, detail: str,
             "status": status,
             "detail": detail,
             "instance": request.url.path,
-            "correlation_id": str(uuid.uuid4()),
+            "correlation_id": correlation_id,
         },
     )
+
+
+def internal_error(request: Request) -> JSONResponse:
+    """500 problem+json with a fixed, non-leaking detail. [FR-10]"""
+    return _problem(request, 500, "/errors/internal", "Internal Server Error", "internal server error")
 
 
 def service_unavailable(request: Request) -> JSONResponse:

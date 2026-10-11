@@ -13,6 +13,7 @@ from fastapi import FastAPI
 
 from taskq_api import config
 from taskq_api.api import routes_health, routes_metrics, routes_runs, routes_tasks
+from taskq_api.api.error_handlers import install_unexpected_handler
 from taskq_api.api.middleware import install_rate_limit
 from taskq_api.errors import install_handlers, service_unavailable
 from taskq_api.service.executor import Executor
@@ -35,6 +36,7 @@ def create_app() -> FastAPI:
     app.state.engine = engine
     app.state.executor = Executor(engine, config.max_concurrent(), config.drain_timeout(), config.task_timeout())
     install_handlers(app)
+    install_unexpected_handler(app)
     app.add_exception_handler(DbUnavailableError, lambda request, exc: service_unavailable(request))
     app.state.rejections = RejectionCounter()
     install_rate_limit(app)
