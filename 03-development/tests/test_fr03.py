@@ -248,3 +248,16 @@ def test_fr03_rate_limited_returns_429(client, db_url):
     client.app.state.rate_config = (1, 0.0001)
     codes = [client.get("/v1/tasks", headers={"X-API-Key": GOOD_KEY}).status_code for _ in range(3)]
     assert 429 in codes
+
+
+def test_fr03_every_v1_route_requires_api_key(client):
+    """[FR-03] SPEC: ALL /v1/* endpoints reject a request carrying no X-API-Key with 401 problem+json."""
+    routes = [
+        (method, route.path.replace("{task_id}", "t1"))
+        for route in client.app.routes
+        if getattr(route, "path", "").startswith("/v1")
+        for method in route.methods
+    ]
+    assert len(routes) >= 7
+    for method, path in routes:
+        _assert_401_problem(client.request(method, path))
