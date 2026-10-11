@@ -30,8 +30,9 @@ def check_ready(engine: DbEngine) -> dict[str, str]:
     try:
         repo.ping(engine)
         current = repo.current_revision(engine)
+        bootstrapped = current is None and repo.schema_present(engine)
     except Exception:  # detail is fixed text so connection URLs/secrets never leak
         raise _not_ready("database unavailable") from None
-    if current != head_revision():
+    if not bootstrapped and current != head_revision():
         raise _not_ready("migration not at head")
     return {"status": "ready"}
