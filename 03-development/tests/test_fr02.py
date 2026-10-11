@@ -327,3 +327,118 @@ def test_sec_t15_secret_patterns_redacted(client, db):
     result_stdout_tail = row.stdout_tail.strip()
     assert result_stdout_tail == expected_stdout_tail
     assert "sk-abcdefgh12345678" not in result_stdout_tail
+
+
+def _pending_run(client, db, command="true"):
+    task_id = _make_task(client, command, name=f"fr02-exec-{uuid.uuid4().hex[:8]}")
+    run_id = str(uuid.uuid4())
+    db.add(TaskResult(id=run_id, task_id=task_id, status="pending"))
+    db.commit()
+    return run_id
+
+
+def _status(db_url, run_id):
+    engine = create_engine(db_url)
+    with Session(engine) as s:
+        row = s.get(TaskResult, run_id)
+        result = (row.status, row.exit_code, row.stderr_tail)
+    engine.dispose()
+    return result
+
+
+def test_fr02_executor_set_status_unknown_run_raises(db_url):
+    engine = create_engine(db_url)
+    with pytest.raises(RuntimeError, match="not found"):
+        executor._set_status(engine, UNKNOWN_ID, "running")
+    engine.dispose()
+
+
+def test_fr02_executor_set_status_illegal_transition_raises(client, db, db_url):
+    run_id = _pending_run(client, db)
+    engine = create_engine(db_url)
+    with pytest.raises(RuntimeError, match="illegal run transition"):
+        executor._set_status(engine, run_id, "done")
+    engine.dispose()
+
+
+def test_fr02_executor_missing_binary_marks_failed(client, db, db_url):
+    run_id = _pending_run(client, db)
+    engine = create_engine(db_url)
+    asyncio.run(executor.execute(engine, run_id, "/nonexistent/binary-fr02", timeout=5.0))
+    engine.dispose()
+    status, exit_code, stderr_tail = _status(db_url, run_id)
+    assert status == "failed"
+    assert exit_code is None
+    assert stderr_tail != ""
+
+
+def test_fr02_executor_cancel_kills_subprocess_and_reraises(client, db, db_url):
+    run_id = _pending_run(client, db)
+    engine = create_engine(db_url)
+
+    async def scenario():
+        job = asyncio.ensure_future(executor.execute(engine, run_id, "sleep 30", timeout=60.0))
+        await asyncio.sleep(0.5)
+        job.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await job
+
+    asyncio.run(scenario())
+    engine.dispose()
+    assert _status(db_url, run_id)[0] == "running"
+
+
+def test_fr02_executor_submit_and_drain_completes_runs(client, db, db_url):
+    ok_id = _pending_run(client, db)
+    bad_id = _pending_run(client, db)
+    engine = create_engine(db_url)
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=2, drain_timeout=5.0, task_timeout=5.0)
+        await ex.start()
+        ex.submit(ok_id, "true")
+        ex.submit(bad_id, "false")
+        await ex.drain()
+        return ex.peak_running
+
+    peak = asyncio.run(scenario())
+    engine.dispose()
+    assert peak >= 1
+    assert _status(db_url, ok_id)[0] == "done"
+    assert _status(db_url, bad_id)[0] == "failed"
+
+
+def test_fr02_executor_job_error_does_not_abort_group(client, db, db_url):
+    engine = create_engine(db_url)
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=1, drain_timeout=5.0, task_timeout=5.0)
+        await ex.start()
+        ex.submit(UNKNOWN_ID, "true")  # _set_status raises RuntimeError -> swallowed
+        await ex.drain()
+        return ex.running
+
+    assert asyncio.run(scenario()) == 0
+    engine.dispose()
+
+
+def test_fr02_executor_drain_timeout_marks_interrupted(client, db, db_url):
+    run_id = _pending_run(client, db)
+    engine = create_engine(db_url)
+
+    async def scenario():
+        ex = executor.Executor(engine, max_concurrent=1, drain_timeout=0.5, task_timeout=60.0)
+        await ex.start()
+        ex.submit(run_id, "sleep 30")
+        await ex.drain()
+
+    asyncio.run(scenario())
+    engine.dispose()
+    assert _status(db_url, run_id)[0] == "interrupted"
+
+
+def test_fr02_executor_drain_without_start_is_noop(db_url):
+    engine = create_engine(db_url)
+    ex = executor.Executor(engine, max_concurrent=1, drain_timeout=0.1, task_timeout=1.0)
+    asyncio.run(ex.drain())
+    engine.dispose()
