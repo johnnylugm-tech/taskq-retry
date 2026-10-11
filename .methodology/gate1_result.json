@@ -1,15 +1,15 @@
 {
   "gate": 1,
   "phase": 3,
-  "fr_id": "FR-04",
-  "overall_score": 100.0,
+  "fr_id": "FR-10",
+  "overall_score": 99.5,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!\nruff exit 0\n",
+      "tool_evidence": "All checks passed!",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
       "effective_threshold": 100.0,
@@ -18,7 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699925931\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.142\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791700221019\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 44,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.162\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,10 +27,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 39,
+      "tests_passed": 33,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "39 passed, 1 warning; deps.py+auth.py coverage 32/32 = 100%; spec coverage 6/6",
+      "tool_evidence": "33 passed, 1 warning; FR-10 files coverage 98.15% (53/54 stmts, 1 missing); spec coverage 17/17",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -39,9 +39,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-04.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-10.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-04",
+      "coverage_scope_fr": "FR-10",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -49,7 +49,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 61 files, 147 dependencies.\n------------------------------------\n\nLayered architecture KEPT\nErrors and session are independent leaves KEPT\nConfig and errors are independent leaves KEPT\nSQLAlchemy only in repository and models KEPT\nDatabase session module does not import upper layers KEPT\n\nContracts: 5 kept, 0 broken.\nexit 0\n",
+      "tool_evidence": "Contracts: 5 kept, 0 broken. exit=0 (PYTHONPATH=03-development/src)",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -87,33 +87,33 @@
     "linting": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "5a8964ce8982c0db31ae0d6c771779b69c62375601276314a5e4b425df738499",
-      "bytes": 30,
-      "head": "All checks passed!\nruff exit 0"
+      "sha256": "f0d0b1081d9d3ebb26c4c93543053ecdc0a58998f22c071dc4ddb26021b57645",
+      "bytes": 18,
+      "head": "All checks passed!"
     },
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "62989b797eedf91850dfe7940c4baae4dfe40038568cdc3cb4d1fa50649b6202",
+      "sha256": "a921fc4e8f9b0f953e2ff0572b1da5f20167bd1e4794d91e92657f39ad646dc4",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699925931\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.142\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791700221019\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 44,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.162\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "bda77b31a8a1e7213b3e62a2674ec705c935b8e1c1b38e4573e102734e7ac461",
-      "bytes": 78,
-      "head": "39 passed, 1 warning; deps.py+auth.py coverage 32/32 = 100%; spec coverage 6/6"
+      "sha256": "8b010223b1b55efb326812a84defa4d53c5c866f835c096f2c9d4a0177aeced1",
+      "bytes": 95,
+      "head": "33 passed, 1 warning; FR-10 files coverage 98.15% (53/54 stmts, 1 missing); spec coverage 17/17"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "8063eb621ab5ef549baf3bc6895e1609f1953da58679c9adc5e337c3b0090292",
-      "bytes": 408,
-      "head": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 61 files, 147 dependencies.\n------------------------------------\n\nLayered architecture KEPT\nErrors and session are independent leaves KEPT\nConfig and errors are independent leaves KEPT\nSQLAlchemy only in repository and models KEPT\nDatabase session module does not import upper layers KEPT\n\nContracts: 5 kept, 0 broken.\nexit 0"
+      "sha256": "a771ab35529c3cf6a0f350faf87d8aa41f8dfe74467da1acdc4537d2d770d01b",
+      "bytes": 67,
+      "head": "Contracts: 5 kept, 0 broken. exit=0 (PYTHONPATH=03-development/src)"
     }
   },
-  "composite_score": 100.0,
+  "composite_score": 99.5,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],

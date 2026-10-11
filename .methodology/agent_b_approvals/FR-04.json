@@ -1,0 +1,55 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Hierarchy (SPEC.md:111) maps to test_fr04.py:96 and :99, which fail if any read/write/admin key combination is allowed or denied wrongly, and to :100, which fails unless exactly 6 of the 9 combinations are allowed. Below-scope 403 (SPEC.md:112) maps to :108, where a read key on POST /v1/tasks must be 403. Problem+json (SPEC.md:112) maps to :119 and :121. No existence leak (SPEC.md:112) maps to :124 and :158, which compare the 403 body for an existing id against the body for an unknown id. :175 shows no repo lookup happens before the 403. The single dependency (SPEC.md:113) maps to :141-:143, which fail if any /v1 route lacks require_scope or if more than one distinct dependency appears. :146 fixes the route count at 7, which matches the SPEC endpoint tables (4 task routes, run, runs and metrics). Residual weakness: only one probe per scope level is exercised, so the per-endpoint required scope for run, runs, metrics and GET by id is not asserted here. That does not leave any FR-04 normative sentence without a failing assertion.",
+  "citations": [
+    "SPEC.md:111",
+    "SPEC.md:112",
+    "SPEC.md:113",
+    "03-development/tests/test_fr04.py:96",
+    "03-development/tests/test_fr04.py:99",
+    "03-development/tests/test_fr04.py:100",
+    "03-development/tests/test_fr04.py:108",
+    "03-development/tests/test_fr04.py:119",
+    "03-development/tests/test_fr04.py:124",
+    "03-development/tests/test_fr04.py:141",
+    "03-development/tests/test_fr04.py:142",
+    "03-development/tests/test_fr04.py:146",
+    "03-development/tests/test_fr04.py:158",
+    "03-development/tests/test_fr04.py:175"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "SPEC.md:112",
+      "message": "Required scope is probed only for GET /v1/tasks, POST /v1/tasks and DELETE /v1/tasks/{id}. The scopes for run, runs, GET by id and metrics are not asserted in test_fr04.py.",
+      "fr_id": "FR-04"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "79747ccba70f8e075711f1ff9e4179f632602f42bc8e1732d62a558c15ff90c7",
+    "declared_tests": [
+      "test_fr04_authorization_precedes_resource_lookup",
+      "test_fr04_every_v1_route_uses_same_scope_dependency",
+      "test_fr04_insufficient_scope_returns_403_without_existence_leak",
+      "test_fr04_scope_below_required_denied",
+      "test_fr04_scope_hierarchy_read_write_admin_inclusive",
+      "test_sec_t04_insufficient_scope_403_no_existence_leak"
+    ],
+    "assertion_digests": {
+      "test_fr04_authorization_precedes_resource_lookup": "88d3b21e2d4d6c52a51b45a8efa1918d3e26609b8a2cd3fc19bf49e92a3213fd",
+      "test_fr04_every_v1_route_uses_same_scope_dependency": "fb86d6191d57dd0016bce7daae373135e5c3f77f70fe1d8658f36cfe2bc9da35",
+      "test_fr04_insufficient_scope_returns_403_without_existence_leak": "8a2cf82bb55edf418311bdbd3dbbb31954156d87d75c89ba5258d4f6bcfb0cbc",
+      "test_fr04_scope_below_required_denied": "48210bf950e18e51c7b7c24e399f29b1b0c2c9d7d7e6a61d5a7a7b5243b79fc5",
+      "test_fr04_scope_hierarchy_read_write_admin_inclusive": "217559be4e324e6eb56ab6c99ba78d45d4713799295542dd0fdacc3803d46267",
+      "test_sec_t04_insufficient_scope_403_no_existence_leak": "84a02974283242115385f4a073c528cba3f96037f4c41468cdb4f5a42af153ab"
+    },
+    "test_files": [
+      "03-development/tests/test_fr04.py"
+    ]
+  }
+}
