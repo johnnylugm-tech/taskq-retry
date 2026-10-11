@@ -3,14 +3,14 @@
 # Sources parsed: SAD.md, SPEC.md, SRS.md
 # Dependencies extracted: 5
 #
-# WARNING: AUTO-SCAFFOLDED FROM SSOT - REVIEW AND PIN VERSIONS BEFORE COMMIT
+# Versions reviewed against SAD/SPEC/SRS and pinned to the verified .venv
 #
 # Versions NOT pinned - SSOT did not declare versions. Pin each line
 # (`pip-compile --output-file=<lock> requirements-dev.txt`, or by hand) per the
 # project's dependency policy.
 
-import-linter
-pip-licenses
-mutmut
-pytest-benchmark
-httpx
+import-linter==2.5.2
+pip-licenses==5.5.5
+mutmut==2.5.1
+pytest-benchmark==5.2.3
+httpx==0.28.1

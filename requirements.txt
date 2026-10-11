@@ -3,14 +3,14 @@
 # Sources parsed: SAD.md, SPEC.md, SRS.md
 # Dependencies extracted: 5
 #
-# WARNING: AUTO-SCAFFOLDED FROM SSOT - REVIEW AND PIN VERSIONS BEFORE COMMIT
+# Versions reviewed against SAD/SPEC/SRS and pinned to the verified .venv
 #
 # Versions NOT pinned - SSOT did not declare versions. Pin each line
 # (`pip-compile --output-file=<lock> requirements.txt`, or by hand) per the
 # project's dependency policy.
 
-sqlalchemy
-alembic
-fastapi
-uvicorn
-pydantic
+sqlalchemy==2.1.4
+alembic==1.20.0
+fastapi==0.143.0
+uvicorn==0.54.0
+pydantic==2.13.5

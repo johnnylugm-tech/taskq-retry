@@ -12,38 +12,33 @@
 |--------|-------|--------|
 | Total Requirements | 10 | — |
 | SRS Coverage | 100.0% | 100% |
-| Code Coverage | 0.0% | 100% |
-| Test Coverage | 0.0% | 100% |
-| Verification Rate | 0.0% | 100% |
-| Total Links | 10 | — |
+| Code Coverage | 100.0% | 100% |
+| Test Coverage | 100.0% | 100% |
+| Verification Rate | 100.0% | 100% |
+| Total Links | 73 | — |
 
 ### ASPICE SWE.3 Compliance
 
 | Practice | Status | Coverage |
 |----------|--------|----------|
 | SWE.3 BP1: FR→SRS | PASS | 10/10 |
-| SWE.3 BP2: SRS→Code | FAIL | 0/10 |
-| SWE.3 BP3: Code→Test | FAIL | 0/10 |
+| SWE.3 BP2: SRS→Code | PASS | 10/10 |
+| SWE.3 BP3: Code→Test | PASS | 10/10 |
 
 ## Detailed Traceability Matrix
 
 | Requirement | Status | Code Files | Test Files | SAD Module |
 |-------------|--------|------------|------------|------------|
-| FR-01 | pending | — | — | — |
-| FR-02 | pending | — | — | — |
-| FR-03 | pending | — | — | — |
-| FR-04 | pending | — | — | — |
-| FR-05 | pending | — | — | — |
-| FR-06 | pending | — | — | — |
-| FR-07 | pending | — | — | — |
-| FR-08 | pending | — | — | — |
-| FR-09 | pending | — | — | — |
-| FR-10 | pending | — | — | — |
-
-## Gaps
-
-- **FR without Code**: FR-01, FR-02, FR-03, FR-04, FR-05, FR-06, FR-07, FR-08, FR-09, FR-10
-- **FR without Test**: FR-01, FR-02, FR-03, FR-04, FR-05, FR-06, FR-07, FR-08, FR-09, FR-10
+| FR-01 | verified | 03-development/src/taskq_api/api/routes_tasks.py, 03-development/src/taskq_api/api/schemas.py, 03-development/src/taskq_api/app.py (+7) | 03-development/tests/test_fr01.py | — |
+| FR-02 | verified | 03-development/src/taskq_api/api/routes_runs.py, 03-development/src/taskq_api/models/task_result.py, 03-development/src/taskq_api/repository/results.py (+3) | 03-development/tests/test_fr02.py | — |
+| FR-03 | verified | 03-development/src/taskq_api/__main__.py, 03-development/src/taskq_api/repository/api_keys.py, 03-development/src/taskq_api/service/keys.py (+1) | 03-development/tests/test_fr03.py | — |
+| FR-04 | verified | 03-development/src/taskq_api/api/routes_metrics.py, 03-development/src/taskq_api/app.py | 03-development/tests/test_fr04.py | — |
+| FR-05 | verified | 03-development/src/taskq_api/api/middleware.py, 03-development/src/taskq_api/config.py, 03-development/src/taskq_api/models/rate_bucket.py (+3) | 03-development/tests/test_fr05.py | — |
+| FR-06 | verified | 03-development/src/taskq_api/config.py, 03-development/src/taskq_api/errors.py, 03-development/src/taskq_api/repository/session.py (+1) | 03-development/tests/test_fr06.py | — |
+| FR-07 | verified | 03-development/src/migrations/__init__.py, 03-development/src/migrations/env.py, 03-development/src/migrations/versions/__init__.py (+4) | 03-development/tests/test_fr07.py | — |
+| FR-08 | verified | 03-development/src/taskq_api/app.py, 03-development/src/taskq_api/config.py, 03-development/src/taskq_api/service/executor.py | 03-development/tests/test_fr08.py | — |
+| FR-09 | verified | 03-development/src/taskq_api/api/routes_health.py, 03-development/src/taskq_api/api/routes_metrics.py, 03-development/src/taskq_api/app.py (+6) | 03-development/tests/test_fr09.py | — |
+| FR-10 | verified | 03-development/src/taskq_api/api/error_handlers.py, 03-development/src/taskq_api/errors.py | 03-development/tests/test_fr10.py | — |
 
 ## Non-Functional Requirements
 
