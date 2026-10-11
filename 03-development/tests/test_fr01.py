@@ -133,12 +133,13 @@ def test_fr01_get_task_read_key_returns_all_fields(client):
     body = r.json()
     result_body_keys = list(body.keys())
     assert all(f in result_body_keys for f in expected_fields.split(","))
+    assert set(result_body_keys) == {c.key for c in inspect(Task).column_attrs}
     assert body["id"] == task_id
     assert body["name"] == "build-docs"
     assert body["command"] == "echo hello"
 
 
-def test_fr01_list_tasks_supports_status_limit_cursor(client):
+def test_fr01_list_tasks_supports_status_limit_cursor(client, db):
     expected_status = "200"
     expected_count = "2"
     _seed(client, 5)
@@ -160,6 +161,17 @@ def test_fr01_list_tasks_supports_status_limit_cursor(client):
             assert result_next_cursor_present == True  # noqa: E712
     assert len(seen) == 5
     assert len(set(seen)) == 5
+    failed_id = seen[0]
+    db.get(Task, failed_id).status = "failed"
+    db.commit()
+    failed = client.get("/v1/tasks", params={"status": "failed"}, headers=_hdr("read"))
+    assert failed.status_code == 200
+    assert [i["id"] for i in failed.json()["items"]] == [failed_id]
+    pending = client.get("/v1/tasks", params={"status": "pending", "limit": 200}, headers=_hdr("read"))
+    assert pending.status_code == 200
+    pending_ids = [i["id"] for i in pending.json()["items"]]
+    assert failed_id not in pending_ids
+    assert len(pending_ids) == 4
 
 
 def test_fr01_delete_task_admin_removes_task_and_results_in_one_transaction(client, db):
@@ -190,6 +202,11 @@ def test_fr01_invalid_body_returns_422_problem_json(client):
     result_content_type, result_problem_type = _problem(r)
     assert result_content_type.startswith("application/problem+json")
     assert result_problem_type == expected_type
+    for bad in ("echo\x00hi", "echo\nhi", "echo\rhi"):
+        bad_resp = _post(client, "forbidden-chars", command=bad)
+        assert bad_resp.status_code == int(expected_status)
+        assert bad_resp.headers["content-type"].startswith("application/problem+json")
+        assert bad_resp.json()["type"] == expected_type
 
 
 def test_fr01_empty_name_rejected_422(client):
@@ -234,6 +251,10 @@ def test_fr01_unknown_id_returns_404_problem_json(client):
     result_content_type, result_problem_type = _problem(r)
     assert result_content_type.startswith("application/problem+json")
     assert result_problem_type == expected_type
+    d = client.delete(f"/v1/tasks/{UNKNOWN_ID}", headers=_hdr("admin"))
+    assert d.status_code == int(expected_status)
+    assert d.headers["content-type"].startswith("application/problem+json")
+    assert d.json()["type"] == expected_type
 
 
 def test_fr01_pagination_is_cursor_based_not_offset(client):
