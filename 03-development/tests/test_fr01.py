@@ -402,3 +402,15 @@ def test_fr01_delete_task_write_key_returns_403(client):
     result_content_type, result_problem_type = _problem(r)
     assert result_content_type.startswith("application/problem+json")
     assert result_problem_type == expected_type
+
+
+def test_fr01_validate_command_rejects_forbidden_chars():
+    with pytest.raises(ValueError):
+        validation.validate_command("echo\x00hi")
+    assert validation.validate_command("echo hi") == "echo hi"
+
+
+def test_fr01_repo_count_by_status_and_durations(client, db):
+    _post(client, "cnt-1")
+    assert sum(repo_tasks.count_by_status(db).values()) == 1
+    assert repo_tasks.durations_ms(db) == []
