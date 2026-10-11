@@ -55,7 +55,7 @@
         "taskq_api.repository.rate_buckets",
         "taskq_api.repository.health",
         "taskq_api.repository",
-        "taskq_api.db"
+        "taskq_api.repository.session"
       ],
       "allowed_dependencies": [
         "models",

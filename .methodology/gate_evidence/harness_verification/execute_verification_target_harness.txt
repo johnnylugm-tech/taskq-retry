@@ -1,0 +1,25 @@
+# Harness-executed: system-verification
+# returncode: 0
+# agent_score: 100.0 | threshold: 100.0
+
+.venv/bin/python -m alembic -c alembic.ini upgrade head
+.venv/bin/python -m pytest 03-development/tests -q
+........................................................................ [ 38%]
+........................................................................ [ 77%]
+.........................................                                [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/johnny/projects/taskq-retry/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+03-development/tests/test_fr09.py::test_sec_t16_db_url_password_absent_from_logs
+  /Users/johnny/projects/taskq-retry/03-development/tests/test_fr09.py:183: SAWarning: Query string argument(s) 'password' are not accepted by the pysqlite driver and are being ignored; SQLite URI arguments require that 'uri=true' also be present in the URL. (Background on this warning at: https://sqlalche.me/e/21/squa)
+    app.state.engine = create_engine(db_url)  # unreachable host: readyz must fail without leaking
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+185 passed, 2 warnings in 16.03s
+{"status":"ok"}
+{"status":"ready"}
+.venv/bin/python -m alembic -c alembic.ini downgrade base
+.venv/bin/python -m alembic -c alembic.ini upgrade head
+verify-system: PASS

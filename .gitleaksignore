@@ -1,0 +1,3 @@
+# Fake credential used as a negative-path fixture ("forged" key expected to be rejected with 401); not a real secret.
+ec9784cbbbb5ad2a1b9e618a5e4242cdf9350586:03-development/tests/test_fr03.py:generic-api-key:148
+e98d5e9995722dc9f6607ef9ba7051e45150292a:02-architecture/TEST_SPEC.md:generic-api-key:176

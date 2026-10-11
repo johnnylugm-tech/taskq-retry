@@ -1,0 +1,45 @@
+{
+  "community_cohesion": {
+    "score": 100.0,
+    "healthy": 8,
+    "total": 8,
+    "total_all": 24,
+    "excluded_test_communities": 16,
+    "unhealthy": [],
+    "low_cohesion": [
+      {
+        "name": "service-key",
+        "cohesion": 0.2628,
+        "size": 27
+      },
+      {
+        "name": "service-bucket",
+        "cohesion": 0.2,
+        "size": 6
+      },
+      {
+        "name": "versions-move",
+        "cohesion": 0.069,
+        "size": 5,
+        "dominant_file": "03-development/src/migrations/versions/v3_split_results.py"
+      }
+    ],
+    "_formula": "size<=50; cohesion reported, not scored (Round 113)",
+    "_cohesion_threshold": 0.3,
+    "_community_oversized": 50,
+    "_community_min_size": 5,
+    "_extra_excludes": [],
+    "excludes_matched": {},
+    "excludes_files_matched": {}
+  },
+  "large_functions_critical": [],
+  "large_functions_penalty": 0,
+  "architecture_score": 100.0,
+  "_source": "framework-independent",
+  "_graph_files": 58,
+  "_source_files": 58,
+  "_unparsed_files": [],
+  "_build_type": "update",
+  "_baseline_sha": "e36052cd381828abac8960a7434734ea9ccc6699",
+  "_baseline_phase": 3
+}

@@ -1,0 +1,82 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-8.4.2, pluggy-1.6.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /Users/johnny/projects/taskq-retry
+plugins: platformdirs-4.12.4, benchmark-5.2.3, cov-7.1.0, anyio-4.15.1
+collected 185 items
+
+03-development/tests/integration/test_nfr10_integration.py ............  [  6%]
+03-development/tests/test_fr01.py .......................                [ 18%]
+03-development/tests/test_fr02.py .........................              [ 32%]
+03-development/tests/test_fr03.py .................                      [ 41%]
+03-development/tests/test_fr04.py ......                                 [ 44%]
+03-development/tests/test_fr05.py ................                       [ 53%]
+03-development/tests/test_fr06.py .........                              [ 58%]
+03-development/tests/test_fr07.py ..........                             [ 63%]
+03-development/tests/test_fr08.py ...............                        [ 71%]
+03-development/tests/test_fr09.py .............                          [ 78%]
+03-development/tests/test_fr10.py .................                      [ 88%]
+03-development/tests/test_nfr08_guards.py ......................         [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/johnny/projects/taskq-retry/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+03-development/tests/test_fr09.py::test_sec_t16_db_url_password_absent_from_logs
+  /Users/johnny/projects/taskq-retry/03-development/tests/test_fr09.py:183: SAWarning: Query string argument(s) 'password' are not accepted by the pysqlite driver and are being ignored; SQLite URI arguments require that 'uri=true' also be present in the URL. (Background on this warning at: https://sqlalche.me/e/21/squa)
+    app.state.engine = create_engine(db_url)  # unreachable host: readyz must fail without leaking
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.15-final-0 _______________
+
+Name                                                         Stmts   Miss  Cover   Missing
+------------------------------------------------------------------------------------------
+03-development/src/migrations/__init__.py                        0      0   100%
+03-development/src/migrations/env.py                            15      0   100%
+03-development/src/migrations/versions/__init__.py               0      0   100%
+03-development/src/migrations/versions/v1_initial.py            12      0   100%
+03-development/src/migrations/versions/v2_tags.py               16      0   100%
+03-development/src/migrations/versions/v3_split_results.py      50      0   100%
+03-development/src/taskq_api/__init__.py                         0      0   100%
+03-development/src/taskq_api/api/__init__.py                     0      0   100%
+03-development/src/taskq_api/api/deps.py                         2      0   100%
+03-development/src/taskq_api/api/error_handlers.py              10      0   100%
+03-development/src/taskq_api/api/middleware.py                  13      0   100%
+03-development/src/taskq_api/api/routes_health.py                9      0   100%
+03-development/src/taskq_api/api/routes_metrics.py               9      0   100%
+03-development/src/taskq_api/api/routes_runs.py                 40      0   100%
+03-development/src/taskq_api/api/routes_tasks.py                21      0   100%
+03-development/src/taskq_api/api/schemas.py                     19      0   100%
+03-development/src/taskq_api/app.py                             31      0   100%
+03-development/src/taskq_api/config.py                          13      0   100%
+03-development/src/taskq_api/errors.py                          31      0   100%
+03-development/src/taskq_api/models/__init__.py                  0      0   100%
+03-development/src/taskq_api/models/api_key.py                  13      0   100%
+03-development/src/taskq_api/models/base.py                      2      0   100%
+03-development/src/taskq_api/models/rate_bucket.py               8      0   100%
+03-development/src/taskq_api/models/task.py                     14      0   100%
+03-development/src/taskq_api/models/task_result.py              17      0   100%
+03-development/src/taskq_api/repository/__init__.py              0      0   100%
+03-development/src/taskq_api/repository/api_keys.py             10      0   100%
+03-development/src/taskq_api/repository/health.py               15      0   100%
+03-development/src/taskq_api/repository/rate_buckets.py         13      0   100%
+03-development/src/taskq_api/repository/results.py              13      0   100%
+03-development/src/taskq_api/repository/session.py              28      0   100%
+03-development/src/taskq_api/repository/tasks.py                28      0   100%
+03-development/src/taskq_api/repository/unit_of_work.py         20      0   100%
+03-development/src/taskq_api/service/__init__.py                 0      0   100%
+03-development/src/taskq_api/service/auth.py                    32      0   100%
+03-development/src/taskq_api/service/executor.py                93      0   100%
+03-development/src/taskq_api/service/health.py                  23      0   100%
+03-development/src/taskq_api/service/keys.py                    11      0   100%
+03-development/src/taskq_api/service/metrics.py                 24      0   100%
+03-development/src/taskq_api/service/rate_limit.py              36      0   100%
+03-development/src/taskq_api/service/runner.py                   5      0   100%
+03-development/src/taskq_api/service/tasks.py                   41      0   100%
+03-development/src/taskq_api/service/validation.py               7      0   100%
+------------------------------------------------------------------------------------------
+TOTAL                                                          744      0   100%
+Coverage JSON written to file .sessi-work/coverage.json
+======================= 185 passed, 2 warnings in 15.63s =======================

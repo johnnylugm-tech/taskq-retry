@@ -1,0 +1,5 @@
+# Harness-executed: ast-assertions
+# returncode: 0
+# agent_score: 96.7 | threshold: 60.0
+
+{"total": 185, "asserted": 179, "zero_assert": ["03-development/tests/test_fr03.py::test_fr03_unknown_api_key_value_returns_401", "03-development/tests/test_fr03.py::test_fr03_empty_api_key_header_returns_401", "03-development/tests/test_fr03.py::test_sec_t01_invalid_api_key_rejected", "03-development/tests/test_fr03.py::test_sec_t02_revoked_key_rejected", "03-development/tests/test_fr02.py::test_fr02_executor_drain_without_start_is_noop", "03-development/tests/test_fr08.py::test_fr08_drain_before_start_is_noop"], "neutralised": []}

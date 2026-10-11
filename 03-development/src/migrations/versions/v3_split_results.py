@@ -4,6 +4,7 @@ Citations: SPEC.md:130-143.
 """
 import json
 import uuid
+from datetime import datetime
 from typing import Any
 
 import sqlalchemy as sa
@@ -29,12 +30,15 @@ def _move_json_to_results(bind: Connection, results: sa.Table) -> None:
     for row in rows:
         task_id = str(row[0])
         data = json.loads(str(row[1]))
+        finished_at = data.get("finished_at")
+        if finished_at is not None:
+            finished_at = datetime.fromisoformat(finished_at)  # downgrade stored str(datetime)
         bind.execute(
             sa.insert(results).values(
                 id=data.get("id", _derived_id(task_id)),
                 task_id=task_id,
                 status=data.get("status", _DEFAULT_STATUS),
-                finished_at=data.get("finished_at"),
+                finished_at=finished_at,
                 **{f: data.get(f) for f in _FIELDS},
             )
         )

@@ -1,0 +1,6 @@
+{
+  "features": {
+    "mutation_testing": true
+  },
+  "mutation_scope_note": "Mutation scope is limited to service/ and repository/ (SPEC.md:247); api/ and models/ are thin wiring and declarations, and a full-tree run would exceed the 60-minute execution budget."
+}

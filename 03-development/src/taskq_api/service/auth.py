@@ -13,8 +13,13 @@ from taskq_api.errors import ApiError
 from taskq_api.repository import api_keys as repo
 from taskq_api.service import rate_limit
 
-# Hierarchical scopes: a higher rank includes every lower one (AC-4.1).
-_RANK = {"read": 1, "write": 2, "admin": 3}
+# Hierarchical scopes, lowest first: a later scope includes every earlier one (AC-4.1).
+_SCOPES = ("read", "write", "admin")
+
+
+def _allows(held: str, needed: str) -> bool:
+    """True when scope `held` is a known scope at least as high as `needed`."""
+    return held in _SCOPES and _SCOPES.index(held) >= _SCOPES.index(needed)
 
 
 def hash_key(plaintext: str) -> str:
@@ -43,7 +48,7 @@ def require_scope(scope: str) -> Callable[..., DbSession]:
             request.app.state.rejections.increment()
             raise ApiError(429, "/errors/rate-limited", "Too Many Requests", "rate limit exceeded",
                            headers={"Retry-After": str(decision.retry_after)})
-        if _RANK.get(row.scope, 0) < _RANK[scope]:
+        if not _allows(row.scope, scope):
             raise ApiError(403, "/errors/forbidden", "Forbidden", "insufficient scope")
         return session
 

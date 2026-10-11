@@ -5,7 +5,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import delete, func, select, tuple_
+from sqlalchemy import delete, func, literal, select, tuple_
 from sqlalchemy.orm import Session
 
 from taskq_api.models.task import Task
@@ -31,7 +31,7 @@ def list_page(session: Session, status: Optional[str], limit: int,
     if status is not None:
         stmt = stmt.where(Task.status == status)
     if after is not None:
-        stmt = stmt.where(tuple_(Task.created_at, Task.id) > tuple_(after[0], after[1]))
+        stmt = stmt.where(tuple_(Task.created_at, Task.id) > tuple_(literal(after[0]), literal(after[1])))
     # suffix, not .limit(): the sqlite dialect renders .limit() as 'LIMIT ? OFFSET ?'
     return list(session.scalars(stmt.suffix_with("LIMIT", str(int(limit)))))
 
