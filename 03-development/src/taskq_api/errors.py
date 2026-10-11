@@ -1,6 +1,6 @@
 """RFC 7807 problem+json errors.
 
-[FR-01] Citations: SPEC.md:88-89, SPEC.md:164-168.
+[FR-10] Citations: SPEC.md:88-89, SPEC.md:164-168.
 """
 import logging
 import uuid
@@ -14,7 +14,7 @@ logger = logging.getLogger("taskq_api.errors")
 
 
 class ApiError(Exception):
-    """Error carrying an HTTP status and problem type."""
+    """Error carrying an HTTP status and problem type. [FR-10]"""
 
     def __init__(self, status: int, type_: str, title: str, detail: str = "",
                  headers: dict[str, str] | None = None):
@@ -28,6 +28,7 @@ class ApiError(Exception):
 
 def _problem(request: Request, status: int, type_: str, title: str, detail: str,
              headers: dict[str, str] | None = None) -> JSONResponse:
+    """Build a problem+json response and log it under a fresh correlation id. [FR-10]"""
     correlation_id = str(uuid.uuid4())
     logger.warning("problem %s status=%s path=%s correlation_id=%s", type_, status, request.url.path, correlation_id)
     return JSONResponse(
@@ -56,7 +57,7 @@ def service_unavailable(request: Request) -> JSONResponse:
 
 
 def install_handlers(app: FastAPI) -> None:
-    """Register problem+json handlers on the app."""
+    """Register problem+json handlers on the app. [FR-10]"""
 
     @app.exception_handler(ApiError)
     async def _api_error(request: Request, exc: ApiError) -> JSONResponse:
