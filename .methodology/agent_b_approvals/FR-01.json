@@ -1,0 +1,98 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Every normative FR-01 requirement maps to an assertion that fails if it is violated. POST write scope: 201 at test_fr01.py:119 and 403 for a read key at :410. GET all fields: column set equality at :136. List status/limit/cursor: :159-174. DELETE with results in one transaction: :188, :190, :192. Admin-only DELETE: 403 for a write key at :422. Validation: empty command at :201, empty name at :217, 1000 accepted at :229, 1001 rejected at :239, forbidden chars at :207. Unknown id: 404 for GET and DELETE at :250 and :255. Cursor-based, no offset: SQL OFFSET count is 0 at :273, offset param ignored at :276, pages disjoint at :282. Default limit 50 at :294, limit 200 at :307, limit 201 returns 422 at :317. 401 tests cover all four endpoints. One caveat: SPEC.md:88 says every validation violation returns 422, while the duplicate-name test pins 409 at :332. SPEC.md:168, :341 and :364 explicitly require 409 for a name conflict, so the test follows the specific rule.",
+  "citations": [
+    "SPEC.md:79-91",
+    "SPEC.md:341",
+    "SPEC.md:364",
+    "03-development/tests/test_fr01.py:119",
+    "03-development/tests/test_fr01.py:136",
+    "03-development/tests/test_fr01.py:159",
+    "03-development/tests/test_fr01.py:174",
+    "03-development/tests/test_fr01.py:192",
+    "03-development/tests/test_fr01.py:201",
+    "03-development/tests/test_fr01.py:229",
+    "03-development/tests/test_fr01.py:239",
+    "03-development/tests/test_fr01.py:255",
+    "03-development/tests/test_fr01.py:273",
+    "03-development/tests/test_fr01.py:276",
+    "03-development/tests/test_fr01.py:294",
+    "03-development/tests/test_fr01.py:307",
+    "03-development/tests/test_fr01.py:317",
+    "03-development/tests/test_fr01.py:332",
+    "03-development/tests/test_fr01.py:410",
+    "03-development/tests/test_fr01.py:422"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "SPEC.md:88",
+      "message": "SPEC.md:88 lists name uniqueness among the validation rules whose violation returns 422, but SPEC.md:168, :341 and :364 require 409 for a duplicate name. The test at test_fr01.py:332 asserts 409. This is a conflict within the spec itself, not a test defect. The spec should be reconciled.",
+      "fr_id": "FR-01"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "SPEC.md:88",
+      "message": "No test checks that a name over 1000 characters is rejected. The 1000-character boundary is only tested on command. The spec does not say which field the limit applies to.",
+      "fr_id": "FR-01"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "requirement_digest": "3999e2e76165e737685853b91cbbaaa91f9e1909fa4abc680207da51a8e9d4fa",
+    "declared_tests": [
+      "test_fr01_command_above_1000_chars_rejected_422",
+      "test_fr01_command_at_1000_chars_accepted",
+      "test_fr01_delete_task_admin_removes_task_and_results_in_one_transaction",
+      "test_fr01_delete_task_unauthenticated_returns_401",
+      "test_fr01_delete_task_write_key_returns_403",
+      "test_fr01_duplicate_name_returns_409",
+      "test_fr01_empty_name_rejected_422",
+      "test_fr01_get_task_read_key_returns_all_fields",
+      "test_fr01_get_task_unauthenticated_returns_401",
+      "test_fr01_invalid_body_returns_422_problem_json",
+      "test_fr01_list_default_limit_50_max_200_over_limit_422",
+      "test_fr01_list_limit_200_accepted",
+      "test_fr01_list_limit_201_rejected_422",
+      "test_fr01_list_tasks_supports_status_limit_cursor",
+      "test_fr01_list_tasks_unauthenticated_returns_401",
+      "test_fr01_pagination_is_cursor_based_not_offset",
+      "test_fr01_post_task_read_key_returns_403",
+      "test_fr01_post_task_unauthenticated_returns_401",
+      "test_fr01_post_task_write_key_returns_201_with_id",
+      "test_fr01_unknown_id_returns_404_problem_json",
+      "test_sec_t07_sql_injection_payload_treated_as_literal"
+    ],
+    "assertion_digests": {
+      "test_fr01_command_above_1000_chars_rejected_422": "a6c2453fc7aca0459bddd374ead6a35cb98ddc5c96d6b3ef7cf7abfabfcf1eac",
+      "test_fr01_command_at_1000_chars_accepted": "da090b737959b13e4874ec6fe42da61727feed68c9c24cc3568153312b92d32c",
+      "test_fr01_delete_task_admin_removes_task_and_results_in_one_transaction": "e996ff58c04730dd5fb315c732156cb02f9b6fcf1d2a4196a482f15ff0a7d7d6",
+      "test_fr01_delete_task_unauthenticated_returns_401": "1b6371ab296463de726b126489093adabb8efc55935d73266d71d0d61f365b34",
+      "test_fr01_delete_task_write_key_returns_403": "f85e281a91cf311fcb08859fe5305e8ca73fc81fb3f6f7d6a6d163469e8aed8a",
+      "test_fr01_duplicate_name_returns_409": "9afbff1ffc38a6ded6080c89d0df209d79907e0aaf5741157eaca639dcca9626",
+      "test_fr01_empty_name_rejected_422": "c04c76f2aba29be5aa5d0903bbb09474ceabece5ab0375481fcfbaa345938a03",
+      "test_fr01_get_task_read_key_returns_all_fields": "f7bf831d097e73fdcb0ed904105c9b2dc296e361940a6a353f32e840eca2da2f",
+      "test_fr01_get_task_unauthenticated_returns_401": "a314fe2ca913597e2071afc4b3c77a422300d67300e6f333d619297129146b4c",
+      "test_fr01_invalid_body_returns_422_problem_json": "9ee48fe0302560ac5f5b07471b1d820a9c241c12cff4d65eebbec6ac646cda1e",
+      "test_fr01_list_default_limit_50_max_200_over_limit_422": "caaf0b6859cd03747e646b64fc5cf839036e5f3e505e49d827776fde90127d46",
+      "test_fr01_list_limit_200_accepted": "335b720cb301c3b60b5a6b7657079319bb2cf3c6076b1ae284d5f097ca34ac00",
+      "test_fr01_list_limit_201_rejected_422": "724744db7789ebce5633acf0b9a0c5b824f7d994e826616dd0f89b038da1f004",
+      "test_fr01_list_tasks_supports_status_limit_cursor": "74b62318ef502ebe0219e5692b9bcf8e136ea881554c491cefe7a94af11add29",
+      "test_fr01_list_tasks_unauthenticated_returns_401": "6f71c8b06850bf53f7d400d792330ebb2a1d4ab7b6223022a23a869043282e1a",
+      "test_fr01_pagination_is_cursor_based_not_offset": "10a2bbea44a858c45b96498ba0f4a18a8b117f3acca5c93478b01b6600b55f87",
+      "test_fr01_post_task_read_key_returns_403": "2e605fd190159c9f53865d0efd64e5d561ec97ba0d9b122543c33171f44dfe67",
+      "test_fr01_post_task_unauthenticated_returns_401": "fccbb67015ce68c8dfc805f4b1bd00f56a08467abe1561b4036d9ba2c8e9a889",
+      "test_fr01_post_task_write_key_returns_201_with_id": "18adc3dba08e9409d951c85accf44232df13f5e783110b6e042834f17604882d",
+      "test_fr01_unknown_id_returns_404_problem_json": "991461ccdab82bb84fe3d172fc05a8d9fc095f8b3ff3ad102065a15d1d564bab",
+      "test_sec_t07_sql_injection_payload_treated_as_literal": "f5d26952189dc686a038721a654d6c04eb77db492c6a745c3de9792b159800ea"
+    },
+    "test_files": [
+      "03-development/tests/test_fr01.py"
+    ]
+  }
+}

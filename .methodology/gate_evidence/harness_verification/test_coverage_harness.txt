@@ -68,4 +68,4 @@ TOTAL                                                          731     19    97%
 FAILED 03-development/tests/test_fr03.py::test_fr03_readyz_does_not_require_auth
 FAILED 03-development/tests/test_fr05.py::test_fr05_readyz_not_rate_limited
 ERROR 03-development/tests/test_fr10.py
-2 failed, 127 passed, 2 warnings, 1 error in 12.55s
+2 failed, 127 passed, 2 warnings, 1 error in 12.73s

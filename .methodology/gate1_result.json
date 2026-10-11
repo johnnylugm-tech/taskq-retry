@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 3,
-  "fr_id": "FR-01",
+  "fr_id": "FR-02",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -9,7 +9,7 @@
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!",
+      "tool_evidence": "All checks passed!\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
       "effective_threshold": 100.0,
@@ -18,8 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699125766\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"inform ... \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.178\n    }\n}\n\n",
-      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699304960\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.134\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -28,13 +27,13 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 23,
+      "tests_passed": 40,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "test_fr01.py 23 passed; FR-01 files coverage 130/130 statements = 100%; spec coverage 21/21",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-01.txt",
+      "tool_evidence": "TOTAL 168 stmts, 0 miss, 100.0% coverage (FR-02 files)\npx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 40 passed, 1 warning in 10.08s ========================\nWrote JSON report to .sessi-work/coverage_FR-02.json\n",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-02.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-01",
+      "coverage_scope_fr": "FR-02",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -42,7 +41,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 61 files, 142 dependencies. Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 61 files, 142 dependencies.\n------------------------------------\n\nLayered architecture KEPT\nErrors and session are independent leaves KEPT\nConfig and errors are independent leaves KEPT\nSQLAlchemy only in repository and models KEPT\nDatabase session module does not import upper layers KEPT\n\nContracts: 5 kept, 0 broken.\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -87,23 +86,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "58a1eb67b7cb1f0852761070d2099c91ba755543aa6aad9b4ab6c5903d291e37",
-      "bytes": 364,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699125766\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"inform ... \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.178\n    }\n}"
+      "sha256": "2ac4fe09209653321e112b7014c3a7c4eddca616b6f86d4fee0432d918e41b3e",
+      "bytes": 250,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791699304960\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 43,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.134\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "42eb6a96b2425af4d536e57547e6fa1d48f620d545587515a45b5aa3af60dd5d",
-      "bytes": 91,
-      "head": "test_fr01.py 23 passed; FR-01 files coverage 130/130 statements = 100%; spec coverage 21/21"
+      "sha256": "75fc8057f93ba23c2e907caecbf9e13e4e44466fab7f550f086e4aa8616a0cfa",
+      "bytes": 404,
+      "head": "TOTAL 168 stmts, 0 miss, 100.0% coverage (FR-02 files)\npx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n======================== 40 passed, 1 warning in 10.08s ========================\nWrote JSON report to .sessi-work/coverage_FR-02.json"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "320894f32726c72e33e2d931df043ab9f939cabb318b8add424f80657ecd35be",
-      "bytes": 65,
-      "head": "Analyzed 61 files, 142 dependencies. Contracts: 5 kept, 0 broken."
+      "sha256": "2c8b27612950cbbdffa3aafe7459f07e924d383cb9b748cdec71e4e518a0e1ab",
+      "bytes": 401,
+      "head": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 61 files, 142 dependencies.\n------------------------------------\n\nLayered architecture KEPT\nErrors and session are independent leaves KEPT\nConfig and errors are independent leaves KEPT\nSQLAlchemy only in repository and models KEPT\nDatabase session module does not import upper layers KEPT\n\nContracts: 5 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
