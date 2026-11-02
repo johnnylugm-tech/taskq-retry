@@ -67,4 +67,4 @@ Name                                                         Stmts   Miss  Cover
 03-development/src/taskq_api/service/validation.py               7      0   100%
 ------------------------------------------------------------------------------------------
 TOTAL                                                          794      0   100%
-231 passed, 2 warnings in 16.86s
+231 passed, 2 warnings in 16.47s
