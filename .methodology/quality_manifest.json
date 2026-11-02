@@ -236,7 +236,7 @@
   "gate_results": {
     "gate1": {
       "FR-05": {
-        "score": 100.0,
+        "score": 99.68,
         "quality_complete": true,
         "rounds_used": 2,
         "open_critical": 0,
