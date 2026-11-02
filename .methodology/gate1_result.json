@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-02",
+  "fr_id": "FR-03",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -9,7 +9,7 @@
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!",
+      "tool_evidence": "All checks passed!\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
       "effective_threshold": 100.0,
@@ -18,8 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626872199\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.188\n    }\n}\n\n",
-      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627003765\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.274\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -28,10 +27,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 40,
+      "tests_passed": 39,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "collected 40 items; test_fr02.py 25 passed, test_fr08.py 15 passed; 40 passed, 1 warning; FR-02 coverage 100.0%",
+      "tool_evidence": "39 passed, 1 warning; FR-03 files coverage 68/68 statements = 100%; spec coverage 12/12",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -40,9 +39,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-02.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-03.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-02",
+      "coverage_scope_fr": "FR-03",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -50,7 +49,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 66 files, 155 dependencies. Layered architecture KEPT ... Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "[22mLayered architecture \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mErrors and session are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mConfig and errors are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mSQLAlchemy only in repository and models \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mDatabase session module does not import upper layers \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mContracts: 5 kept, 0 broken.\u001b[0m\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -102,23 +101,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "aabd691c7bf25b44b96e931505f46638de07d7bb3c6cf974c1443c2d697be2a8",
+      "sha256": "c0b66054ec40019a429f21a5dc0d37ccc3a58c113f3f20fb8b4707001ca86bf0",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626872199\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.188\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627003765\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.274\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "ee584594e799badce354b6cfd68ee62c1262dc48d44980c1a71a848a64af20db",
-      "bytes": 111,
-      "head": "collected 40 items; test_fr02.py 25 passed, test_fr08.py 15 passed; 40 passed, 1 warning; FR-02 coverage 100.0%"
+      "sha256": "93045ea2b33413a1253d7b8a44758ed38ca1de113daff493e3a4f6ea294a63e6",
+      "bytes": 87,
+      "head": "39 passed, 1 warning; FR-03 files coverage 68/68 statements = 100%; spec coverage 12/12"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "5274da5ccc8e9a41105b773d8af329c7f59f3d427b0d9661b7697f9e573ccfce",
-      "bytes": 95,
-      "head": "Analyzed 66 files, 155 dependencies. Layered architecture KEPT ... Contracts: 5 kept, 0 broken."
+      "sha256": "257ba2d1bf2805343c532eb5a803cfd2acfeef63669650fcb399e4bc80799579",
+      "bytes": 499,
+      "head": "[22mLayered architecture \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mErrors and session are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mConfig and errors are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mSQLAlchemy only in repository and models \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mDatabase session module does not import upper layers \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mContracts: 5 kept, 0 broken.\u001b[0m"
     }
   },
   "composite_score": 100.0,
