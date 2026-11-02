@@ -1,15 +1,16 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-05",
-  "overall_score": 99.68,
+  "fr_id": "FR-06",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!\n",
+      "tool_evidence": "All checks passed!",
+      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
       "effective_threshold": 100.0,
@@ -18,7 +19,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627225237\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.19\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627618689\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.176\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,10 +28,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 56,
+      "tests_passed": 9,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "                2      0   100%\n03-development/src/taskq_api/api/middleware.py               19      0   100%\n03-development/src/taskq_api/models/rate_bucket.py            8      0   100%\n03-development/src/taskq_api/repository/rate_buckets.py      13      0   100%\n03-development/src/taskq_api/service/rate_limit.py           36      0   100%\n-----------------------------------------------------------------------------\nTOTAL                                                        78      0   100%\n\n56 passed",
+      "tool_evidence": "9 passed in 0.51s; coverage of session.py, unit_of_work.py, models/base.py: 50/50 statements, 100%; 8/8 required spec tests present",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -39,9 +40,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-05.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-05",
+      "coverage_scope_fr": "FR-06",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -49,7 +50,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "[22mLayered architecture \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mErrors and session are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mConfig and errors are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mSQLAlchemy only in repository and models \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mDatabase session module does not import upper layers \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mContracts: 5 kept, 0 broken.\u001b[0m\n",
+      "tool_evidence": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -101,26 +102,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "d5f9b674925294f2c4b72f368538cdfc4e63ff57e025a28cd2e309f73ebe73b3",
-      "bytes": 249,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627225237\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.19\n    }\n}"
+      "sha256": "04e132537ac9c0aa9adf8c446f2286022b4b4f5097e81d82d7f5bda68a2bdd09",
+      "bytes": 250,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627618689\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.176\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "78b9838b504d0c8adf690007c0986f76108fde5e2c7e8fbff8bbf32c61023e5a",
-      "bytes": 494,
-      "head": "2      0   100%\n03-development/src/taskq_api/api/middleware.py               19      0   100%\n03-development/src/taskq_api/models/rate_bucket.py            8      0   100%\n03-development/src/taskq_api/repository/rate_buckets.py      13      0   100%\n03-development/src/taskq_api/service/rate_limit.py           36      0   100%\n-----------------------------------------------------------------------------\nTOTAL                                                        78      0   100%\n\n56 passed"
+      "sha256": "79f03b45c91e4d69b4c85280277aebd328462ccd8cc0908979b3e69b1e001560",
+      "bytes": 131,
+      "head": "9 passed in 0.51s; coverage of session.py, unit_of_work.py, models/base.py: 50/50 statements, 100%; 8/8 required spec tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "257ba2d1bf2805343c532eb5a803cfd2acfeef63669650fcb399e4bc80799579",
-      "bytes": 499,
-      "head": "[22mLayered architecture \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mErrors and session are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mConfig and errors are independent leaves \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mSQLAlchemy only in repository and models \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mDatabase session module does not import upper layers \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mContracts: 5 kept, 0 broken.\u001b[0m"
+      "sha256": "6dbedcc4b65d99a430f1c7f9e714024a59528de943b40bda03eed27af24196ee",
+      "bytes": 65,
+      "head": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken."
     }
   },
-  "composite_score": 99.68,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
