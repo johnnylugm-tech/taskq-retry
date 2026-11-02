@@ -9,7 +9,7 @@
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!\n",
+      "tool_evidence": "All checks passed!",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
       "effective_threshold": 100.0,
@@ -18,7 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626657629\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.248\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626736845\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.232\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -30,7 +30,7 @@
       "tests_passed": 23,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "23 passed, 1 warning in 1.70s; FR-01 files coverage 100.0%; spec coverage 21/21",
+      "tool_evidence": "23 passed, 1 warning in 1.71s; FR-01 coverage 130/130 statements = 100%; spec coverage 21/21",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -49,7 +49,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -101,23 +101,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "a847eaffe91cfedf3ce937fc1bd5524fed28d56633fc5494348095f19c7ee0cc",
+      "sha256": "f2a14027bbb6711f8c05db3b5e361d201efb5facd9b8b257dbf285867edb466c",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626657629\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.248\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626736845\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.232\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "d4500ec4835f0eb3760c14d49b827deef705f829ea0c1dd4b07d124dd639c8a0",
-      "bytes": 79,
-      "head": "23 passed, 1 warning in 1.70s; FR-01 files coverage 100.0%; spec coverage 21/21"
+      "sha256": "f92a8711e34e961cc896119767f4f55531ce8dc3aa8584b67803f1362fb71d37",
+      "bytes": 92,
+      "head": "23 passed, 1 warning in 1.71s; FR-01 coverage 130/130 statements = 100%; spec coverage 21/21"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6fa0caab63839c3e163e4e18754d273b5d70f4155d040f5c5f1ec832538cdeed",
-      "bytes": 28,
-      "head": "Contracts: 5 kept, 0 broken."
+      "sha256": "6dbedcc4b65d99a430f1c7f9e714024a59528de943b40bda03eed27af24196ee",
+      "bytes": 65,
+      "head": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
