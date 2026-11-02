@@ -67,3 +67,18 @@ Phase 3: 10/10 FRs Gate 1 PASS. Gate 2 (score=96.37) — quality_complete. Ready
 
 ---
 *由 `HandoverGenerator` 自動生成。下次 push 時此檔案將被覆寫。*
+
+## Sync Blocked — manual push required
+
+The Phase 3 advance handover commit landed locally but `git push origin main` did not pass the pre-push hook after 3 attempts, the last of which was allowed to fix what the hook named:
+
+```
+the spec to drop the keys, would be a workaround.
+- **It involves design choices that need your sign-off.** Examples are the JSON and text log formats and how the server is launched. Your CLAUDE.md requires a plan and your confirmation before multi-step work like this.
+
+Local `main` is 4 commits ahead of `origin/main` and was not pushed. I used no `--no-verify` and made no file changes.
+
+Decision for you: do you approve implementing the five reads (a CORS allowlist from `TASKQ_CORS_ORIGINS`, log level and format setup, and a host/port launcher)? If you'd rather amend the spec instead, tell me.
+```
+
+Resolve the blocker(s) above, then run `git push origin main` manually. Do NOT use `--no-verify` without explicit human sign-off.
