@@ -1,15 +1,16 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-09",
-  "overall_score": 100.0,
+  "fr_id": "FR-10",
+  "overall_score": 99.17,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!\n",
+      "tool_evidence": "All checks passed!",
+      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
       "effective_threshold": 100.0,
@@ -18,7 +19,8 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793628026096\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.193\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793628145549\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"inform ... \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.188\n    }\n}\n\n",
+      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,10 +29,11 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 13,
+      "tests_passed": 33,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "13 passed in 0.53s; FR-09 files coverage 100.0%; 8/8 required tests present",
+      "tool_evidence": "33 passed, 1 warning; FR-10 files coverage 58/60 statements = 96.67% (2 missing lines)",
+      "evidence_file": ".sessi-work/round_1/tools/test_coverage.txt",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -39,9 +42,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-10.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-09",
+      "coverage_scope_fr": "FR-10",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -49,7 +52,8 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "Contracts: 5 kept, 0 broken. (PYTHONPATH=03-development/src lint-imports; PYTHONPATH=src could not find package taskq_api)",
+      "evidence_file": ".sessi-work/round_1/tools/architecture_constraints.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -101,26 +105,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "7c3da580b6fc451cb948a7728d018b4ecaa0cc4753c4a7c0f82a124fa19c8358",
-      "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793628026096\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.193\n    }\n}"
+      "sha256": "0e3671665f014f9bdadbca725d21a83efc3511c94dca37102136b3adcfda3dfa",
+      "bytes": 364,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793628145549\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"inform ... \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.188\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "94e9235bd97de2618a87fe4348f0496792d3e6a5ec3f4f4f1a1f2e60fdbd8f70",
-      "bytes": 75,
-      "head": "13 passed in 0.53s; FR-09 files coverage 100.0%; 8/8 required tests present"
+      "sha256": "45cfec4c381a7464f4f918f42160c164a014ebb2be697f373dbc1e9629508187",
+      "bytes": 86,
+      "head": "33 passed, 1 warning; FR-10 files coverage 58/60 statements = 96.67% (2 missing lines)"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6dbedcc4b65d99a430f1c7f9e714024a59528de943b40bda03eed27af24196ee",
-      "bytes": 65,
-      "head": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken."
+      "sha256": "03c9ccc3af14242adfbd869a9cea66bbe3ad00dd1c0d1a8c32054f50c9784087",
+      "bytes": 122,
+      "head": "Contracts: 5 kept, 0 broken. (PYTHONPATH=03-development/src lint-imports; PYTHONPATH=src could not find package taskq_api)"
     }
   },
-  "composite_score": 100.0,
+  "composite_score": 99.17,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
