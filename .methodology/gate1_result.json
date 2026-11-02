@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-07",
-  "overall_score": 99.68,
+  "fr_id": "FR-08",
+  "overall_score": 99.66,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -18,7 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627761099\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.182\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627891269\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.186\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,10 +27,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 10,
+      "tests_passed": 40,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "test_fr07.py 10 passed in 0.26s; FR-07 migrations coverage 98.72%; spec coverage 9/9",
+      "tool_evidence": "40 passed, 1 warning in 10.34s; coverage of executor/runner/app = 98.63%; spec coverage 10/10",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -39,9 +39,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-07.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-08.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-07",
+      "coverage_scope_fr": "FR-08",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -101,16 +101,16 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6ac8848629b5aa0d6b0d0ccb79ba835bedf16baecd988f58929385bac3f3aef5",
+      "sha256": "d2240c0619c69602e52a431113b94b3d06fc9766fc39a0de76706018ca54c957",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627761099\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.182\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627891269\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.186\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "80b41f7158daaaa1c45a325c9fc3c2020778316d7a9b44752c1e43f0df43249c",
-      "bytes": 84,
-      "head": "test_fr07.py 10 passed in 0.26s; FR-07 migrations coverage 98.72%; spec coverage 9/9"
+      "sha256": "390c5c17fb5cf738e094696692fe3ec4bd98364a8f97c07badfc7b79bd056290",
+      "bytes": 93,
+      "head": "40 passed, 1 warning in 10.34s; coverage of executor/runner/app = 98.63%; spec coverage 10/10"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
@@ -120,7 +120,7 @@
       "head": "Contracts: 5 kept, 0 broken."
     }
   },
-  "composite_score": 99.68,
+  "composite_score": 99.66,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
