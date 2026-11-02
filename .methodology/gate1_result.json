@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-01",
+  "fr_id": "FR-02",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -18,7 +18,8 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626736845\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.232\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626872199\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.188\n    }\n}\n\n",
+      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,10 +28,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 23,
+      "tests_passed": 40,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "23 passed, 1 warning in 1.71s; FR-01 coverage 130/130 statements = 100%; spec coverage 21/21",
+      "tool_evidence": "collected 40 items; test_fr02.py 25 passed, test_fr08.py 15 passed; 40 passed, 1 warning; FR-02 coverage 100.0%",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -39,9 +40,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-01.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-02.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-01",
+      "coverage_scope_fr": "FR-02",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -49,7 +50,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "Analyzed 66 files, 155 dependencies. Layered architecture KEPT ... Contracts: 5 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -101,23 +102,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "f2a14027bbb6711f8c05db3b5e361d201efb5facd9b8b257dbf285867edb466c",
+      "sha256": "aabd691c7bf25b44b96e931505f46638de07d7bb3c6cf974c1443c2d697be2a8",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626736845\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.232\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793626872199\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.188\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "f92a8711e34e961cc896119767f4f55531ce8dc3aa8584b67803f1362fb71d37",
-      "bytes": 92,
-      "head": "23 passed, 1 warning in 1.71s; FR-01 coverage 130/130 statements = 100%; spec coverage 21/21"
+      "sha256": "ee584594e799badce354b6cfd68ee62c1262dc48d44980c1a71a848a64af20db",
+      "bytes": 111,
+      "head": "collected 40 items; test_fr02.py 25 passed, test_fr08.py 15 passed; 40 passed, 1 warning; FR-02 coverage 100.0%"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6dbedcc4b65d99a430f1c7f9e714024a59528de943b40bda03eed27af24196ee",
-      "bytes": 65,
-      "head": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken."
+      "sha256": "5274da5ccc8e9a41105b773d8af329c7f59f3d427b0d9661b7697f9e573ccfce",
+      "bytes": 95,
+      "head": "Analyzed 66 files, 155 dependencies. Layered architecture KEPT ... Contracts: 5 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
