@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-06",
-  "overall_score": 100.0,
+  "fr_id": "FR-07",
+  "overall_score": 99.68,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -10,7 +10,6 @@
       "score": 100.0,
       "threshold": 100,
       "tool_evidence": "All checks passed!",
-      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt",
       "effective_threshold": 100.0,
@@ -19,7 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627618689\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.176\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627761099\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.182\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -28,10 +27,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 9,
+      "tests_passed": 10,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "9 passed in 0.51s; coverage of session.py, unit_of_work.py, models/base.py: 50/50 statements, 100%; 8/8 required spec tests present",
+      "tool_evidence": "test_fr07.py 10 passed in 0.26s; FR-07 migrations coverage 98.72%; spec coverage 9/9",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -40,9 +39,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-07.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-06",
+      "coverage_scope_fr": "FR-07",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -50,7 +49,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "Contracts: 5 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -102,26 +101,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "04e132537ac9c0aa9adf8c446f2286022b4b4f5097e81d82d7f5bda68a2bdd09",
+      "sha256": "6ac8848629b5aa0d6b0d0ccb79ba835bedf16baecd988f58929385bac3f3aef5",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627618689\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.176\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793627761099\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.182\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "79f03b45c91e4d69b4c85280277aebd328462ccd8cc0908979b3e69b1e001560",
-      "bytes": 131,
-      "head": "9 passed in 0.51s; coverage of session.py, unit_of_work.py, models/base.py: 50/50 statements, 100%; 8/8 required spec tests present"
+      "sha256": "80b41f7158daaaa1c45a325c9fc3c2020778316d7a9b44752c1e43f0df43249c",
+      "bytes": 84,
+      "head": "test_fr07.py 10 passed in 0.26s; FR-07 migrations coverage 98.72%; spec coverage 9/9"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6dbedcc4b65d99a430f1c7f9e714024a59528de943b40bda03eed27af24196ee",
-      "bytes": 65,
-      "head": "Analyzed 66 files, 155 dependencies. Contracts: 5 kept, 0 broken."
+      "sha256": "6fa0caab63839c3e163e4e18754d273b5d70f4155d040f5c5f1ec832538cdeed",
+      "bytes": 28,
+      "head": "Contracts: 5 kept, 0 broken."
     }
   },
-  "composite_score": 100.0,
+  "composite_score": 99.68,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
