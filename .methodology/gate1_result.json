@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-02",
+  "fr_id": "FR-03",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -18,8 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793709964349\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.268\n    }\n}\n\n",
-      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793710106712\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.225\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -28,11 +27,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 40,
+      "tests_passed": 39,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "pytest: 40 passed, 1 warning. coverage report FR-02 files: TOTAL percent_covered=100.0% (coverage_FR-02.json) {\"covered_lines\": 169, \"num_statements\": 169, \"percent_covered\": 100.0, \"percent_covered_display\": \"100\", \"missing_lines\": 0, \"excluded_lines\": 0, \"percent_statements_covered\": 100.0, \"percent_statements_covered_display\": \"100\"}",
-      "evidence_file": ".sessi-work/round_1/tools/test_coverage.txt",
+      "tool_evidence": "39 passed, 1 warning; FR-03 files coverage 68/68 statements = 100%; spec coverage 12/12",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -41,9 +39,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-02.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-03.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-02",
+      "coverage_scope_fr": "FR-03",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -51,7 +49,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 66 files, 156 dependencies. Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "Contracts: 5 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -103,23 +101,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "f9c85a2b55aee6a190862c1e64f259269fac8aaeac278ed4e0c30731e01a6c00",
+      "sha256": "a356026f562410381b0cc62704bf7651130b7c6022bf7caa9a809a61b4e5d5b2",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793709964349\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.268\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793710106712\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.225\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "33e33504afb1ea5b7020924a663a6890dca7bd344760723985c5739f8b07f6f1",
-      "bytes": 338,
-      "head": "pytest: 40 passed, 1 warning. coverage report FR-02 files: TOTAL percent_covered=100.0% (coverage_FR-02.json) {\"covered_lines\": 169, \"num_statements\": 169, \"percent_covered\": 100.0, \"percent_covered_display\": \"100\", \"missing_lines\": 0, \"excluded_lines\": 0, \"percent_statements_covered\": 100.0, \"percent_statements_covered_display\": \"100\"}"
+      "sha256": "93045ea2b33413a1253d7b8a44758ed38ca1de113daff493e3a4f6ea294a63e6",
+      "bytes": 87,
+      "head": "39 passed, 1 warning; FR-03 files coverage 68/68 statements = 100%; spec coverage 12/12"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "ef236815b94de55cc8790643bba34a70e128aff1964010386b502799d0ee66aa",
-      "bytes": 65,
-      "head": "Analyzed 66 files, 156 dependencies. Contracts: 5 kept, 0 broken."
+      "sha256": "6fa0caab63839c3e163e4e18754d273b5d70f4155d040f5c5f1ec832538cdeed",
+      "bytes": 28,
+      "head": "Contracts: 5 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
