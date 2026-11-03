@@ -441,4 +441,5 @@ def test_fr02_executor_drain_without_start_is_noop(db_url):
     engine = create_engine(db_url)
     ex = executor.Executor(engine, max_concurrent=1, drain_timeout=0.1, task_timeout=1.0)
     asyncio.run(ex.drain())
+    assert ex._group is None and not ex._jobs  # NFR-09: drain before start leaves no state
     engine.dispose()

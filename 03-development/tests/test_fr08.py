@@ -344,6 +344,7 @@ def test_fr08_drain_before_start_is_noop(engine):
     async def scenario():
         ex = executor.Executor(engine, max_concurrent=2, drain_timeout=1.0, task_timeout=10.0)
         await ex.drain()
+        assert ex._group is None and not ex._jobs  # NFR-09: drain before start leaves no state
 
     asyncio.run(scenario())
 
