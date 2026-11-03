@@ -22,7 +22,7 @@ from taskq_api.api.middleware import install_cors, install_rate_limit
 from taskq_api.errors import install_handlers, service_unavailable
 from taskq_api.service.executor import Executor
 from taskq_api.service.metrics import RejectionCounter
-from taskq_api.service.redaction import redact
+from taskq_api.service.redaction import redact_inline
 from taskq_api.repository.session import DbUnavailableError, create_db_engine
 
 
@@ -34,10 +34,10 @@ class _JsonFormatter(logging.Formatter):
             "ts": datetime.fromtimestamp(record.created, timezone.utc).isoformat(),
             "level": record.levelname,
             "logger": record.name,
-            "message": redact(record.getMessage()),
+            "message": redact_inline(record.getMessage()),
         }
         if record.exc_info:
-            payload["exc"] = redact(self.formatException(record.exc_info))
+            payload["exc"] = redact_inline(self.formatException(record.exc_info))
         return json.dumps(payload, ensure_ascii=False)
 
 
@@ -45,7 +45,7 @@ class _TextFormatter(logging.Formatter):
     """Plain text line; secrets are redacted after formatting. [NFR-04]"""
 
     def format(self, record: logging.LogRecord) -> str:
-        return redact(super().format(record))
+        return redact_inline(super().format(record))
 
 
 def configure_logging(level: str, fmt: str) -> None:

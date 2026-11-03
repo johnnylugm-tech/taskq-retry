@@ -5,6 +5,7 @@
 Citations: SPEC.md:145-150, SPEC.md:381.
 """
 import asyncio
+import logging
 import os
 import shlex
 import time
@@ -17,6 +18,7 @@ from taskq_api.service import runner
 from taskq_api.service.redaction import redact
 
 TAIL_BYTES = 4096
+_log = logging.getLogger(__name__)
 
 
 def _utcnow() -> datetime:
@@ -108,7 +110,7 @@ class Executor:
             _set_status(self._engine, run_id, "interrupted", finished_at=_utcnow())
             raise
         except Exception:  # a failed run must not abort sibling jobs in the TaskGroup
-            pass
+            _log.exception("run %s failed", run_id)
 
     async def run(self, run_id: str, command: str) -> None:
         """Execute under the concurrency cap and wait for completion."""
