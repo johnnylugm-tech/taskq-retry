@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-08",
-  "overall_score": 99.83,
+  "fr_id": "FR-09",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -18,7 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "\"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.187\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793710997575\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.192\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,10 +27,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 40,
+      "tests_passed": 13,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "40 passed, 1 warning; coverage of executor.py/runner.py/app.py = 99.32%; spec coverage 10/10",
+      "tool_evidence": "13 passed, 2 warnings; FR-09 coverage 74/74 statements = 100%; 8/8 required tests present",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -39,9 +39,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-08.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-08",
+      "coverage_scope_fr": "FR-09",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -49,7 +49,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "Analyzed 66 files, 156 dependencies. Contracts: 5 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -101,26 +101,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "7f3851fc5b34021a2caec63f212d2014b8a5acca8f65e4e750e577b5ae0a292f",
-      "bytes": 159,
-      "head": "\"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.187\n    }\n}"
+      "sha256": "94d5e86a5f024820e3b054c6bb77e1f64666eab626fb50adff4df2460ea3521a",
+      "bytes": 250,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793710997575\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.192\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6862f209451635f986f793bcba5387c9ff1fca85d5d1627e261f49f27cb8e798",
-      "bytes": 92,
-      "head": "40 passed, 1 warning; coverage of executor.py/runner.py/app.py = 99.32%; spec coverage 10/10"
+      "sha256": "ef22a8c843fa244f825c513457b4173002171e8e5b4c84eb3ac99f9dbc1528db",
+      "bytes": 89,
+      "head": "13 passed, 2 warnings; FR-09 coverage 74/74 statements = 100%; 8/8 required tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6fa0caab63839c3e163e4e18754d273b5d70f4155d040f5c5f1ec832538cdeed",
-      "bytes": 28,
-      "head": "Contracts: 5 kept, 0 broken."
+      "sha256": "ef236815b94de55cc8790643bba34a70e128aff1964010386b502799d0ee66aa",
+      "bytes": 65,
+      "head": "Analyzed 66 files, 156 dependencies. Contracts: 5 kept, 0 broken."
     }
   },
-  "composite_score": 99.83,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
