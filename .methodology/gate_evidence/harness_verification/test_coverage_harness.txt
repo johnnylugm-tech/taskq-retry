@@ -1,11 +1,11 @@
 # Harness-executed: pytest-cov
 # returncode: 0
-# agent_score: 96.7 | threshold: 80.0
+# agent_score: 100.0 | threshold: 80.0
 
-........................................................................ [ 31%]
-........................................................................ [ 62%]
-........................................................................ [ 93%]
-...............                                                          [100%]
+........................................................................ [ 25%]
+........................................................................ [ 51%]
+........................................................................ [ 76%]
+.................................................................        [100%]
 =============================== warnings summary ===============================
 .venv/lib/python3.11/site-packages/fastapi/testclient.py:1
   /Users/johnny/projects/taskq-retry/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
@@ -22,7 +22,7 @@ ______________ coverage: platform darwin, python 3.11.15-final-0 _______________
 Name                                                         Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------
 03-development/src/migrations/__init__.py                        0      0   100%
-03-development/src/migrations/env.py                            15      0   100%
+03-development/src/migrations/env.py                            22      0   100%
 03-development/src/migrations/versions/__init__.py               0      0   100%
 03-development/src/migrations/versions/v1_initial.py            12      0   100%
 03-development/src/migrations/versions/v2_tags.py               16      0   100%
@@ -56,15 +56,26 @@ Name                                                         Stmts   Miss  Cover
 03-development/src/taskq_api/repository/unit_of_work.py         20      0   100%
 03-development/src/taskq_api/service/__init__.py                 0      0   100%
 03-development/src/taskq_api/service/auth.py                    32      0   100%
-03-development/src/taskq_api/service/executor.py                92      0   100%
+03-development/src/taskq_api/service/executor.py                94      0   100%
 03-development/src/taskq_api/service/health.py                  22      0   100%
 03-development/src/taskq_api/service/keys.py                    11      0   100%
 03-development/src/taskq_api/service/metrics.py                 24      0   100%
 03-development/src/taskq_api/service/rate_limit.py              36      0   100%
-03-development/src/taskq_api/service/redaction.py                4      0   100%
+03-development/src/taskq_api/service/redaction.py                8      0   100%
 03-development/src/taskq_api/service/runner.py                   5      0   100%
 03-development/src/taskq_api/service/tasks.py                   41      0   100%
 03-development/src/taskq_api/service/validation.py               7      0   100%
 ------------------------------------------------------------------------------------------
-TOTAL                                                          794      0   100%
-231 passed, 2 warnings in 15.97s
+TOTAL                                                          807      0   100%
+
+--------------------------------------------------------------------------------------------------- benchmark: 2 tests ---------------------------------------------------------------------------------------------------
+Name (time in ms)                                                Min               Max              Mean            StdDev            Median               IQR            Outliers       OPS            Rounds  Iterations
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_nfr01_get_task_p95_under_30ms_at_10k_rows                1.7018 (1.0)      2.6864 (1.0)      2.0315 (1.0)      0.1967 (1.16)     2.0444 (1.0)      0.2777 (1.33)         32;2  492.2454 (1.0)         100           1
+test_nfr01_list_tasks_limit_50_p95_under_80ms_at_10k_rows     2.6612 (1.56)     3.4884 (1.30)     3.0948 (1.52)     0.1699 (1.0)      3.1003 (1.52)     0.2090 (1.0)          30;2  323.1191 (0.66)        100           1
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+281 passed, 2 warnings in 20.73s

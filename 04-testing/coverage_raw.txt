@@ -1,0 +1,77 @@
+........................................................................ [ 25%]
+........................................................................ [ 51%]
+........................................................................ [ 76%]
+.................................................................        [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/johnny/projects/taskq-retry/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+03-development/tests/test_fr09.py::test_sec_t16_db_url_password_absent_from_logs
+  /Users/johnny/projects/taskq-retry/03-development/tests/test_fr09.py:183: SAWarning: Query string argument(s) 'password' are not accepted by the pysqlite driver and are being ignored; SQLite URI arguments require that 'uri=true' also be present in the URL. (Background on this warning at: https://sqlalche.me/e/21/squa)
+    app.state.engine = create_engine(db_url)  # unreachable host: readyz must fail without leaking
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.15-final-0 _______________
+
+Name                                                         Stmts   Miss  Cover   Missing
+------------------------------------------------------------------------------------------
+03-development/src/migrations/__init__.py                        0      0   100%
+03-development/src/migrations/env.py                            22      0   100%
+03-development/src/migrations/versions/__init__.py               0      0   100%
+03-development/src/migrations/versions/v1_initial.py            12      0   100%
+03-development/src/migrations/versions/v2_tags.py               16      0   100%
+03-development/src/migrations/versions/v3_split_results.py      50      0   100%
+03-development/src/taskq_api/__init__.py                         0      0   100%
+03-development/src/taskq_api/api/__init__.py                     0      0   100%
+03-development/src/taskq_api/api/deps.py                         2      0   100%
+03-development/src/taskq_api/api/error_handlers.py              10      0   100%
+03-development/src/taskq_api/api/middleware.py                  19      0   100%
+03-development/src/taskq_api/api/routes_health.py                9      0   100%
+03-development/src/taskq_api/api/routes_metrics.py               9      0   100%
+03-development/src/taskq_api/api/routes_runs.py                 40      0   100%
+03-development/src/taskq_api/api/routes_tasks.py                21      0   100%
+03-development/src/taskq_api/api/schemas.py                     19      0   100%
+03-development/src/taskq_api/app.py                             49      0   100%
+03-development/src/taskq_api/config.py                          42      0   100%
+03-development/src/taskq_api/errors.py                          31      0   100%
+03-development/src/taskq_api/models/__init__.py                  0      0   100%
+03-development/src/taskq_api/models/api_key.py                  13      0   100%
+03-development/src/taskq_api/models/base.py                      2      0   100%
+03-development/src/taskq_api/models/rate_bucket.py               8      0   100%
+03-development/src/taskq_api/models/task.py                     14      0   100%
+03-development/src/taskq_api/models/task_result.py              17      0   100%
+03-development/src/taskq_api/repository/__init__.py              0      0   100%
+03-development/src/taskq_api/repository/api_keys.py             10      0   100%
+03-development/src/taskq_api/repository/health.py               10      0   100%
+03-development/src/taskq_api/repository/rate_buckets.py         13      0   100%
+03-development/src/taskq_api/repository/results.py              13      0   100%
+03-development/src/taskq_api/repository/session.py              28      0   100%
+03-development/src/taskq_api/repository/tasks.py                28      0   100%
+03-development/src/taskq_api/repository/unit_of_work.py         20      0   100%
+03-development/src/taskq_api/service/__init__.py                 0      0   100%
+03-development/src/taskq_api/service/auth.py                    32      0   100%
+03-development/src/taskq_api/service/executor.py                94      0   100%
+03-development/src/taskq_api/service/health.py                  22      0   100%
+03-development/src/taskq_api/service/keys.py                    11      0   100%
+03-development/src/taskq_api/service/metrics.py                 24      0   100%
+03-development/src/taskq_api/service/rate_limit.py              36      0   100%
+03-development/src/taskq_api/service/redaction.py                8      0   100%
+03-development/src/taskq_api/service/runner.py                   5      0   100%
+03-development/src/taskq_api/service/tasks.py                   41      0   100%
+03-development/src/taskq_api/service/validation.py               7      0   100%
+------------------------------------------------------------------------------------------
+TOTAL                                                          807      0   100%
+
+--------------------------------------------------------------------------------------------------- benchmark: 2 tests ---------------------------------------------------------------------------------------------------
+Name (time in ms)                                                Min               Max              Mean            StdDev            Median               IQR            Outliers       OPS            Rounds  Iterations
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_nfr01_get_task_p95_under_30ms_at_10k_rows                1.7367 (1.0)      2.2031 (1.0)      1.8770 (1.0)      0.0985 (1.0)      1.8508 (1.0)      0.1077 (1.0)          27;4  532.7760 (1.0)         100           1
+test_nfr01_list_tasks_limit_50_p95_under_80ms_at_10k_rows     2.7027 (1.56)     3.6882 (1.67)     3.1074 (1.66)     0.2167 (2.20)     3.0868 (1.67)     0.3583 (3.33)         37;0  321.8075 (0.60)        100           1
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+281 passed, 2 warnings in 19.80s
