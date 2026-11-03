@@ -22,7 +22,7 @@ def serve() -> None:
 
 
 def main() -> None:
-    """Run the CLI."""
+    """Run the CLI. [FR-03]"""
     parser = argparse.ArgumentParser(prog="taskq_api")
     sub = parser.add_subparsers(dest="group", required=True)
     sub.add_parser("serve")

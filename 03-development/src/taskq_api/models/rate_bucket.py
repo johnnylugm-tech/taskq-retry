@@ -9,7 +9,7 @@ from taskq_api.models.base import Base
 
 
 class RateBucket(Base):
-    """Persisted bucket state: remaining tokens and the epoch second of the last refill."""
+    """Persisted bucket state: remaining tokens and the epoch second of the last refill. [FR-05]"""
 
     __tablename__ = "rate_buckets"
 

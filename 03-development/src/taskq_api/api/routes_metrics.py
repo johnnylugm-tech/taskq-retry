@@ -17,4 +17,5 @@ router = APIRouter(prefix="/v1", tags=["metrics"])
 @router.get("/metrics", summary="Metrics",
             description="Task counts, latency percentiles, rate-limit rejections (scope admin).")
 def get_metrics(request: Request, session: DbSession = Depends(require_scope("admin"))) -> dict[str, Any]:
+    """Get metrics. [FR-04]"""
     return svc.snapshot(session, request.app.state.rejections)

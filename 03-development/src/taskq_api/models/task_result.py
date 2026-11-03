@@ -15,7 +15,7 @@ INITIAL_STATUS = "pending"
 
 
 class TaskResult(Base):
-    """Execution result row belonging to a task."""
+    """Execution result row belonging to a task. [FR-01]"""
 
     __tablename__ = "task_results"
 

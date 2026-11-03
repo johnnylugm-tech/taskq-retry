@@ -9,7 +9,7 @@ FORBIDDEN_COMMAND_CHARS = frozenset("\x00\r\n")
 
 
 def validate_command(value: str) -> str:
-    """Reject commands containing blacklisted characters."""
+    """Reject commands containing blacklisted characters. [FR-01]"""
     if FORBIDDEN_COMMAND_CHARS & set(value):
         raise ValueError("command contains forbidden characters")
     return value

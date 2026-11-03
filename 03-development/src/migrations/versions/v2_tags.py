@@ -12,6 +12,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade. [FR-07]"""
     op.create_table(
         "tags",
         sa.Column("id", sa.String(36), primary_key=True),
@@ -32,6 +33,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade. [FR-07]"""
     op.drop_index("ix_tasks_name", table_name="tasks")
     op.drop_table("rate_buckets")
     op.drop_table("task_tags")

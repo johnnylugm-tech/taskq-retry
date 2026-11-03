@@ -21,13 +21,13 @@ _background: set[asyncio.Future[None]] = set()
 
 
 class RunAccepted(BaseModel):
-    """202 body."""
+    """202 body. [FR-02]"""
 
     run_id: str
 
 
 class RunOut(BaseModel):
-    """One run record."""
+    """One run record. [FR-02]"""
 
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
@@ -42,7 +42,7 @@ class RunOut(BaseModel):
 
 
 class RunPage(BaseModel):
-    """Run history, newest first."""
+    """Run history, newest first. [FR-02]"""
 
     items: list[RunOut]
 
@@ -50,6 +50,7 @@ class RunPage(BaseModel):
 @router.post("/{task_id}/run", status_code=202, response_model=RunAccepted, summary="Run task",
              description="Start asynchronous execution (scope write).")
 async def run_task(task_id: str, request: Request, session: DbSession = Depends(require_scope("write"))) -> RunAccepted:
+    """Run task. [FR-02]"""
     task = svc.get(session, task_id)
     run_id = str(uuid.uuid4())
     repo.add(session, task.id, run_id)
@@ -62,5 +63,6 @@ async def run_task(task_id: str, request: Request, session: DbSession = Depends(
 @router.get("/{task_id}/runs", response_model=RunPage, summary="List runs",
             description="Run history, newest first (scope read).")
 def list_runs(task_id: str, session: DbSession = Depends(require_scope("read"))) -> RunPage:
+    """List runs. [FR-02]"""
     svc.get(session, task_id)
     return RunPage(items=[RunOut.model_validate(r) for r in repo.list_for_task(session, task_id)])

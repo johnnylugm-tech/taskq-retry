@@ -68,6 +68,7 @@ def _move_results_to_json(bind: Connection) -> None:
 
 
 def upgrade() -> None:
+    """Upgrade. [FR-07]"""
     results = op.create_table(
         "task_results",
         sa.Column("id", sa.String(36), primary_key=True),
@@ -86,6 +87,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade. [FR-07]"""
     op.add_column("tasks", sa.Column("result_json", sa.Text, nullable=True))
     if not context.is_offline_mode():
         _move_results_to_json(op.get_bind())

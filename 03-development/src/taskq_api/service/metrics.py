@@ -19,11 +19,13 @@ class RejectionCounter:
         self._count = 0
 
     def increment(self) -> None:
+        """Increment. [FR-09]"""
         with self._lock:
             self._count += 1
 
     @property
     def count(self) -> int:
+        """Count. [FR-09]"""
         with self._lock:
             return self._count
 

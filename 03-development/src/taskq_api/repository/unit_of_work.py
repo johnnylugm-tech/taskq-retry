@@ -26,7 +26,7 @@ class UnitOfWork:
         return self._scope.__exit__(exc_type, exc, tb)
 
     def get_run(self, run_id: str) -> Optional[TaskResult]:
-        """Fetch a run row inside this transaction."""
+        """Fetch a run row inside this transaction. [FR-06]"""
         return results.get(self._require_session(), run_id)
 
     def _require_session(self) -> DbSession:

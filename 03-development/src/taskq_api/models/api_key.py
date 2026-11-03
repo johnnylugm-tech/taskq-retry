@@ -13,7 +13,7 @@ from taskq_api.models.task import _now
 
 
 class ApiKey(Base):
-    """Stored API key: sha256 hex digest plus scope."""
+    """Stored API key: sha256 hex digest plus scope. [FR-01]"""
 
     __tablename__ = "api_keys"
 

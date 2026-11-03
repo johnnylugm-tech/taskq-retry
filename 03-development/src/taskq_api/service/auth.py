@@ -23,7 +23,7 @@ def _allows(held: str, needed: str) -> bool:
 
 
 def hash_key(plaintext: str) -> str:
-    """SHA-256 hex digest under which a key is stored."""
+    """SHA-256 hex digest under which a key is stored. [FR-03]"""
     return hashlib.sha256(plaintext.encode()).hexdigest()
 
 
@@ -32,7 +32,7 @@ def _unauthenticated() -> ApiError:
 
 
 def require_scope(scope: str) -> Callable[..., DbSession]:
-    """Build a dependency requiring at least `scope`; returns the open session."""
+    """Build a dependency requiring at least `scope`; returns the open session. [FR-03]"""
 
     def dep(request: Request, x_api_key: str | None = Header(default=None),
             session: DbSession = Depends(get_session)) -> DbSession:

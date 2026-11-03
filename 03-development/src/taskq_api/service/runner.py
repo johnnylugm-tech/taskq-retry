@@ -14,5 +14,5 @@ _TRANSITIONS = {
 
 
 def is_transition_allowed(from_status: str, to_status: str) -> bool:
-    """Return True if `from_status -> to_status` is a legal run transition."""
+    """Return True if `from_status -> to_status` is a legal run transition. [FR-02]"""
     return to_status in _TRANSITIONS.get(from_status, set())

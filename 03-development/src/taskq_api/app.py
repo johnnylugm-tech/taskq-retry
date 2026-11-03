@@ -72,7 +72,7 @@ def configure_logging(level: str, fmt: str) -> None:
 
 
 def create_app() -> FastAPI:
-    """Create the app, bound to the engine at TASKQ_DB_URL."""
+    """Create the app, bound to the engine at TASKQ_DB_URL. [FR-01]"""
     configure_logging(config.log_level(), config.log_format())
     engine = create_db_engine(os.environ["TASKQ_DB_URL"])
 

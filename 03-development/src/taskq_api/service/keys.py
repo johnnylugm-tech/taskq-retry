@@ -12,7 +12,7 @@ from taskq_api.service.auth import hash_key
 
 
 def create_key(session: DbSession, scope: str) -> str:
-    """Store the SHA-256 of a fresh key and return the plaintext (shown once)."""
+    """Store the SHA-256 of a fresh key and return the plaintext (shown once). [FR-03]"""
     plaintext = "tq-" + secrets.token_urlsafe(32)
     repo.add(session, ApiKey(
         id=str(uuid.uuid4()),

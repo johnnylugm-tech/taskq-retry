@@ -43,7 +43,7 @@ def _set_status(engine: DbEngine, run_id: str, status: str, **fields: Any) -> No
 
 
 async def execute(engine: DbEngine, run_id: str, command: str, timeout: Optional[float] = None) -> None:
-    """Run `command` without a shell, enforcing the timeout (default TASKQ_TASK_TIMEOUT), and persist the outcome."""
+    """Run `command` without a shell, enforcing the timeout (default TASKQ_TASK_TIMEOUT), and persist the outcome. [FR-02]"""
     _set_status(engine, run_id, "running")
     if timeout is None:
         timeout = float(os.environ["TASKQ_TASK_TIMEOUT"])
@@ -92,12 +92,12 @@ class Executor:
         self.peak_running = 0
 
     async def start(self) -> None:
-        """Open the TaskGroup that owns every submitted job."""
+        """Open the TaskGroup that owns every submitted job. [FR-02]"""
         self._group = asyncio.TaskGroup()
         await self._group.__aenter__()
 
     def submit(self, run_id: str, command: str) -> None:
-        """Enqueue a run without blocking; it waits for a free concurrency slot."""
+        """Enqueue a run without blocking; it waits for a free concurrency slot. [FR-02]"""
         assert self._group is not None, "Executor.start() must be called before submit()"
         job = self._group.create_task(self._job(run_id, command))
         self._jobs.add(job)
@@ -113,7 +113,7 @@ class Executor:
             _log.exception("run %s failed", run_id)
 
     async def run(self, run_id: str, command: str) -> None:
-        """Execute under the concurrency cap and wait for completion."""
+        """Execute under the concurrency cap and wait for completion. [FR-02]"""
         async with self._sem:
             self.running += 1
             self.peak_running = max(self.peak_running, self.running)
@@ -123,7 +123,7 @@ class Executor:
                 self.running -= 1
 
     async def drain(self) -> None:
-        """Wait up to drain_timeout for in-flight jobs; cancel (-> interrupted) the rest."""
+        """Wait up to drain_timeout for in-flight jobs; cancel (-> interrupted) the rest. [FR-02]"""
         if self._group is None:
             return
         if self._jobs:

@@ -13,7 +13,7 @@ TaskStatus = Literal["pending", "running", "succeeded", "failed"]
 
 
 class TaskCreate(BaseModel):
-    """POST /v1/tasks body."""
+    """POST /v1/tasks body. [FR-01]"""
 
     name: str = Field(min_length=1, max_length=MAX_NAME_LEN)
     command: str = Field(min_length=1, max_length=MAX_COMMAND_LEN)
@@ -22,7 +22,7 @@ class TaskCreate(BaseModel):
 
 
 class TaskOut(BaseModel):
-    """Full task representation."""
+    """Full task representation. [FR-01]"""
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -34,7 +34,7 @@ class TaskOut(BaseModel):
 
 
 class TaskPage(BaseModel):
-    """Cursor-paginated task list."""
+    """Cursor-paginated task list. [FR-01]"""
 
     items: list[TaskOut]
     next_cursor: Optional[str] = None

@@ -16,7 +16,7 @@ def _now() -> datetime:
 
 
 class Task(Base):
-    """A queued task: id, command, unique name, status, created_at."""
+    """A queued task: id, command, unique name, status, created_at. [FR-01]"""
 
     __tablename__ = "tasks"
 

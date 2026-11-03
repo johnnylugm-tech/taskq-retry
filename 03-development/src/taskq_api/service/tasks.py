@@ -17,7 +17,7 @@ def _not_found() -> ApiError:
 
 
 def create(session: DbSession, name: str, command: str) -> Task:
-    """Create a task; duplicate name -> 409."""
+    """Create a task; duplicate name -> 409. [FR-01]"""
     try:
         task = repo.add(session, Task(name=name, command=command))
         session.commit()
@@ -28,7 +28,7 @@ def create(session: DbSession, name: str, command: str) -> Task:
 
 
 def get(session: DbSession, task_id: str) -> Task:
-    """Fetch a task or raise 404."""
+    """Fetch a task or raise 404. [FR-01]"""
     task = repo.get(session, task_id)
     if task is None:
         raise _not_found()
@@ -49,7 +49,7 @@ def _encode_cursor(task: Task) -> str:
 
 
 def list_page(session: DbSession, status: Optional[str], limit: int, cursor: Optional[str]) -> tuple[list[Task], Optional[str]]:
-    """Return (items, next_cursor) using keyset pagination."""
+    """Return (items, next_cursor) using keyset pagination. [FR-01]"""
     after = _decode_cursor(cursor) if cursor else None
     rows = repo.list_page(session, status, limit + 1, after)
     items = rows[:limit]
@@ -58,7 +58,7 @@ def list_page(session: DbSession, status: Optional[str], limit: int, cursor: Opt
 
 
 def delete(session: DbSession, task_id: str) -> None:
-    """Delete a task and its results in one transaction."""
+    """Delete a task and its results in one transaction. [FR-01]"""
     task = get(session, task_id)
     repo.delete_with_results(session, task)
     session.commit()

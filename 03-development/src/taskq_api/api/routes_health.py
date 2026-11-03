@@ -11,9 +11,11 @@ router = APIRouter(tags=["health"])
 
 @router.get("/healthz", summary="Liveness", description="Process is alive.")
 def healthz() -> dict[str, str]:
+    """Healthz. [FR-09]"""
     return {"status": "ok"}
 
 
 @router.get("/readyz", summary="Readiness", description="DB reachable and migration at head, else 503.")
 def readyz(request: Request) -> dict[str, str]:
+    """Readyz. [FR-09]"""
     return svc.check_ready(request.app.state.engine)
