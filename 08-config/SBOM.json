@@ -20,6 +20,12 @@
             "id": "MIT"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "direct"
+        }
       ]
     },
     {
@@ -32,6 +38,12 @@
           "license": {
             "id": "MIT"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
         }
       ]
     },
@@ -46,6 +58,12 @@
             "id": "MIT"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -58,6 +76,12 @@
           "license": {
             "id": "MIT"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
         }
       ]
     },
@@ -72,6 +96,12 @@
             "id": "BSD-3-Clause"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -84,6 +114,12 @@
           "license": {
             "id": "MIT"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "direct"
         }
       ]
     },
@@ -98,6 +134,12 @@
             "id": "MIT"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -110,6 +152,12 @@
           "license": {
             "id": "BSD-3-Clause"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
         }
       ]
     },
@@ -124,6 +172,12 @@
             "id": "MIT"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -136,6 +190,12 @@
           "license": {
             "id": "BSD-3-Clause"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
         }
       ]
     },
@@ -150,6 +210,12 @@
             "id": "Apache-2.0"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -162,6 +228,12 @@
           "license": {
             "id": "MIT"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "direct"
         }
       ]
     },
@@ -176,6 +248,12 @@
             "id": "MIT"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -188,6 +266,12 @@
           "license": {
             "id": "MIT"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "direct"
         }
       ]
     },
@@ -202,6 +286,12 @@
             "id": "BSD-3-Clause"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -214,6 +304,12 @@
           "license": {
             "id": "PSF-2.0"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
         }
       ]
     },
@@ -228,6 +324,12 @@
             "id": "MIT"
           }
         }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "transitive"
+        }
       ]
     },
     {
@@ -240,6 +342,12 @@
           "license": {
             "id": "BSD-3-Clause"
           }
+        }
+      ],
+      "properties": [
+        {
+          "name": "taskq:dependency-type",
+          "value": "direct"
         }
       ]
     }
