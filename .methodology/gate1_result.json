@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-05",
-  "overall_score": 99.67948717948718,
+  "fr_id": "FR-06",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -18,7 +18,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793710410934\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.194\n    }\n}\n\n",
+      "tool_evidence": "\"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.195\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt",
       "effective_threshold": 100.0,
@@ -27,10 +27,10 @@
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 56,
+      "tests_passed": 9,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "56 passed, 1 warning; FR-05 files coverage 77/78 statements = 98.7%",
+      "tool_evidence": "9 passed, 1 warning; FR-06 files coverage 100% (50/50 statements); spec coverage 8/8",
       "coverage_denominator": {
         "statements_delivered": 0,
         "statements_omitted": 0,
@@ -39,9 +39,9 @@
           "03-development/src/taskq_api/__main__.py"
         ]
       },
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-05.txt",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-05",
+      "coverage_scope_fr": "FR-06",
       "score_source": "framework",
       "effective_threshold": 100.0,
       "passed": true
@@ -49,7 +49,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 5 kept, 0 broken.",
+      "tool_evidence": "Analyzed 66 files, 156 dependencies. Contracts: 5 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt",
       "effective_threshold": 100.0,
@@ -101,26 +101,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "78ba7910218ad0e709c3ebe4c3963c39a0e04e9c4e4084de2271ef0905721bfd",
-      "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1793710410934\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.194\n    }\n}"
+      "sha256": "e2369a3cf4eac5cd1111e404da4b3ec702decae0f1d9a642cc928f67c408dce4",
+      "bytes": 159,
+      "head": "\"summary\": {\n        \"filesAnalyzed\": 45,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.195\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6c38c279a5d8541743ff6ddf204bbac5849ce7cb36103e3990d5dee672e5c155",
-      "bytes": 67,
-      "head": "56 passed, 1 warning; FR-05 files coverage 77/78 statements = 98.7%"
+      "sha256": "0cd8005daf917abf50edb593d4864b1886524a6be7f577ef950aa3584c0609ea",
+      "bytes": 84,
+      "head": "9 passed, 1 warning; FR-06 files coverage 100% (50/50 statements); spec coverage 8/8"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6fa0caab63839c3e163e4e18754d273b5d70f4155d040f5c5f1ec832538cdeed",
-      "bytes": 28,
-      "head": "Contracts: 5 kept, 0 broken."
+      "sha256": "ef236815b94de55cc8790643bba34a70e128aff1964010386b502799d0ee66aa",
+      "bytes": 65,
+      "head": "Analyzed 66 files, 156 dependencies. Contracts: 5 kept, 0 broken."
     }
   },
-  "composite_score": 99.6795,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
